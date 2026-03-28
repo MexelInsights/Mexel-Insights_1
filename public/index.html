@@ -933,15 +933,15 @@ footer {
   <div class="hero-left">
     <div class="eyebrow">Decision-Grade Intelligence · Powered by Claude Opus</div>
     <h1>Where <em>signal</em><br>becomes<br><span class="rust">strategy.</span></h1>
-    <p class="hero-sub">Fast, cross-silo intelligence at the intersection of energy transition, geopolitics, regulatory pressure, and critical minerals — with live AI analysis powered by Claude Opus.</p>
+    <p class="hero-sub">Cross-silo intelligence at the intersection of energy transition, ESG regulation, critical minerals, AI infrastructure, and geopolitical risk — covering the deep-scale materials that power supply chains but remain invisible to most.</p>
     <div class="actions">
       <a href="#tools" class="btn-g">Try AI Intelligence ↗</a>
       <a href="#products" class="btn-o">Explore Products</a>
     </div>
     <div class="stats">
       <div class="stat"><div class="stat-val">Opus</div><div class="stat-lbl">AI Engine</div></div>
-      <div class="stat"><div class="stat-val">48h</div><div class="stat-lbl">RRM SLA</div></div>
-      <div class="stat"><div class="stat-val">6</div><div class="stat-lbl">Jurisdictions</div></div>
+      <div class="stat"><div class="stat-val">30</div><div class="stat-lbl">Materials Tracked</div></div>
+      <div class="stat"><div class="stat-val">14</div><div class="stat-lbl">Jurisdictions</div></div>
     </div>
   </div>
   <div class="hero-right">
@@ -952,10 +952,10 @@ footer {
         <div class="ai-model-tag">claude-opus-4-5</div>
       </div>
       <div class="chat-msgs" id="chat-msgs">
-        <div class="msg msg-ai">Hello. I'm Mexel Insights' intelligence analyst, powered by Claude Opus.<br><br>Ask me anything about energy transition, geopolitical risk, critical minerals, ESG regulation, or request a specific intelligence brief.</div>
+        <div class="msg msg-ai">Hello. I'm Mexel Insights' intelligence analyst, powered by Claude Opus.<br><br>Ask me about critical minerals (lithium to gallium), ESG regulation (CBAM, CSRD), energy policy, AI infrastructure supply chains, or request a structured intelligence brief.</div>
       </div>
       <div class="chat-input-row">
-        <input type="text" id="chat-in" placeholder="Ask about CBAM, lithium supply, Iran risk..." onkeydown="if(event.key==='Enter')sendChat()">
+        <input type="text" id="chat-in" placeholder="Ask about gallium export controls, CBAM compliance, AI mineral demand..." onkeydown="if(event.key==='Enter')sendChat()">
         <button class="chat-send" onclick="sendChat()">Send ↗</button>
       </div>
     </div>
@@ -967,11 +967,13 @@ footer {
         <div style="font-family:var(--mono);font-size:0.46rem;color:var(--green-bright);display:flex;align-items:center;gap:0.35rem;"><span class="status-dot"></span>Active</div>
       </div>
       <div class="term-body">
-        <div class="tl"><span class="tt">09:14</span><span class="tag t-rrm">RRM</span><div class="tx">China expands REE export controls — 12 new compounds. URGENT.</div><span class="rb r5">5/5</span></div>
-        <div class="tl"><span class="tt">08:52</span><span class="tag t-ppi">PPI</span><div class="tx">CSRD Wave 2 — 49,000 additional companies in scope.</div><span class="rb r4">4/5</span></div>
-        <div class="tl"><span class="tt">08:31</span><span class="tag t-mmr">MMR</span><div class="tx">Mozambique graphite port disruption — 3–4 week delay.</div><span class="rb r4">4/5</span></div>
-        <div class="tl"><span class="tt">07:48</span><span class="tag t-sc">SCEN</span><div class="tx">Hormuz scenarios update — insurance premiums +60% YoY.</div><span class="rb r3">3/5</span></div>
-        <div class="tl"><span class="tt">07:20</span><span class="tag t-ppi">PPI</span><div class="tx">CBAM Phase-in declarant deadline Q3 2026. Most not compliant.</div><span class="rb r3">3/5</span></div>
+        <div class="tl"><span class="tt">09:41</span><span class="tag t-rrm">RRM</span><div class="tx">China tightens gallium & germanium export licensing — AI chip supply chain at risk. URGENT.</div><span class="rb r5">5/5</span></div>
+        <div class="tl"><span class="tt">09:18</span><span class="tag t-mmr">MMR</span><div class="tx">Antimony prices +140% YoY — US 100% import-dependent. DoD stockpile RFI issued.</div><span class="rb r5">5/5</span></div>
+        <div class="tl"><span class="tt">08:52</span><span class="tag t-ppi">PPI</span><div class="tx">CBAM Phase-in declarant deadline Q3 2026. Most companies not compliant.</div><span class="rb r4">4/5</span></div>
+        <div class="tl"><span class="tt">08:31</span><span class="tag t-mmr">MMR</span><div class="tx">Indium phosphide demand surge — hyperscale data centre fiber optic buildout accelerating.</div><span class="rb r4">4/5</span></div>
+        <div class="tl"><span class="tt">07:48</span><span class="tag t-sc">SCEN</span><div class="tx">Hormuz scenario update — insurance premiums +60% YoY. Gulf LNG rerouting underway.</div><span class="rb r3">3/5</span></div>
+        <div class="tl"><span class="tt">07:20</span><span class="tag t-ppi">PPI</span><div class="tx">CSRD Wave 2 — 49,000 companies in scope. ESG reporting burden doubling.</div><span class="rb r3">3/5</span></div>
+        <div class="tl"><span class="tt">06:55</span><span class="tag t-mmr">MMR</span><div class="tx">Tellurium supply squeeze — CdTe solar + thermoelectric cooling competing for scarce output.</div><span class="rb r4">4/5</span></div>
       </div>
     </div>
   </div>
@@ -982,25 +984,45 @@ footer {
   <div class="t-track" id="ttk">
     <span class="tick"><span class="tn">BRENT</span><span class="tsep">|</span><span class="tv">$87.42</span><span class="tu">▲1.2%</span></span>
     <span class="tick"><span class="tn">EU ETS</span><span class="tsep">|</span><span class="tv">€67.80</span><span class="td">▼0.4%</span></span>
-    <span class="tick"><span class="tn">LNG ASIA</span><span class="tsep">|</span><span class="tv">$12.40/MMBtu</span><span class="tu">▲3.4%</span></span>
     <span class="tick"><span class="tn">TTF GAS</span><span class="tsep">|</span><span class="tv">€34.10</span><span class="tu">▲2.1%</span></span>
     <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv">$14,200/t</span><span class="td">▼0.9%</span></span>
     <span class="tick"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
+    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv">$425/kg</span><span class="tu">▲8.2%</span></span>
+    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv">$2,180/kg</span><span class="tu">▲5.7%</span></span>
+    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv">$38,500/t</span><span class="tu">▲12.4%</span></span>
+    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv">$28,400/t</span><span class="td">▼1.8%</span></span>
+    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv">$680/t</span><span class="tu">▲2.3%</span></span>
     <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv">2,841</span><span class="td">▼2.3%</span></span>
-    <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
+    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv">$310/kg</span><span class="tu">▲3.1%</span></span>
+    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv">$7.20/lb</span><span class="tu">▲1.9%</span></span>
+    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv">$165/lb</span><span class="tu">▲0.8%</span></span>
+    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv">$85/kg</span><span class="tu">▲6.3%</span></span>
+    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv">$340/mtu</span><span class="tu">▲4.1%</span></span>
+    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv">$1,012/oz</span><span class="td">▼0.6%</span></span>
+    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv">$580/t</span><span class="tu">▲1.4%</span></span>
     <span class="tick"><span class="tn">GOLD</span><span class="tsep">|</span><span class="tv">$2,640/oz</span><span class="tu">▲0.7%</span></span>
-    <span class="tick"><span class="tn">CLEAN ENERGY</span><span class="tsep">|</span><span class="tv">4,201</span><span class="tu">▲1.1%</span></span>
+    <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
     <!-- duplicate set for seamless loop -->
     <span class="tick"><span class="tn">BRENT</span><span class="tsep">|</span><span class="tv">$87.42</span><span class="tu">▲1.2%</span></span>
     <span class="tick"><span class="tn">EU ETS</span><span class="tsep">|</span><span class="tv">€67.80</span><span class="td">▼0.4%</span></span>
-    <span class="tick"><span class="tn">LNG ASIA</span><span class="tsep">|</span><span class="tv">$12.40/MMBtu</span><span class="tu">▲3.4%</span></span>
     <span class="tick"><span class="tn">TTF GAS</span><span class="tsep">|</span><span class="tv">€34.10</span><span class="tu">▲2.1%</span></span>
     <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv">$14,200/t</span><span class="td">▼0.9%</span></span>
     <span class="tick"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
+    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv">$425/kg</span><span class="tu">▲8.2%</span></span>
+    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv">$2,180/kg</span><span class="tu">▲5.7%</span></span>
+    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv">$38,500/t</span><span class="tu">▲12.4%</span></span>
+    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv">$28,400/t</span><span class="td">▼1.8%</span></span>
+    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv">$680/t</span><span class="tu">▲2.3%</span></span>
     <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv">2,841</span><span class="td">▼2.3%</span></span>
-    <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
+    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv">$310/kg</span><span class="tu">▲3.1%</span></span>
+    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv">$7.20/lb</span><span class="tu">▲1.9%</span></span>
+    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv">$165/lb</span><span class="tu">▲0.8%</span></span>
+    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv">$85/kg</span><span class="tu">▲6.3%</span></span>
+    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv">$340/mtu</span><span class="tu">▲4.1%</span></span>
+    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv">$1,012/oz</span><span class="td">▼0.6%</span></span>
+    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv">$580/t</span><span class="tu">▲1.4%</span></span>
     <span class="tick"><span class="tn">GOLD</span><span class="tsep">|</span><span class="tv">$2,640/oz</span><span class="tu">▲0.7%</span></span>
-    <span class="tick"><span class="tn">CLEAN ENERGY</span><span class="tsep">|</span><span class="tv">4,201</span><span class="tu">▲1.1%</span></span>
+    <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
   </div>
 </div>
 
@@ -1011,7 +1033,7 @@ footer {
       <div>
         <div class="ey">Live AI Intelligence · Claude Opus</div>
         <h2>Generate real <em>intelligence</em><br>in seconds.</h2>
-        <p class="sdesc">Four analyst-grade tools powered by Claude Opus — the same engine behind every Mexel Insights subscription product.</p>
+        <p class="sdesc">Four analyst-grade tools powered by Claude Opus — spanning energy policy, ESG compliance, critical minerals from lithium to gallium, and the overlooked materials underpinning AI, defence, and the energy transition.</p>
       </div>
     </div>
     <div class="tools-grid rv">
@@ -1056,10 +1078,42 @@ footer {
       <div class="tool-card">
         <div class="tool-label">Product 04 · <span>Live AI</span></div>
         <div class="tool-title">MMR Signal Analyser</div>
-        <div class="tool-desc">Paste a raw news item or supply chain event. Claude Opus tags it, risk-rates it, assigns confidence, and generates an actionable Move.</div>
+        <div class="tool-desc">Paste a raw signal — news, export controls, port disruptions. Claude Opus analyses it across 30 materials including gallium, germanium, antimony, tellurium, and other deep-scale inputs most analysts miss.</div>
         <div class="form-row">
           <textarea class="fi" id="mmr-sig" rows="3" placeholder="e.g. Chile's government has announced it will require state participation in all new lithium extraction contracts..."></textarea>
-          <input class="fi" id="mmr-mat" placeholder="Material (e.g. Lithium)" value="Lithium">
+          <input class="fi" id="mmr-mat" placeholder="Material (e.g. Lithium)" value="Lithium" list="mmr-materials">
+          <datalist id="mmr-materials">
+            <option value="Lithium">
+            <option value="Copper">
+            <option value="Graphite">
+            <option value="Cobalt">
+            <option value="Nickel">
+            <option value="Rare Earth Elements (REE)">
+            <option value="Gallium">
+            <option value="Germanium">
+            <option value="Indium">
+            <option value="Antimony">
+            <option value="Tungsten">
+            <option value="Tantalum">
+            <option value="Niobium">
+            <option value="Vanadium">
+            <option value="Tellurium">
+            <option value="Selenium">
+            <option value="Molybdenum">
+            <option value="Fluorspar">
+            <option value="Hafnium">
+            <option value="Rhenium">
+            <option value="Scandium">
+            <option value="Beryllium">
+            <option value="Palladium">
+            <option value="Iridium">
+            <option value="Silicon (High-Purity)">
+            <option value="Bismuth">
+            <option value="Manganese">
+            <option value="Platinum">
+            <option value="Uranium">
+            <option value="Zirconium">
+          </datalist>
           <button class="run-btn" id="mmr-btn" onclick="runMMR()">
             <span id="mmr-icon">⚡</span> Analyse Signal
           </button>
@@ -1071,15 +1125,21 @@ footer {
       <div class="tool-card">
         <div class="tool-label">Product 03 · <span>Live AI</span></div>
         <div class="tool-title">Policy Pressure Index Scorer</div>
-        <div class="tool-desc">Select a sector and jurisdiction. Claude Opus scores the five PPI dimensions and returns an overall pressure score with recommended actions.</div>
+        <div class="tool-desc">Select a sector and jurisdiction. Claude Opus scores CBAM exposure, CSRD compliance burden, export control risk, ESG reporting pressure, and returns actionable next steps.</div>
         <div class="form-row">
           <select class="fi" id="ppi-sector">
             <option>Chemicals & Industrials</option>
             <option>Energy & Utilities</option>
             <option>Mining & Metals</option>
             <option>Technology / Data Centres</option>
+            <option>Semiconductors & Electronics</option>
             <option>Automotive / Manufacturing</option>
             <option>Financial Services</option>
+            <option>Defence & Aerospace</option>
+            <option>Battery & Energy Storage</option>
+            <option>Hydrogen & Fuel Cells</option>
+            <option>Solar & Wind</option>
+            <option>Critical Minerals Processing</option>
           </select>
           <select class="fi" id="ppi-jur">
             <option>European Union</option>
@@ -1088,6 +1148,14 @@ footer {
             <option>Canada</option>
             <option>Australia</option>
             <option>China</option>
+            <option>Japan</option>
+            <option>South Korea</option>
+            <option>India</option>
+            <option>Saudi Arabia / UAE</option>
+            <option>Indonesia</option>
+            <option>DR Congo</option>
+            <option>Chile</option>
+            <option>Brazil</option>
           </select>
           <button class="run-btn" id="ppi-btn" onclick="runPPI()">
             <span id="ppi-icon">⚡</span> Generate PPI Score
@@ -1113,9 +1181,9 @@ footer {
     <div class="prods rv">
       <div class="prod"><div class="p-n">01</div><div class="p-icon">RRM</div><div class="p-name">Rapid Response Memos</div><div class="p-abbr">Event-driven · 48–72h SLA</div><div class="p-desc">Structured brief within 48–72 hours of any trigger event: Context, Signals, Moves, Uncertainty Flags.</div><div class="p-sla">SLA: <span>48–72h</span></div></div>
       <div class="prod"><div class="p-n">02</div><div class="p-icon">SCN</div><div class="p-name">Scenario Briefings</div><div class="p-abbr">Quarterly + bespoke</div><div class="p-desc">Three explicitly-structured scenarios with named triggers, probability estimates, and a Moves Summary table.</div><div class="p-sla">Cadence: <span>Quarterly</span></div></div>
-      <div class="prod"><div class="p-n">03</div><div class="p-icon">PPI</div><div class="p-name">Policy Pressure Index</div><div class="p-abbr">Monthly · 6 jurisdictions</div><div class="p-desc">Sector × jurisdiction scoring matrix (0–5) with real-time alerts on regulatory score changes.</div><div class="p-sla">Alert: <span>Real-time</span></div></div>
-      <div class="prod"><div class="p-n">04</div><div class="p-icon">MMR</div><div class="p-name">Minerals & Metals Radar</div><div class="p-abbr">Weekly signal tape</div><div class="p-desc">Tagged, risk-rated, confidence-graded signals across 10 critical materials. Each with a specific Move.</div><div class="p-sla">Frequency: <span>Weekly</span></div></div>
-      <div class="prod"><div class="p-n">05</div><div class="p-icon">AIR</div><div class="p-name">AI Energy Demand Radar</div><div class="p-abbr">Compute-to-power intelligence</div><div class="p-desc">Bridges hyperscale buildouts, grid constraints, permitting, and geopolitical risk in one view.</div><div class="p-sla">Quarterly <span>Compute Supercycle</span></div></div>
+      <div class="prod"><div class="p-n">03</div><div class="p-icon">PPI</div><div class="p-name">Policy Pressure Index</div><div class="p-abbr">Monthly · 14 jurisdictions · ESG lens</div><div class="p-desc">Sector × jurisdiction scoring (0–5) covering CBAM, CSRD, export controls, ESG disclosure burden, and cross-border compliance exposure. Real-time alerts on score changes across 12 sectors.</div><div class="p-sla">Alert: <span>Real-time</span></div></div>
+      <div class="prod"><div class="p-n">04</div><div class="p-icon">MMR</div><div class="p-name">Minerals & Metals Radar</div><div class="p-abbr">Weekly signal tape · 30 materials</div><div class="p-desc">Tagged, risk-rated signals across lithium, copper, graphite, REEs and the deep-scale materials powering AI chips, data centres, and defence: gallium, germanium, antimony, indium, tantalum, tellurium, vanadium, tungsten, and more.</div><div class="p-sla">Frequency: <span>Weekly</span></div></div>
+      <div class="prod"><div class="p-n">05</div><div class="p-icon">AIR</div><div class="p-name">AI Energy Demand Radar</div><div class="p-abbr">Compute-to-power · Mineral demand</div><div class="p-desc">Tracks hyperscale data centre buildouts, grid constraints, semiconductor mineral demand (gallium, germanium, indium, hafnium), cooling system materials, and the policy signals shaping AI infrastructure globally.</div><div class="p-sla">Quarterly <span>Compute Supercycle</span></div></div>
       <div class="prod"><div class="p-n">06</div><div class="p-icon">PPB</div><div class="p-name">Procurement Playbooks</div><div class="p-abbr">Commercial guidance</div><div class="p-desc">Price adjustment, force majeure, renegotiation triggers, compliance obligations — formatted for immediate use.</div><div class="p-sla">Delivery: <span>PDF + Word</span></div></div>
     </div>
   </div>
@@ -1136,9 +1204,9 @@ footer {
         <div class="pv">$4,800</div><div class="pp">per year · USD / CA$6,500</div>
         <div class="pdiv"></div>
         <ul class="pfs">
-          <li>PPI heatmap — 2 sectors</li>
-          <li>MMR — 3 materials</li>
-          <li>Monthly executive brief</li>
+          <li>PPI heatmap — 3 sectors, 6 jurisdictions</li>
+          <li>MMR — 10 materials incl. gallium, germanium</li>
+          <li>Monthly executive brief + ESG digest</li>
           <li>Email alerts on score changes</li>
         </ul>
         <a href="#subscribe" class="btn-o" style="width:100%;justify-content:center;font-size:0.56rem;">Get Started</a>
@@ -1149,9 +1217,9 @@ footer {
         <div class="pv">$12,000</div><div class="pp">per year · USD / CA$16,200</div>
         <div class="pdiv"></div>
         <ul class="pfs">
-          <li>PPI — all sectors, all jurisdictions</li>
-          <li>MMR — all 10 materials + alerts</li>
-          <li>AI Energy Demand Radar</li>
+          <li>PPI — all 12 sectors, 14 jurisdictions</li>
+          <li>MMR — all 30 materials + deep-scale alerts</li>
+          <li>AI Energy Demand Radar + mineral impact</li>
           <li>4 Rapid Response Memos / month</li>
           <li>Quarterly Scenario Briefing</li>
           <li>Monthly 30-min analyst call</li>
@@ -1212,7 +1280,7 @@ footer {
           <div class="logo-mark" style="width:22px;height:22px;"></div>
           <div class="logo-text" style="font-size:0.72rem;">MEXEL <span>INSIGHTS</span></div>
         </div>
-        <p>Independent geopolitical intelligence for the energy transition. Fast. Cross-silo. Action-oriented. Powered by Claude Opus.</p>
+        <p>Independent geopolitical intelligence for energy transition, critical minerals, ESG compliance, and AI infrastructure supply chains. Deep-scale. Cross-silo. Action-oriented.</p>
       </div>
       <div><div class="fc-t">Products</div><ul class="fl"><li><a href="#">Rapid Response Memos</a></li><li><a href="#">Scenario Briefings</a></li><li><a href="#">Policy Pressure Index</a></li><li><a href="#">Minerals & Metals Radar</a></li><li><a href="#">AI Energy Radar</a></li></ul></div>
       <div><div class="fc-t">Sectors</div><ul class="fl"><li><a href="#">Energy & Utilities</a></li><li><a href="#">Chemicals</a></li><li><a href="#">Mining & Metals</a></li><li><a href="#">Technology</a></li><li><a href="#">Financial Services</a></li></ul></div>
