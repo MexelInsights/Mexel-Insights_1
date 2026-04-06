@@ -364,6 +364,45 @@ h1 .rust { color: var(--rust); }
 .r5 { color: #E8724A; } .r4 { color: #D4953A; }
 .r3 { color: #C4A84C; } .r2 { color: #3DBDA8; }
 
+/* ═══ HOW IT WORKS ═══ */
+.how-sec { background: var(--bg-primary); padding: 6rem 3.5rem; }
+.how-inner { max-width: 1320px; margin: 0 auto; text-align: center; }
+.how-inner .ey { justify-content: center; margin-bottom: 1.2rem; }
+.how-inner h2 { font-family: var(--serif); font-size: clamp(2rem, 3.2vw, 3rem); color: var(--navy); font-weight: 400; margin-bottom: 3.5rem; letter-spacing: -0.01em; }
+.how-inner h2 em { font-style: italic; color: var(--gold); }
+.how-flow {
+  display: flex; align-items: stretch; justify-content: center; gap: 0;
+}
+.how-card {
+  flex: 1; max-width: 220px;
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 10px; padding: 2rem 1.4rem 1.8rem;
+  text-align: center; position: relative;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.how-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.how-card-num {
+  font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.12em;
+  color: var(--gold); font-weight: 500; margin-bottom: 0.8rem; text-transform: uppercase;
+}
+.how-card-title {
+  font-family: var(--serif); font-size: 1.35rem; color: var(--navy);
+  font-weight: 400; margin-bottom: 0.7rem;
+}
+.how-card-desc {
+  font-size: 0.82rem; color: var(--text-muted); line-height: 1.65;
+}
+.how-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; flex-shrink: 0;
+  font-size: 1.1rem; color: var(--gold); font-weight: 500;
+}
+@media (max-width: 900px) {
+  .how-flow { flex-direction: column; align-items: center; gap: 0; }
+  .how-card { max-width: 380px; width: 100%; }
+  .how-arrow { transform: rotate(90deg); width: auto; height: 36px; }
+}
+
 /* ═══ TICKER ═══ */
 .ticker {
   background: var(--bg-dark);
@@ -839,6 +878,45 @@ footer .logo-mark { background: var(--gold); }
         <div class="tl"><span class="tt">07:48</span><span class="tag t-sc">SCEN</span><div class="tx">Hormuz scenario update — insurance premiums +60% YoY. Gulf LNG rerouting underway.</div><span class="rb r3">3/5</span></div>
         <div class="tl"><span class="tt">07:20</span><span class="tag t-ppi">PPI</span><div class="tx">CSRD Wave 2 — 49,000 companies in scope. ESG reporting burden doubling.</div><span class="rb r3">3/5</span></div>
         <div class="tl"><span class="tt">06:55</span><span class="tag t-mmr">MMR</span><div class="tx">Tellurium supply squeeze — CdTe solar + thermoelectric cooling competing for scarce output.</div><span class="rb r4">4/5</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-sec rv">
+  <div class="how-inner">
+    <div class="ey" style="justify-content:center;">HOW IT WORKS</div>
+    <h2>From headline to decision in <em>one platform.</em></h2>
+    <div class="how-flow">
+      <div class="how-card">
+        <div class="how-card-num">01</div>
+        <div class="how-card-title">Signal</div>
+        <div class="how-card-desc">Geopolitical events, export controls, policy shifts, supply disruptions</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-card">
+        <div class="how-card-num">02</div>
+        <div class="how-card-title">Transmission</div>
+        <div class="how-card-desc">How the event moves through commodity, energy, and financial channels</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-card">
+        <div class="how-card-num">03</div>
+        <div class="how-card-title">Scenario</div>
+        <div class="how-card-desc">Base, stress, and tail risk paths with probability estimates</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-card">
+        <div class="how-card-num">04</div>
+        <div class="how-card-title">Implication</div>
+        <div class="how-card-desc">Sector, equity, commodity, and material-level impact assessment</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-card">
+        <div class="how-card-num">05</div>
+        <div class="how-card-title">Decision</div>
+        <div class="how-card-desc">Time-bounded actions with confidence levels and invalidation triggers</div>
       </div>
     </div>
   </div>
