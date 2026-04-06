@@ -708,6 +708,39 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 @media (max-width: 1100px) { .ccw-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .ccw-grid { grid-template-columns: 1fr; } }
 
+/* ═══ ESG & POLICY ═══ */
+.esg-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
+.esg-inner { max-width: 1320px; margin: 0 auto; }
+.esg-inner .shdr { margin-bottom: 1rem; }
+.esg-subtitle {
+  font-size: 1.05rem; color: var(--text-muted); line-height: 1.75;
+  max-width: 780px; margin-bottom: 3rem;
+}
+.esg-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.esg-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 10px; padding: 2rem 1.8rem 1.6rem; position: relative;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.esg-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.esg-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.7rem; }
+.esg-card-title { font-family: var(--serif); font-size: 1.15rem; color: var(--navy); font-weight: 400; flex: 1; }
+.esg-badge {
+  font-family: var(--mono); font-size: 0.46rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 600; padding: 0.25rem 0.6rem;
+  border-radius: 3px; flex-shrink: 0; margin-left: 0.8rem;
+}
+.esg-badge-active { background: rgba(14,124,107,0.12); color: var(--teal); }
+.esg-badge-expanding { background: rgba(196,126,48,0.12); color: var(--amber); }
+.esg-badge-implementing { background: rgba(196,126,48,0.12); color: var(--amber); }
+.esg-badge-escalating { background: rgba(192,74,40,0.12); color: var(--rust); }
+.esg-badge-emerging { background: rgba(59,130,246,0.12); color: #3B82F6; }
+.esg-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+@media (max-width: 1000px) { .esg-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .esg-grid { grid-template-columns: 1fr; } }
+
 /* ═══ WHO THIS IS FOR ═══ */
 .who-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
 .who-inner { max-width: 1320px; margin: 0 auto; }
@@ -1380,6 +1413,63 @@ footer .logo-mark { background: var(--gold); }
         <div class="ccw-tag">Energy</div>
         <div class="ccw-desc">Battery cathodes, steel. South Africa, Gabon, Australia.</div>
         <div class="ccw-stat">Diversified supply base</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ESG & POLICY INTELLIGENCE ═══ -->
+<section class="esg-sec rv" id="policy">
+  <div class="esg-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">REGULATORY PRESSURE MONITOR</div>
+        <h2>Policy, ESG & Energy<br>Transition <em>Intelligence</em></h2>
+      </div>
+    </div>
+    <p class="esg-subtitle">Regulatory and policy shifts don't just create compliance burden — they reshape commodity flows, sector valuations, and procurement economics. We track the policy signals that move markets.</p>
+    <div class="esg-grid">
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">CBAM (Carbon Border Adjustment)</div>
+          <div class="esg-badge esg-badge-active">Active</div>
+        </div>
+        <div class="esg-desc">EU carbon tariff on imports. Affects steel, aluminium, cement, fertiliser, hydrogen. Phase-in Q3 2026.</div>
+      </div>
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">CSRD Wave 2</div>
+          <div class="esg-badge esg-badge-active">Active</div>
+        </div>
+        <div class="esg-desc">49,000 companies entering ESG reporting scope. Doubles disclosure burden across the EU and supply chain partners.</div>
+      </div>
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">China Export Controls</div>
+          <div class="esg-badge esg-badge-escalating">Escalating</div>
+        </div>
+        <div class="esg-desc">Gallium, germanium, antimony, REEs, tungsten, tellurium. Weaponised supply chain leverage across critical minerals.</div>
+      </div>
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">US Critical Minerals Policy</div>
+          <div class="esg-badge esg-badge-expanding">Expanding</div>
+        </div>
+        <div class="esg-desc">$7.5B OBBB allocation. DoD stockpiling. Permitting reform. Defence Production Act invocations accelerating.</div>
+      </div>
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">EU Critical Raw Materials Act</div>
+          <div class="esg-badge esg-badge-implementing">Implementing</div>
+        </div>
+        <div class="esg-desc">60 strategic projects. Processing targets. Recycling mandates. Reshaping European mineral supply chains.</div>
+      </div>
+      <div class="esg-card">
+        <div class="esg-card-top">
+          <div class="esg-card-title">NATO Defence Minerals</div>
+          <div class="esg-badge esg-badge-emerging">Emerging</div>
+        </div>
+        <div class="esg-desc">12 defence-critical minerals identified. 9 face elevated supply risk. Alliance-level procurement coordination underway.</div>
       </div>
     </div>
   </div>
