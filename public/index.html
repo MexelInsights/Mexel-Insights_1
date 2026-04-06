@@ -659,6 +659,29 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 }
 .p-sla span { color: var(--gold); font-weight: 500; }
 
+/* ═══ WHO THIS IS FOR ═══ */
+.who-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
+.who-inner { max-width: 1320px; margin: 0 auto; }
+.who-inner .shdr { margin-bottom: 3.5rem; }
+.who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.who-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 10px; padding: 2.4rem 2rem 2rem;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.who-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.who-icon {
+  font-size: 1.6rem; margin-bottom: 1.2rem;
+  width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  background: var(--gold-glow); border-radius: 10px;
+}
+.who-title {
+  font-family: var(--serif); font-size: 1.35rem; color: var(--navy);
+  font-weight: 400; margin-bottom: 0.7rem;
+}
+.who-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+@media (max-width: 900px) { .who-grid { grid-template-columns: 1fr; } }
+
 /* ═══ PRICING ═══ */
 .price-sec { background: var(--bg-elevated); }
 .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -1133,6 +1156,35 @@ footer .logo-mark { background: var(--gold); }
       <div class="prod"><div class="p-n">04</div><div class="p-icon">MMR</div><div class="p-name">Minerals & Metals Radar</div><div class="p-abbr">Weekly signal tape · 30 materials</div><div class="p-desc">Tagged, risk-rated signals across lithium, copper, graphite, REEs and the deep-scale materials powering AI chips, data centres, and defence: gallium, germanium, antimony, indium, tantalum, tellurium, vanadium, tungsten, and more.</div><div class="p-sla">Frequency: <span>Weekly</span></div></div>
       <div class="prod"><div class="p-n">05</div><div class="p-icon">AIR</div><div class="p-name">AI Energy Demand Radar</div><div class="p-abbr">Compute-to-power · Mineral demand</div><div class="p-desc">Tracks hyperscale data centre buildouts, grid constraints, semiconductor mineral demand (gallium, germanium, indium, hafnium), cooling system materials, and the policy signals shaping AI infrastructure globally.</div><div class="p-sla">Quarterly <span>Compute Supercycle</span></div></div>
       <div class="prod"><div class="p-n">06</div><div class="p-icon">PPB</div><div class="p-name">Procurement Playbooks</div><div class="p-abbr">Commercial guidance</div><div class="p-desc">Price adjustment, force majeure, renegotiation triggers, compliance obligations — formatted for immediate use.</div><div class="p-sla">Delivery: <span>PDF + Word</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHO THIS IS FOR ═══ -->
+<section class="who-sec rv" id="audience">
+  <div class="who-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">WHO THIS IS FOR</div>
+        <h2>Built for professionals who act on <em>intelligence</em></h2>
+      </div>
+    </div>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-icon">📈</div>
+        <div class="who-title">Investors & Funds</div>
+        <div class="who-desc">Portfolio managers, macro strategists, and commodity-focused funds tracking geopolitical risk transmission to equities, commodities, and rates.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🛡</div>
+        <div class="who-title">Corporates & Procurement</div>
+        <div class="who-desc">Strategy leads, supply chain teams, and procurement officers managing exposure to critical minerals, chemicals, and ESG compliance.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🔍</div>
+        <div class="who-title">Analysts & Researchers</div>
+        <div class="who-desc">Policy analysts, energy researchers, and media professionals requiring structured, sourced, scenario-based intelligence.</div>
+      </div>
     </div>
   </div>
 </section>
