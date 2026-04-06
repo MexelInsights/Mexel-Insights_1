@@ -383,69 +383,6 @@ app.post('/api/chat', aiLimiter, async (req, res) => {
   }
 });
 
-// ── COMMODITY TICKER ─────────────────────────────────────────
-const TICKER_SYMBOLS = {
-  'BZ=F':  { name: 'BRENT',    unit: '',     decimals: 2 },
-  'GC=F':  { name: 'GOLD',     unit: '/oz',  decimals: 0 },
-  'HG=F':  { name: 'COPPER',   unit: '/lb',  decimals: 2 },
-  'SI=F':  { name: 'SILVER',   unit: '/oz',  decimals: 2 },
-  'PL=F':  { name: 'PLATINUM', unit: '/oz',  decimals: 0 },
-};
-
-let tickerCache = null;
-let tickerCacheTime = 0;
-const TICKER_TTL = 15 * 60 * 1000; // 15 minutes
-
-async function fetchTickerData() {
-  const now = Date.now();
-  if (tickerCache && now - tickerCacheTime < TICKER_TTL) return tickerCache;
-
-  const results = {};
-  const symbols = Object.keys(TICKER_SYMBOLS);
-
-  await Promise.all(symbols.map(async (sym) => {
-    try {
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?range=2d&interval=1d`;
-      const resp = await fetch(url, {
-        headers: { 'User-Agent': 'MexelInsights/1.0' },
-      });
-      if (!resp.ok) return;
-      const data = await resp.json();
-      const meta = data.chart?.result?.[0]?.meta;
-      if (!meta) return;
-
-      const price = meta.regularMarketPrice;
-      const prevClose = meta.chartPreviousClose ?? meta.previousClose;
-      const info = TICKER_SYMBOLS[sym];
-      const change = prevClose ? ((price - prevClose) / prevClose * 100) : 0;
-
-      results[info.name] = {
-        price: price.toFixed(info.decimals),
-        change: change.toFixed(1),
-        unit: info.unit,
-      };
-    } catch (e) {
-      console.error(`Ticker fetch failed for ${sym}:`, e.message);
-    }
-  }));
-
-  if (Object.keys(results).length > 0) {
-    tickerCache = results;
-    tickerCacheTime = now;
-  }
-  return results;
-}
-
-app.get('/api/ticker', async (req, res) => {
-  try {
-    const data = await fetchTickerData();
-    res.json({ prices: data, cached: Date.now() - tickerCacheTime < 1000 ? false : true });
-  } catch (err) {
-    console.error('Ticker error:', err.message);
-    res.status(500).json({ error: 'Failed to fetch commodity prices.' });
-  }
-});
-
 // â”€â”€ HEALTH CHECK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/api/health', (req, res) => {
   res.json({
