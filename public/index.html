@@ -425,6 +425,7 @@ h1 .rust { color: var(--rust); }
 }
 .tn { color: rgba(255,255,255,0.4); } .tv { color: rgba(255,255,255,0.9); }
 .tu { color: var(--green-bright); } .td { color: #E8724A; }
+.ti { color: rgba(255,255,255,0.25); font-style: italic; }
 .tsep { color: rgba(255,255,255,0.12); }
 
 /* ═══ SECTIONS ═══ */
@@ -1031,52 +1032,48 @@ footer .logo-mark { background: var(--gold); }
 <div class="ticker">
   <div class="t-track" id="ttk">
     <span class="tick" data-ticker="BRENT"><span class="tn">BRENT</span><span class="tsep">|</span><span class="tv">$87.42</span><span class="tu">▲1.2%</span></span>
-    <span class="tick"><span class="tn">EU ETS</span><span class="tsep">|</span><span class="tv">€67.80</span><span class="td">▼0.4%</span></span>
-    <span class="tick"><span class="tn">TTF GAS</span><span class="tsep">|</span><span class="tv">€34.10</span><span class="tu">▲2.1%</span></span>
-    <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv">$14,200/t</span><span class="td">▼0.9%</span></span>
-    <span class="tick" data-ticker="COPPER"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
-    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv">$425/kg</span><span class="tu">▲8.2%</span></span>
-    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv">$2,180/kg</span><span class="tu">▲5.7%</span></span>
-    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv">$38,500/t</span><span class="tu">▲12.4%</span></span>
-    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv">$28,400/t</span><span class="td">▼1.8%</span></span>
-    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv">$680/t</span><span class="tu">▲2.3%</span></span>
-    <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv">2,841</span><span class="td">▼2.3%</span></span>
-    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv">$310/kg</span><span class="tu">▲3.1%</span></span>
-    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv">$7.20/lb</span><span class="tu">▲1.9%</span></span>
-    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv">$165/lb</span><span class="tu">▲0.8%</span></span>
-    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv">$85/kg</span><span class="tu">▲6.3%</span></span>
-    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv">$340/mtu</span><span class="tu">▲4.1%</span></span>
-    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv">$1,012/oz</span><span class="td">▼0.6%</span></span>
-    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv">$580/t</span><span class="tu">▲1.4%</span></span>
     <span class="tick" data-ticker="GOLD"><span class="tn">GOLD</span><span class="tsep">|</span><span class="tv">$2,640/oz</span><span class="tu">▲0.7%</span></span>
+    <span class="tick" data-ticker="COPPER"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
     <span class="tick" data-ticker="SILVER"><span class="tn">SILVER</span><span class="tsep">|</span><span class="tv">$31.20/oz</span><span class="tu">▲0.9%</span></span>
     <span class="tick" data-ticker="PLATINUM"><span class="tn">PLATINUM</span><span class="tsep">|</span><span class="tv">$982/oz</span><span class="tu">▲0.4%</span></span>
+    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
     <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
     <!-- duplicate set for seamless loop -->
     <span class="tick" data-ticker="BRENT"><span class="tn">BRENT</span><span class="tsep">|</span><span class="tv">$87.42</span><span class="tu">▲1.2%</span></span>
-    <span class="tick"><span class="tn">EU ETS</span><span class="tsep">|</span><span class="tv">€67.80</span><span class="td">▼0.4%</span></span>
-    <span class="tick"><span class="tn">TTF GAS</span><span class="tsep">|</span><span class="tv">€34.10</span><span class="tu">▲2.1%</span></span>
-    <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv">$14,200/t</span><span class="td">▼0.9%</span></span>
-    <span class="tick" data-ticker="COPPER"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
-    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv">$425/kg</span><span class="tu">▲8.2%</span></span>
-    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv">$2,180/kg</span><span class="tu">▲5.7%</span></span>
-    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv">$38,500/t</span><span class="tu">▲12.4%</span></span>
-    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv">$28,400/t</span><span class="td">▼1.8%</span></span>
-    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv">$680/t</span><span class="tu">▲2.3%</span></span>
-    <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv">2,841</span><span class="td">▼2.3%</span></span>
-    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv">$310/kg</span><span class="tu">▲3.1%</span></span>
-    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv">$7.20/lb</span><span class="tu">▲1.9%</span></span>
-    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv">$165/lb</span><span class="tu">▲0.8%</span></span>
-    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv">$85/kg</span><span class="tu">▲6.3%</span></span>
-    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv">$340/mtu</span><span class="tu">▲4.1%</span></span>
-    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv">$1,012/oz</span><span class="td">▼0.6%</span></span>
-    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv">$580/t</span><span class="tu">▲1.4%</span></span>
     <span class="tick" data-ticker="GOLD"><span class="tn">GOLD</span><span class="tsep">|</span><span class="tv">$2,640/oz</span><span class="tu">▲0.7%</span></span>
+    <span class="tick" data-ticker="COPPER"><span class="tn">COPPER</span><span class="tsep">|</span><span class="tv">$9,820/t</span><span class="tu">▲0.5%</span></span>
     <span class="tick" data-ticker="SILVER"><span class="tn">SILVER</span><span class="tsep">|</span><span class="tv">$31.20/oz</span><span class="tu">▲0.9%</span></span>
     <span class="tick" data-ticker="PLATINUM"><span class="tn">PLATINUM</span><span class="tsep">|</span><span class="tv">$982/oz</span><span class="tu">▲0.4%</span></span>
+    <span class="tick"><span class="tn">GALLIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">GERMANIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">ANTIMONY</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">LITHIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">COBALT</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">GRAPHITE</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">RARE EARTHS</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">INDIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TUNGSTEN</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TANTALUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">VANADIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">TELLURIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">FLUORSPAR</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
+    <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv ti">Indicative</span></span>
     <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
   </div>
-  <div class="ticker-label" style="text-align:center;padding:0.35rem 0 0.1rem;font-family:var(--mono);font-size:0.48rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3);text-transform:uppercase;">Major commodities live · Specialty minerals indicative</div>
+  <div class="ticker-label" style="text-align:center;padding:0.35rem 0 0.1rem;font-family:var(--mono);font-size:0.48rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3);text-transform:uppercase;">Live: Brent · Gold · Copper · Silver · Platinum &nbsp;|&nbsp; Indicative: Specialty minerals & chemicals &nbsp;·&nbsp; <span id="ticker-updated"></span></div>
 </div>
 
 <!-- ═══ AI TOOLS ═══ -->
@@ -1677,6 +1674,12 @@ if (ttk) { const cl = ttk.cloneNode(true); cl.id = ''; ttk.parentElement.appendC
       changeEl.textContent = arrow + Math.abs(changeNum) + '%';
       changeEl.className = cls;
     });
+    // Show last updated timestamp
+    const ts = document.getElementById('ticker-updated');
+    if (ts) {
+      const now = new Date();
+      ts.textContent = 'Last updated ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + ' ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    }
   } catch (e) {
     console.warn('Ticker fetch failed, using static values:', e.message);
   }
