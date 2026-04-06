@@ -742,6 +742,58 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 @media (max-width: 1000px) { .esg-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .esg-grid { grid-template-columns: 1fr; } }
 
+/* ═══ INTELLIGENCE MAP ═══ */
+.map-sec { background: var(--bg-dark); padding: 6rem 3.5rem; }
+.map-inner { max-width: 1320px; margin: 0 auto; }
+.map-inner .shdr { margin-bottom: 1rem; }
+.map-inner .ey { color: var(--gold); }
+.map-inner h2 { color: #fff; }
+.map-inner h2 em { color: var(--gold); }
+.map-subtitle {
+  font-size: 1.05rem; color: rgba(255,255,255,0.5); line-height: 1.75;
+  max-width: 780px; margin-bottom: 2rem;
+}
+#intel-map {
+  width: 100%; height: 520px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+}
+.map-legend {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-top: 1.4rem; padding: 0;
+}
+.map-legend-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--mono); font-size: 0.54rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.map-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.map-legend-dot.ml-red { background: #C04A28; }
+.map-legend-dot.ml-amber { background: #C47E30; }
+.map-legend-dot.ml-teal { background: #0E7C6B; }
+.map-legend-dot.ml-blue { background: #3B82F6; }
+/* Leaflet popup overrides */
+.leaflet-popup-content-wrapper {
+  background: var(--bg-dark-surface) !important; color: #fff !important;
+  border-radius: 8px !important; box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+.leaflet-popup-tip { background: var(--bg-dark-surface) !important; }
+.leaflet-popup-content { font-family: var(--body) !important; font-size: 0.85rem !important; line-height: 1.6 !important; }
+.leaflet-popup-content strong { color: var(--gold); }
+.map-popup-tag {
+  display: inline-block; font-family: var(--mono); font-size: 0.46rem;
+  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  padding: 0.15rem 0.5rem; border-radius: 3px; margin-bottom: 0.4rem;
+}
+.mpt-critical { background: rgba(192,74,40,0.2); color: #E8724A; }
+.mpt-elevated { background: rgba(196,126,48,0.2); color: #C47E30; }
+.mpt-watch { background: rgba(14,124,107,0.2); color: #22A85E; }
+.mpt-policy { background: rgba(59,130,246,0.2); color: #60A5FA; }
+@media (max-width: 600px) { #intel-map { height: 380px; } }
+
 /* ═══ WHO THIS IS FOR ═══ */
 .who-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
 .who-inner { max-width: 1320px; margin: 0 auto; }
@@ -908,6 +960,8 @@ footer .logo-mark { background: var(--gold); }
   .shdr { flex-direction: column; align-items: flex-start; }
 }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
@@ -1472,6 +1526,26 @@ footer .logo-mark { background: var(--gold); }
   </div>
 </section>
 
+<!-- ═══ INTELLIGENCE MAP ═══ -->
+<section class="map-sec rv" id="map">
+  <div class="map-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">SUPPLY CHAIN RISK MAP</div>
+        <h2>Global chokepoints,<br><em>visualised.</em></h2>
+      </div>
+    </div>
+    <p class="map-subtitle">Critical mineral supply chains, export control jurisdictions, and geopolitical risk hotspots — mapped to the materials and policy signals that matter to your portfolio and procurement.</p>
+    <div id="intel-map"></div>
+    <div class="map-legend">
+      <div class="map-legend-item"><div class="map-legend-dot ml-red"></div>Critical — Export controlled / supply crisis</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-amber"></div>Elevated — Concentrated supply / rising risk</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-teal"></div>Watch — Emerging shifts</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-blue"></div>Policy — Regulatory action</div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ PRODUCTS ═══ -->
 <section class="sec" id="products" style="background:var(--bg-primary)">
   <div class="inner">
@@ -1641,6 +1715,115 @@ const hdr = document.getElementById('header');
 window.addEventListener('scroll', () => {
   hdr.classList.toggle('scrolled', window.scrollY > 50);
 });
+
+// ═══ INTELLIGENCE MAP ═══
+(function initMap() {
+  const mapEl = document.getElementById('intel-map');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  const map = L.map('intel-map', {
+    center: [25, 30],
+    zoom: 2,
+    minZoom: 2,
+    maxZoom: 6,
+    scrollWheelZoom: false,
+    zoomControl: true,
+    attributionControl: false,
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+  }).addTo(map);
+
+  L.control.attribution({ prefix: false, position: 'bottomright' })
+    .addAttribution('&copy; <a href="https://carto.com" style="color:rgba(255,255,255,0.3)">CARTO</a>')
+    .addTo(map);
+
+  const riskColors = { critical: '#C04A28', elevated: '#C47E30', watch: '#0E7C6B', policy: '#3B82F6' };
+
+  function mkIcon(color) {
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:12px;height:12px;border-radius:50%;background:' + color + ';box-shadow:0 0 8px ' + color + '80;border:2px solid rgba(255,255,255,0.25);"></div>',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6],
+    });
+  }
+
+  const points = [
+    // CRITICAL — Export controlled / supply crisis
+    { lat: 35.86, lng: 104.20, risk: 'critical', title: 'China — Gallium & Germanium',
+      tag: 'mpt-critical', tagText: 'Critical',
+      desc: 'Export controls on gallium, germanium, antimony, REEs, tungsten, tellurium. 98% gallium, 60% germanium refining, 90% REE processing, 80% tungsten.' },
+    { lat: 38.86, lng: 71.28, risk: 'critical', title: 'Tajikistan — Antimony',
+      tag: 'mpt-critical', tagText: 'Critical',
+      desc: 'Second-largest antimony producer. Combined with China controls 80%+ of global supply. Defence-critical material.' },
+    { lat: -4.04, lng: 21.76, risk: 'critical', title: 'DRC — Cobalt & Tantalum',
+      tag: 'mpt-critical', tagText: 'Critical',
+      desc: '70% of global cobalt, 60%+ tantalum. Artisanal mining ESG risk. Conflict mineral regulations apply.' },
+
+    // ELEVATED — Concentrated supply
+    { lat: -0.79, lng: 113.92, risk: 'elevated', title: 'Indonesia — Nickel',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: '50%+ of global nickel supply. Processing dominance. Class 1 vs Class 2 split creating market friction.' },
+    { lat: -28.48, lng: 24.68, risk: 'elevated', title: 'South Africa — Platinum & Manganese',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: '70%+ of global platinum (hydrogen fuel cells). Major manganese producer. Eskom grid instability affects output.' },
+    { lat: -23.44, lng: -68.93, risk: 'elevated', title: 'Chile — Lithium & Copper',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: 'State participation mandate on new lithium contracts. Copper output critical — structural deficit looming by 2027.' },
+    { lat: -16.29, lng: -68.15, risk: 'elevated', title: 'Bolivia — Lithium',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: 'Largest undeveloped lithium reserves. State-controlled extraction. Infrastructure and political risk.' },
+    { lat: -25.27, lng: 133.78, risk: 'elevated', title: 'Australia — Lithium, REEs & Manganese',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: 'Top lithium producer. Growing REE processing capacity. Critical Minerals Strategy 2024 reshaping investment.' },
+    { lat: -1.24, lng: 11.61, risk: 'elevated', title: 'Gabon — Manganese',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: 'Major manganese exporter. Political instability and transport bottlenecks affect supply reliability.' },
+    { lat: 27.51, lng: 90.43, risk: 'elevated', title: 'Hormuz Strait / Persian Gulf',
+      tag: 'mpt-elevated', tagText: 'Elevated',
+      desc: 'Insurance premiums +60% YoY. LNG rerouting underway. Chokepoint for 20% of global oil transit.' },
+
+    // WATCH — Emerging shifts
+    { lat: 62.0, lng: -135.0, risk: 'watch', title: 'Canada — Critical Minerals Strategy',
+      tag: 'mpt-watch', tagText: 'Watch',
+      desc: 'C$3.8B critical minerals plan. Graphite, REE, nickel processing buildout. US-Canada supply chain alignment.' },
+    { lat: -22.91, lng: -43.17, risk: 'watch', title: 'Brazil — High-Purity Silicon & Niobium',
+      tag: 'mpt-watch', tagText: 'Watch',
+      desc: '90%+ of global niobium. Key HP silicon supplier for semiconductor wafers. Growing graphite output.' },
+    { lat: 24.47, lng: 54.37, risk: 'watch', title: 'UAE / Gulf — Green Ammonia & Hydrogen',
+      tag: 'mpt-watch', tagText: 'Watch',
+      desc: 'NEOM-scale green hydrogen projects. Ammonia as hydrogen carrier. IMO 2030 marine fuel transition driver.' },
+
+    // POLICY — Regulatory action
+    { lat: 50.85, lng: 4.35, risk: 'policy', title: 'EU — CBAM & CRMA',
+      tag: 'mpt-policy', tagText: 'Policy',
+      desc: 'CBAM phase-in Q3 2026 (steel, aluminium, cement, fertiliser, hydrogen). Critical Raw Materials Act: 60 strategic projects. CSRD Wave 2: 49,000 companies in scope.' },
+    { lat: 38.91, lng: -77.04, risk: 'policy', title: 'US — Critical Minerals & Defence',
+      tag: 'mpt-policy', tagText: 'Policy',
+      desc: '$7.5B OBBB allocation. DoD stockpiling RFIs. Defence Production Act invocations. Permitting reform underway.' },
+    { lat: 50.45, lng: -3.53, risk: 'policy', title: 'UK — Supply Chain Due Diligence',
+      tag: 'mpt-policy', tagText: 'Policy',
+      desc: 'Modern Slavery Act expansion. Critical minerals strategy under review. CBAM shadow alignment with EU.' },
+    { lat: 35.68, lng: 139.69, risk: 'policy', title: 'Japan — Economic Security Act',
+      tag: 'mpt-policy', tagText: 'Policy',
+      desc: 'Critical mineral stockpiling. Joint ventures in Australia, Canada for REE and lithium. Semiconductor reshoring.' },
+    { lat: 36.5, lng: 127.0, risk: 'policy', title: 'South Korea — Mineral Security',
+      tag: 'mpt-policy', tagText: 'Policy',
+      desc: '35 critical minerals list. Overseas resource development push. Battery material supply chain diversification.' },
+  ];
+
+  points.forEach(p => {
+    const marker = L.marker([p.lat, p.lng], { icon: mkIcon(riskColors[p.risk]) }).addTo(map);
+    marker.bindPopup(
+      '<div class="map-popup-tag ' + p.tag + '">' + p.tagText + '</div>' +
+      '<div style="margin-bottom:0.3rem;"><strong>' + p.title + '</strong></div>' +
+      '<div style="color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.55;">' + p.desc + '</div>',
+      { maxWidth: 280 }
+    );
+  });
+})();
 
 // ═══ SCROLL REVEAL ═══
 const observer = new IntersectionObserver(
