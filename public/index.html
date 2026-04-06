@@ -659,6 +659,55 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 }
 .p-sla span { color: var(--gold); font-weight: 500; }
 
+/* ═══ CRITICAL COMMODITIES ═══ */
+.ccw-sec { background: var(--bg-primary); padding: 6rem 3.5rem; }
+.ccw-inner { max-width: 1320px; margin: 0 auto; }
+.ccw-inner .shdr { margin-bottom: 1rem; }
+.ccw-subtitle {
+  font-size: 1.05rem; color: var(--text-muted); line-height: 1.75;
+  max-width: 780px; margin-bottom: 3rem;
+}
+.ccw-cat-label {
+  font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--gold); font-weight: 500;
+  margin: 2.5rem 0 1.2rem; padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.ccw-cat-label::before { content: ''; width: 20px; height: 2px; background: var(--gold); }
+.ccw-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem;
+}
+.ccw-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 10px; padding: 1.6rem 1.4rem 1.4rem; position: relative;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+.ccw-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.ccw-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+.ccw-name { font-family: var(--serif); font-size: 1.15rem; color: var(--navy); font-weight: 400; }
+.ccw-risk {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+}
+.ccw-risk-red { background: var(--rust); box-shadow: 0 0 6px rgba(192,74,40,0.4); }
+.ccw-risk-amber { background: var(--amber); box-shadow: 0 0 6px rgba(196,126,48,0.4); }
+.ccw-risk-green { background: var(--green); box-shadow: 0 0 6px rgba(26,140,78,0.3); }
+.ccw-tag {
+  display: inline-block; font-family: var(--mono); font-size: 0.46rem;
+  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+  padding: 0.2rem 0.55rem; border-radius: 3px; margin-bottom: 0.6rem;
+  border: 1px solid var(--border-default); color: var(--text-muted);
+}
+.ccw-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.7rem; }
+.ccw-stat {
+  font-family: var(--mono); font-size: 0.56rem; color: var(--gold);
+  font-weight: 500; letter-spacing: 0.04em;
+  background: var(--gold-glow); padding: 0.35rem 0.6rem; border-radius: 4px;
+  display: inline-block;
+}
+@media (max-width: 1100px) { .ccw-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .ccw-grid { grid-template-columns: 1fr; } }
+
 /* ═══ WHO THIS IS FOR ═══ */
 .who-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
 .who-inner { max-width: 1320px; margin: 0 auto; }
@@ -1135,6 +1184,188 @@ footer .logo-mark { background: var(--gold); }
         <div id="ppi-result"></div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CRITICAL COMMODITIES & CHEMICALS WATCH ═══ -->
+<section class="ccw-sec rv" id="commodities">
+  <div class="ccw-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">STRATEGIC MATERIALS INTELLIGENCE</div>
+        <h2>Critical Commodities &<br>Chemicals <em>Watch</em></h2>
+      </div>
+    </div>
+    <p class="ccw-subtitle">Tracking the materials and chemicals that sit at the chokepoints of energy transition, AI infrastructure, defence, and industrial supply chains — most of which remain invisible to mainstream analysis.</p>
+
+    <!-- SEMICONDUCTOR & AI -->
+    <div class="ccw-cat-label">Semiconductor & AI</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Gallium</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">High-speed chips (GaN/GaAs). Export controlled since July 2023.</div>
+        <div class="ccw-stat">China: 98% of production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Germanium</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Fiber optics, IR optics. Export controlled alongside gallium.</div>
+        <div class="ccw-stat">China: 60% of refining</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Indium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Phosphide semiconductors, ITO displays. Limited substitutes.</div>
+        <div class="ccw-stat">Concentrated supply, low recycling</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Hafnium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Transistor gate dielectrics. Nuclear-grade. Concentrated supply.</div>
+        <div class="ccw-stat">Byproduct of zirconium refining</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Silicon (HP)</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Wafer fabrication. Reliant on Germany, Taiwan, Brazil.</div>
+        <div class="ccw-stat">Fab-grade purity bottleneck</div>
+      </div>
+    </div>
+
+    <!-- BATTERY & ENERGY STORAGE -->
+    <div class="ccw-cat-label">Battery & Energy Storage</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Lithium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">LFP/NMC cathodes. Price collapsed 80% since 2022. Oversupply risk.</div>
+        <div class="ccw-stat">Oversupply cycle — watch restocking</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Cobalt</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">Cathode stabilizer. 70% from DRC. Artisanal mining ESG risk.</div>
+        <div class="ccw-stat">DRC: 70% of global supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Nickel</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">High-energy density batteries. Indonesia dominance. Class 1 vs Class 2 split.</div>
+        <div class="ccw-stat">Indonesia: 50%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Graphite</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">Anodes. China dominates production. CBAM-relevant.</div>
+        <div class="ccw-stat">China: 70% of production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Vanadium</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Energy Storage</div>
+        <div class="ccw-desc">Flow batteries, grid storage. Steel alloy demand competing.</div>
+        <div class="ccw-stat">Grid storage demand rising</div>
+      </div>
+    </div>
+
+    <!-- DEFENCE & STRATEGIC -->
+    <div class="ccw-cat-label">Defence & Strategic</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Antimony</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Ammunition, flame retardants. China/Tajikistan: 80%+.</div>
+        <div class="ccw-stat">US: 100% import-dependent</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tungsten</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Armor-piercing, tooling. Export restricted.</div>
+        <div class="ccw-stat">China: 80% of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tantalum</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Capacitors in every server/weapon system.</div>
+        <div class="ccw-stat">DRC: 60%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Rare Earth Elements</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Permanent magnets (Nd, Pr, Dy). Critical for motors, wind, defence.</div>
+        <div class="ccw-stat">China: 90% of refining</div>
+      </div>
+    </div>
+
+    <!-- INDUSTRIAL CHEMICALS -->
+    <div class="ccw-cat-label">Industrial Chemicals</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Ammonia</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Fertilizer, hydrogen carrier. Green ammonia emerging.</div>
+        <div class="ccw-stat">Energy transition pivot</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Methanol</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Chemical feedstock, marine fuel transition.</div>
+        <div class="ccw-stat">IMO 2030 marine fuel driver</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Sulfuric Acid</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Mining leach agent. Tight supply = mining bottleneck.</div>
+        <div class="ccw-stat">Supply constrains mine output</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Chlor-Alkali</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">PVC, water treatment, alumina refining. Chlorine/Caustic pair.</div>
+        <div class="ccw-stat">Energy-intensive production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Fluorspar</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Steelmaking flux, refrigerants, lithium processing.</div>
+        <div class="ccw-stat">Critical to lithium refining</div>
+      </div>
+    </div>
+
+    <!-- ENERGY TRANSITION -->
+    <div class="ccw-cat-label">Energy Transition</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Copper</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Electrification backbone. Grid, EVs, renewables. Structural deficit looming.</div>
+        <div class="ccw-stat">Structural supply deficit by 2027</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Uranium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Nuclear renaissance. SMRs, data center power. Supply constrained.</div>
+        <div class="ccw-stat">SMR + data center demand surge</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tellurium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">CdTe solar, thermoelectric cooling. Byproduct supply only.</div>
+        <div class="ccw-stat">Byproduct — no primary mines</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Platinum</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Hydrogen fuel cells. Concentrated supply.</div>
+        <div class="ccw-stat">South Africa: 70%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Manganese</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Battery cathodes, steel. South Africa, Gabon, Australia.</div>
+        <div class="ccw-stat">Diversified supply base</div>
+      </div>
     </div>
   </div>
 </section>
