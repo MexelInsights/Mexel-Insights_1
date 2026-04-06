@@ -1080,7 +1080,7 @@ footer .logo-mark { background: var(--gold); }
       <div class="tool-card">
         <div class="tool-label">Product 02 · <span>Live AI</span></div>
         <div class="tool-title">Scenario Briefing Generator</div>
-        <div class="tool-desc">Enter a geopolitical topic and Claude Opus builds a 3-scenario briefing (Base / Stress / Tail) with triggers, probabilities, and Moves.</div>
+        <div class="tool-desc">Model geopolitical scenarios from trigger event to market implication. Each briefing maps conflict, policy, or supply shocks through commodity, energy, and financial transmission channels — with time-horizon views at 1 week, 1 month, and 3 months.</div>
         <div class="sc-form">
           <input class="fi" id="sc-topic" placeholder="e.g. Hormuz Strait closure risk and oil market impact" value="Iran nuclear escalation and Gulf energy supply impact">
           <div class="fi-row">
@@ -1090,6 +1090,21 @@ footer .logo-mark { background: var(--gold); }
           <button class="run-btn" id="sc-btn" onclick="runScenario()">
             <span id="sc-icon">⚡</span> Generate Scenarios
           </button>
+        </div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:1.4rem 1.6rem;margin-top:1.2rem;">
+          <div style="font-family:var(--mono);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:0.9rem;">Output includes</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem 1.5rem;">
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; What changed</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Why it matters</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Transmission mechanism</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; 3 scenarios (Base / Stress / Tail)</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Best/worst relative sectors</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Commodity & material implications</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Key triggers to watch</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Invalidation conditions</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Confidence level</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Time horizons (1W / 1M / 3M)</div>
+          </div>
         </div>
         <div id="sc-result"></div>
       </div>

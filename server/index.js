@@ -180,9 +180,14 @@ Topic: ${topic}
 Sector: ${sector}
 Timeframe: ${timeframe}
 
+For each scenario, include best/worst relative sectors, commodity & material implications, time-horizon views (1 week, 1 month, 3 months), and invalidation conditions.
+
 Return ONLY valid JSON (no markdown):
 {
   "framingQuestion": "The core question this briefing answers",
+  "whatChanged": "1-2 sentence summary of the triggering event",
+  "whyItMatters": "1-2 sentence summary of significance",
+  "transmissionMechanism": "How the event transmits through commodity, energy, and financial channels",
   "signals": [
     { "signal": "Current signal", "source": "Source reference", "implication": "What it means" }
   ],
@@ -192,6 +197,11 @@ Return ONLY valid JSON (no markdown):
       "probability": "X%",
       "description": "What happens",
       "triggers": ["Trigger 1", "Trigger 2"],
+      "best_sectors": ["Sector that benefits"],
+      "worst_sectors": ["Sector most exposed"],
+      "commodity_implications": ["Material/commodity impact"],
+      "time_horizons": { "1w": "Near-term view", "1m": "Medium-term view", "3m": "Longer-term view" },
+      "invalidation_conditions": ["What would make this scenario no longer valid"],
       "moves": [{ "action": "What to do", "timeframe": "By when", "owner": "Function" }]
     },
     "stress": {
@@ -199,6 +209,11 @@ Return ONLY valid JSON (no markdown):
       "probability": "X%",
       "description": "What happens",
       "triggers": ["What tips it from base to stress"],
+      "best_sectors": ["Sector that benefits"],
+      "worst_sectors": ["Sector most exposed"],
+      "commodity_implications": ["Material/commodity impact"],
+      "time_horizons": { "1w": "Near-term view", "1m": "Medium-term view", "3m": "Longer-term view" },
+      "invalidation_conditions": ["What would invalidate"],
       "moves": [{ "action": "What to do", "timeframe": "By when", "owner": "Function" }]
     },
     "tail": {
@@ -206,9 +221,15 @@ Return ONLY valid JSON (no markdown):
       "probability": "X%",
       "description": "Low-probability, high-impact",
       "triggers": ["What to watch"],
+      "best_sectors": ["Sector that benefits"],
+      "worst_sectors": ["Sector most exposed"],
+      "commodity_implications": ["Material/commodity impact"],
+      "time_horizons": { "1w": "Near-term view", "1m": "Medium-term view", "3m": "Longer-term view" },
+      "invalidation_conditions": ["What would invalidate"],
       "moves": [{ "action": "Hedge action", "timeframe": "By when", "owner": "Function" }]
     }
   },
+  "confidence": "High|Medium|Low",
   "leadingIndicators": ["Indicator 1", "Indicator 2", "Indicator 3"],
   "keyAssumptions": ["Assumption 1", "Assumption 2"],
   "disclaimer": "For informational purposes only. Not investment advice. Mexel Insights Ltd."
@@ -217,7 +238,7 @@ Return ONLY valid JSON (no markdown):
   try {
     const response = await anthropic.messages.create({
       model: 'claude-opus-4-5',
-      max_tokens: 2500,
+      max_tokens: 4000,
       system: MEXEL_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: prompt }],
     });
