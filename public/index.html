@@ -403,6 +403,34 @@ h1 .rust { color: var(--rust); }
   .how-arrow { transform: rotate(90deg); width: auto; height: 36px; }
 }
 
+/* ═══ WHAT MATTERS NOW ═══ */
+.wmn-sec { background: var(--bg-dark); padding: 4.5rem 3.5rem; }
+.wmn-inner { max-width: 1320px; margin: 0 auto; }
+.wmn-hdr { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.wmn-hdr .ey { color: var(--gold); margin-bottom: 0.5rem; }
+.wmn-hdr h2 { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.2rem); color: #fff; font-weight: 400; margin: 0; }
+.wmn-hdr h2 em { color: var(--gold); font-style: italic; }
+.wmn-date { font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; }
+.wmn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.wmn-card {
+  background: var(--bg-dark-surface); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 1.5rem 1.4rem;
+}
+.wmn-label {
+  font-family: var(--mono); font-size: 0.48rem; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 500; margin-bottom: 0.6rem;
+}
+.wmn-label-gold { color: var(--gold); }
+.wmn-label-green { color: var(--green-bright); }
+.wmn-label-rust { color: #E8724A; }
+.wmn-label-teal { color: var(--teal); }
+.wmn-label-muted { color: rgba(255,255,255,0.4); }
+.wmn-text { font-size: 0.9rem; color: rgba(255,255,255,0.75); line-height: 1.65; }
+.wmn-text strong { color: #fff; font-weight: 600; }
+.wmn-full { grid-column: 1 / -1; }
+.wmn-disclaimer { font-family: var(--mono); font-size: 0.44rem; color: rgba(255,255,255,0.25); margin-top: 1.2rem; letter-spacing: 0.06em; }
+@media (max-width: 768px) { .wmn-grid { grid-template-columns: 1fr; } .wmn-full { grid-column: auto; } }
+
 /* ═══ TICKER ═══ */
 .ticker {
   background: var(--bg-dark);
@@ -792,6 +820,15 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 .mpt-elevated { background: rgba(196,126,48,0.2); color: #C47E30; }
 .mpt-watch { background: rgba(14,124,107,0.2); color: #22A85E; }
 .mpt-policy { background: rgba(59,130,246,0.2); color: #60A5FA; }
+.map-filter-btn {
+  font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+  padding: 0.4rem 1rem; border-radius: 4px; cursor: pointer;
+  background: transparent; border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.45); transition: all 0.25s var(--ease-out);
+}
+.map-filter-btn:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+.map-filter-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
 @media (max-width: 600px) { #intel-map { height: 380px; } }
 
 /* ═══ WHO THIS IS FOR ═══ */
@@ -930,6 +967,7 @@ footer .logo-mark { background: var(--gold); }
   .hero-right { display: none; }
   .tools-grid, .prods, .prices { grid-template-columns: 1fr; }
   .nl-in { grid-template-columns: 1fr; gap: 3rem; }
+  .subscribe-paths { grid-template-columns: 1fr !important; }
   .ft { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
@@ -974,7 +1012,7 @@ footer .logo-mark { background: var(--gold); }
     <a href="#tools" class="hm">Intelligence</a>
     <a href="#products" class="hm">Products</a>
     <a href="#pricing" class="hm">Pricing</a>
-    <div class="nav-status"><span class="status-dot"></span>CLAUDE OPUS LIVE</div>
+    <div class="nav-status"><span class="status-dot"></span>SYSTEMS ACTIVE</div>
     <a href="#subscribe" class="nav-cta">Get Access</a>
     <button class="hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -995,9 +1033,9 @@ footer .logo-mark { background: var(--gold); }
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-left">
-    <div class="eyebrow">Decision-Grade Intelligence · Powered by Claude Opus</div>
+    <div class="eyebrow">Decision-Grade Intelligence · Energy · Minerals · Policy</div>
     <h1>Geopolitical risk meets<br><em>market</em> <span class="rust">intelligence.</span></h1>
-    <p class="hero-sub">Mexel Insights connects geopolitical events, commodity disruptions, and policy shifts to their downstream market implications — across energy, critical minerals, chemicals, and public equities. Built for investors, corporates, and analysts who need to move before the headline.</p>
+    <p class="hero-sub">Connecting geopolitical events, commodity disruptions, and policy shifts to downstream market implications — across energy, critical minerals, chemicals, and equities. For investors, corporates, and analysts who move before the headline.</p>
     <div class="actions">
       <a href="#tools" class="btn-g">Explore Intelligence ↗</a>
       <a href="#subscribe" class="btn-o">Request Access</a>
@@ -1013,10 +1051,10 @@ footer .logo-mark { background: var(--gold); }
     <div class="ai-panel">
       <div class="ai-panel-hdr">
         <div class="ai-panel-title">Mexel Intelligence Assistant</div>
-        <div class="ai-model-tag">claude-opus-4-5</div>
+        <div class="ai-model-tag">AI-powered</div>
       </div>
       <div class="chat-msgs" id="chat-msgs">
-        <div class="msg msg-ai">Hello. I'm Mexel Insights' intelligence analyst, powered by Claude Opus.<br><br>Ask me about critical minerals (lithium to gallium), ESG regulation (CBAM, CSRD), energy policy, AI infrastructure supply chains, or request a structured intelligence brief.</div>
+        <div class="msg msg-ai">Hello. I'm Mexel's intelligence analyst.<br><br>Ask me about critical minerals, ESG regulation (CBAM, CSRD), energy policy, AI infrastructure supply chains, or request a structured intelligence brief.</div>
       </div>
       <div class="chat-input-row">
         <input type="text" id="chat-in" placeholder="Ask about gallium export controls, CBAM compliance, AI mineral demand..." onkeydown="if(event.key==='Enter')sendChat()">
@@ -1027,9 +1065,10 @@ footer .logo-mark { background: var(--gold); }
     <div class="terminal">
       <div class="term-hdr">
         <div class="term-dots"><span class="d-r"></span><span class="d-y"></span><span class="d-g"></span></div>
-        <div class="term-title">Signal Feed — Live</div>
+        <div class="term-title">Mexel Signal Feed</div>
         <div style="font-family:var(--mono);font-size:0.46rem;color:var(--green-bright);display:flex;align-items:center;gap:0.35rem;"><span class="status-dot"></span>Active</div>
       </div>
+      <div style="padding:0.5rem 0.8rem 0.3rem;font-family:var(--mono);font-size:0.42rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;border-bottom:1px solid rgba(255,255,255,0.06);">Curated intelligence signals from market, policy & supply-chain inputs · Sample signals · Urgency: 5/5 Critical → 1/5 Low</div>
       <div class="term-body">
         <div class="tl"><span class="tt">09:41</span><span class="tag t-rrm">RRM</span><div class="tx">China tightens gallium & germanium export licensing — AI chip supply chain at risk. URGENT.</div><span class="rb r5">5/5</span></div>
         <div class="tl"><span class="tt">09:18</span><span class="tag t-mmr">MMR</span><div class="tx">Antimony prices +140% YoY — US 100% import-dependent. DoD stockpile RFI issued.</div><span class="rb r5">5/5</span></div>
@@ -1082,6 +1121,46 @@ footer .logo-mark { background: var(--gold); }
   </div>
 </section>
 
+<!-- ═══ WHAT MATTERS NOW ═══ -->
+<section class="wmn-sec rv">
+  <div class="wmn-inner">
+    <div class="wmn-hdr">
+      <div>
+        <div class="ey" style="color:var(--gold);">TODAY'S DECISION LAYER</div>
+        <h2>What matters <em>now.</em></h2>
+      </div>
+      <div class="wmn-date">Mexel Insights · Q2 2026 assessment</div>
+    </div>
+    <div class="wmn-grid">
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-gold">What changed</div>
+        <div class="wmn-text"><strong>China expanded export controls</strong> to include antimony, tungsten, and tellurium — following the 2023 gallium/germanium restrictions. Five of the top six semiconductor-grade minerals now face Chinese licensing requirements.</div>
+      </div>
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-rust">Why it matters</div>
+        <div class="wmn-text">Western supply chains for <strong>defence, semiconductors, and solar</strong> face simultaneous chokepoints. No credible alternative supply exists at scale for 3-5 years. Procurement teams without hedged positions are exposed.</div>
+      </div>
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-green">Best relative expressions</div>
+        <div class="wmn-text"><strong>Uranium/nuclear</strong> (data centre power demand), <strong>copper miners</strong> (structural deficit), <strong>Australian REE processors</strong> (diversification beneficiary), <strong>green ammonia</strong> (IMO 2030 marine transition).</div>
+      </div>
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-rust">Most pressured expressions</div>
+        <div class="wmn-text"><strong>GaN/GaAs chip fabs</strong> (gallium controls), <strong>CdTe solar manufacturers</strong> (tellurium squeeze), <strong>EU importers in CBAM scope</strong> (Q3 2026 deadline), <strong>DRC-exposed battery supply chains</strong> (ESG + cobalt).</div>
+      </div>
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-teal">Key trigger to watch</div>
+        <div class="wmn-text"><strong>CBAM Phase-in enforcement</strong> begins Q3 2026. 49,000 companies entering CSRD Wave 2 disclosure scope. If enforcement is strict, expect repricing across steel, aluminium, and fertiliser import chains into Europe.</div>
+      </div>
+      <div class="wmn-card">
+        <div class="wmn-label wmn-label-muted">What would prove this wrong</div>
+        <div class="wmn-text">China reverses or softens export licensing (low probability). Major non-Chinese gallium/germanium capacity comes online (18+ month lead time). CBAM enforcement is delayed beyond 2027. US-China diplomatic reset reduces mineral weaponisation.</div>
+      </div>
+    </div>
+    <div class="wmn-disclaimer">Mexel Insights assessment. For informational purposes only. Not investment advice. Based on publicly available sources and proprietary analysis as of April 2026.</div>
+  </div>
+</section>
+
 <!-- ═══ TICKER ═══ -->
 <div class="ticker">
   <div class="t-track" id="ttk">
@@ -1127,7 +1206,7 @@ footer .logo-mark { background: var(--gold); }
     <span class="tick"><span class="tn">PALLADIUM</span><span class="tsep">|</span><span class="tv">$1,012/oz</span></span>
     <span class="tick"><span class="tn">GEO RISK</span><span class="tsep">|</span><span class="tv">142</span><span class="td">ELEVATED</span></span>
   </div>
-  <div class="ticker-label" style="text-align:center;padding:0.4rem 0 0.15rem;font-family:var(--mono);font-size:0.5rem;letter-spacing:0.1em;color:rgba(255,255,255,0.35);text-transform:uppercase;">Indicative prices · Not real-time</div>
+  <div class="ticker-label" style="text-align:center;padding:0.4rem 0 0.15rem;font-family:var(--mono);font-size:0.48rem;letter-spacing:0.1em;color:rgba(255,255,255,0.35);text-transform:uppercase;">Indicative snapshot prices as of Q1 2026 · Sources: LME, LBMA, Fastmarkets, USGS, trade publications · Not real-time · Updated periodically</div>
 </div>
 
 <!-- ═══ AI TOOLS ═══ -->
@@ -1135,18 +1214,24 @@ footer .logo-mark { background: var(--gold); }
   <div class="inner">
     <div class="shdr rv">
       <div>
-        <div class="ey">Live AI Intelligence · Claude Opus</div>
-        <h2>Generate real <em>intelligence</em><br>in seconds.</h2>
-        <p class="sdesc">Four analyst-grade tools powered by Claude Opus — spanning energy policy, ESG compliance, critical minerals from lithium to gallium, and the overlooked materials underpinning AI, defence, and the energy transition.</p>
+        <div class="ey">Mexel AI Intelligence Tools</div>
+        <h2>Analyst-grade output<br>in <em>seconds.</em></h2>
+        <p class="sdesc">Four structured intelligence tools covering energy policy, ESG compliance, critical minerals, and the overlooked materials underpinning AI, defence, and the energy transition. AI-assisted analysis with Mexel's proprietary frameworks.</p>
       </div>
     </div>
     <div class="tools-grid rv">
 
       <!-- RRM -->
       <div class="tool-card">
-        <div class="tool-label">Product 01 · <span>Live AI</span></div>
+        <div class="tool-label">Product 01 · <span>AI-assisted</span></div>
         <div class="tool-title">Rapid Response Memo Generator</div>
-        <div class="tool-desc">Describe a geopolitical or regulatory event and Claude Opus generates a structured RRM with Context, Signals, Moves, and Uncertainty Flags.</div>
+        <div class="tool-desc">Describe a geopolitical or regulatory event. Mexel generates a structured RRM with Context, Signals, Moves, and Uncertainty Flags.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Strategy, risk, procurement leads</div>
+          <div><span style="color:var(--gold);">Decision:</span> Respond to breaking events</div>
+          <div><span style="color:var(--gold);">Output:</span> Structured JSON/prose brief</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised scenario analysis</div>
+        </div>
         <div class="form-row">
           <textarea class="fi" id="rrm-event" rows="3" placeholder="e.g. China has announced new export controls on graphite, effective in 30 days..."></textarea>
           <div class="fi-row">
@@ -1162,9 +1247,15 @@ footer .logo-mark { background: var(--gold); }
 
       <!-- Scenario -->
       <div class="tool-card">
-        <div class="tool-label">Product 02 · <span>Live AI</span></div>
+        <div class="tool-label">Product 02 · <span>AI-assisted</span></div>
         <div class="tool-title">Scenario Briefing Generator</div>
         <div class="tool-desc">Model geopolitical scenarios from trigger event to market implication. Each briefing maps conflict, policy, or supply shocks through commodity, energy, and financial transmission channels — with time-horizon views at 1 week, 1 month, and 3 months.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Portfolio managers, macro strategists</div>
+          <div><span style="color:var(--gold);">Decision:</span> Position ahead of regime shifts</div>
+          <div><span style="color:var(--gold);">Output:</span> 3-scenario briefing with probabilities</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised scenario modelling</div>
+        </div>
         <div class="sc-form">
           <input class="fi" id="sc-topic" placeholder="e.g. Hormuz Strait closure risk and oil market impact" value="Iran nuclear escalation and Gulf energy supply impact">
           <div class="fi-row">
@@ -1195,9 +1286,15 @@ footer .logo-mark { background: var(--gold); }
 
       <!-- MMR -->
       <div class="tool-card">
-        <div class="tool-label">Product 04 · <span>Live AI</span></div>
+        <div class="tool-label">Product 04 · <span>AI-assisted</span></div>
         <div class="tool-title">MMR Signal Analyser</div>
-        <div class="tool-desc">Paste a raw signal — news, export controls, port disruptions. Claude Opus analyses it across 30 materials including gallium, germanium, antimony, tellurium, and other deep-scale inputs most analysts miss.</div>
+        <div class="tool-desc">Paste a raw signal — news, export controls, port disruptions. Mexel analyses it across 30+ materials including gallium, germanium, antimony, tellurium, and other deep-scale inputs most analysts miss.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Commodity analysts, procurement teams</div>
+          <div><span style="color:var(--gold);">Decision:</span> Assess supply chain exposure fast</div>
+          <div><span style="color:var(--gold);">Output:</span> Risk-rated signal with recommended action</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised signal triage</div>
+        </div>
         <div class="form-row">
           <textarea class="fi" id="mmr-sig" rows="3" placeholder="e.g. Chile's government has announced it will require state participation in all new lithium extraction contracts..."></textarea>
           <input class="fi" id="mmr-mat" placeholder="Material (e.g. Lithium)" value="Lithium" list="mmr-materials">
@@ -1242,9 +1339,15 @@ footer .logo-mark { background: var(--gold); }
 
       <!-- PPI -->
       <div class="tool-card">
-        <div class="tool-label">Product 03 · <span>Live AI</span></div>
+        <div class="tool-label">Product 03 · <span>AI-assisted</span></div>
         <div class="tool-title">Policy Pressure Index Scorer</div>
-        <div class="tool-desc">Select a sector and jurisdiction. Claude Opus scores CBAM exposure, CSRD compliance burden, export control risk, ESG reporting pressure, and returns actionable next steps.</div>
+        <div class="tool-desc">Select a sector and jurisdiction. Mexel scores CBAM exposure, CSRD compliance burden, export control risk, ESG reporting pressure, and returns actionable next steps.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Compliance, legal, ESG teams</div>
+          <div><span style="color:var(--gold);">Decision:</span> Prioritise regulatory response</div>
+          <div><span style="color:var(--gold);">Output:</span> 0-5 pressure score with rationale</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised policy assessment</div>
+        </div>
         <div class="form-row">
           <select class="fi" id="ppi-sector">
             <option>Chemicals & Industrials</option>
@@ -1535,7 +1638,14 @@ footer .logo-mark { background: var(--gold); }
         <h2>Global chokepoints,<br><em>visualised.</em></h2>
       </div>
     </div>
-    <p class="map-subtitle">Critical mineral supply chains, export control jurisdictions, and geopolitical risk hotspots — mapped to the materials and policy signals that matter to your portfolio and procurement.</p>
+    <p class="map-subtitle">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter to your portfolio and procurement.</p>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.2rem;" id="map-filters">
+      <button class="map-filter-btn active" data-filter="all" onclick="filterMap('all',this)">All</button>
+      <button class="map-filter-btn" data-filter="critical" onclick="filterMap('critical',this)">Export Controls</button>
+      <button class="map-filter-btn" data-filter="elevated" onclick="filterMap('elevated',this)">Supply Concentration</button>
+      <button class="map-filter-btn" data-filter="watch" onclick="filterMap('watch',this)">Emerging Shifts</button>
+      <button class="map-filter-btn" data-filter="policy" onclick="filterMap('policy',this)">Policy & Regulation</button>
+    </div>
     <div id="intel-map"></div>
     <div class="map-legend">
       <div class="map-legend-item"><div class="map-legend-dot ml-red"></div>Critical — Export controlled / supply crisis</div>
@@ -1552,7 +1662,7 @@ footer .logo-mark { background: var(--gold); }
     <div class="shdr rv">
       <div>
         <div class="ey">Intelligence Suite</div>
-        <h2>Six products.<br><em>One decision advantage.</em></h2>
+        <h2>Six products.<br><em>One decision edge.</em></h2>
       </div>
       <a href="#subscribe" class="va">Full Access →</a>
     </div>
@@ -1580,17 +1690,17 @@ footer .logo-mark { background: var(--gold); }
       <div class="who-card">
         <div class="who-icon">📈</div>
         <div class="who-title">Investors & Funds</div>
-        <div class="who-desc">Portfolio managers, macro strategists, and commodity-focused funds tracking geopolitical risk transmission to equities, commodities, and rates.</div>
+        <div class="who-desc">Portfolio managers and macro strategists tracking how geopolitical risk transmits to equities, commodities, and rates.</div>
       </div>
       <div class="who-card">
         <div class="who-icon">🛡</div>
         <div class="who-title">Corporates & Procurement</div>
-        <div class="who-desc">Strategy leads, supply chain teams, and procurement officers managing exposure to critical minerals, chemicals, and ESG compliance.</div>
+        <div class="who-desc">Supply chain and procurement teams managing mineral exposure, chemical sourcing risk, and ESG compliance obligations.</div>
       </div>
       <div class="who-card">
         <div class="who-icon">🔍</div>
         <div class="who-title">Analysts & Researchers</div>
-        <div class="who-desc">Policy analysts, energy researchers, and media professionals requiring structured, sourced, scenario-based intelligence.</div>
+        <div class="who-desc">Policy analysts and energy researchers who need structured, sourced, scenario-based intelligence — not opinion.</div>
       </div>
     </div>
   </div>
@@ -1602,7 +1712,7 @@ footer .logo-mark { background: var(--gold); }
     <div class="shdr rv">
       <div>
         <div class="ey">Access & Pricing</div>
-        <h2>Built for organisations<br>that <em>act</em> on intelligence.</h2>
+        <h2>Intelligence at every<br>scale of <em>commitment.</em></h2>
       </div>
     </div>
     <div class="prices rv">
@@ -1657,25 +1767,45 @@ footer .logo-mark { background: var(--gold); }
 <section class="nl" id="subscribe">
   <div class="nl-in">
     <div class="rv">
-      <div class="ey">Get Access</div>
-      <div class="nl-t">Intelligence that<br>moves <em>ahead</em>.</div>
-      <p class="nl-d">Join institutional analysts, fund managers, procurement leads, and policy professionals receiving Mexel Insights briefings — powered by Claude Opus.</p>
+      <div class="ey">Start Here</div>
+      <div class="nl-t">Two ways to<br>get <em>started</em>.</div>
+      <p class="nl-d">Whether you're exploring or ready to deploy — there's a path in.</p>
     </div>
-    <div class="nl-form rv">
-      <div style="font-family:var(--mono);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);">Select focus areas</div>
-      <div class="nl-tags">
-        <button class="nl-tag on" onclick="this.classList.toggle('on')">Energy</button>
-        <button class="nl-tag on" onclick="this.classList.toggle('on')">ESG & Regulation</button>
-        <button class="nl-tag" onclick="this.classList.toggle('on')">Critical Minerals</button>
-        <button class="nl-tag" onclick="this.classList.toggle('on')">AI & Grid</button>
-        <button class="nl-tag" onclick="this.classList.toggle('on')">Geopolitics</button>
-        <button class="nl-tag" onclick="this.classList.toggle('on')">Procurement</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;width:100%;max-width:48rem;margin:0 auto;" class="rv subscribe-paths">
+      <!-- Low-friction path -->
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:0.6rem;padding:1.5rem;">
+        <div style="font-family:var(--mono);font-size:0.45rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Free — No commitment</div>
+        <div style="font-family:var(--serif);font-size:0.85rem;color:#fff;margin-bottom:0.4rem;">Weekly Signal Digest</div>
+        <p style="font-size:0.52rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:1rem;">Curated intelligence on critical minerals, energy transition, and policy shifts — delivered every Monday. Plus 3 AI tool queries per day.</p>
+        <div style="font-family:var(--mono);font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.5rem;">Select focus areas</div>
+        <div class="nl-tags" style="margin-bottom:0.8rem;">
+          <button class="nl-tag on" onclick="this.classList.toggle('on')">Energy</button>
+          <button class="nl-tag on" onclick="this.classList.toggle('on')">ESG & Regulation</button>
+          <button class="nl-tag" onclick="this.classList.toggle('on')">Critical Minerals</button>
+          <button class="nl-tag" onclick="this.classList.toggle('on')">AI & Grid</button>
+          <button class="nl-tag" onclick="this.classList.toggle('on')">Geopolitics</button>
+          <button class="nl-tag" onclick="this.classList.toggle('on')">Procurement</button>
+        </div>
+        <div class="nl-ir">
+          <input type="email" placeholder="your@organisation.com">
+          <button>Subscribe Free</button>
+        </div>
+        <div class="nl-note">No card required · Unsubscribe any time</div>
       </div>
-      <div class="nl-ir">
-        <input type="email" placeholder="your@organisation.com">
-        <button>Subscribe</button>
+      <!-- High-intent path -->
+      <div style="background:rgba(255,255,255,0.06);border:1px solid var(--gold);border-radius:0.6rem;padding:1.5rem;">
+        <div style="font-family:var(--mono);font-size:0.45rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Professional & Enterprise</div>
+        <div style="font-family:var(--serif);font-size:0.85rem;color:#fff;margin-bottom:0.4rem;">Request Access</div>
+        <p style="font-size:0.52rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:1rem;">Full intelligence suite: PPI across 14 jurisdictions, MMR for 30+ materials, Scenario Briefings, Rapid Response Memos, and dedicated analyst support. From $12,000/year.</p>
+        <ul style="list-style:none;padding:0;margin:0 0 1rem 0;font-size:0.48rem;color:rgba(255,255,255,0.7);line-height:2;">
+          <li>✓ 30-minute introductory briefing</li>
+          <li>✓ Sample Scenario Briefing & MMR</li>
+          <li>✓ Custom scoping for your coverage needs</li>
+          <li>✓ No obligation</li>
+        </ul>
+        <a href="mailto:info@mexelinsights.com?subject=Mexel%20Insights%20—%20Access%20Request" class="btn-g" style="width:100%;justify-content:center;font-size:0.56rem;display:inline-flex;text-decoration:none;">Request a Briefing →</a>
+        <div style="font-family:var(--mono);font-size:0.4rem;color:rgba(255,255,255,0.35);margin-top:0.6rem;text-align:center;">Or email directly: info@mexelinsights.com</div>
       </div>
-      <div class="nl-note">Weekly digest · No spam · Unsubscribe any time · Institutional-grade research</div>
     </div>
   </div>
 </section>
@@ -1751,79 +1881,130 @@ window.addEventListener('scroll', () => {
   }
 
   const points = [
-    // CRITICAL — Export controlled / supply crisis
-    { lat: 35.86, lng: 104.20, risk: 'critical', title: 'China — Gallium & Germanium',
-      tag: 'mpt-critical', tagText: 'Critical',
-      desc: 'Export controls on gallium, germanium, antimony, REEs, tungsten, tellurium. 98% gallium, 60% germanium refining, 90% REE processing, 80% tungsten.' },
+    { lat: 35.86, lng: 104.20, risk: 'critical', title: 'China — Export Controls',
+      tag: 'mpt-critical', tagText: 'Export Control',
+      materials: 'Gallium, Germanium, Antimony, REEs, Tungsten, Tellurium',
+      sectors: 'Semiconductors, Defence, Solar, Battery',
+      desc: 'Export controls on 6+ critical minerals. 98% gallium, 60% germanium refining, 90% REE processing, 80% tungsten.' },
     { lat: 38.86, lng: 71.28, risk: 'critical', title: 'Tajikistan — Antimony',
-      tag: 'mpt-critical', tagText: 'Critical',
-      desc: 'Second-largest antimony producer. Combined with China controls 80%+ of global supply. Defence-critical material.' },
+      tag: 'mpt-critical', tagText: 'Supply Crisis',
+      materials: 'Antimony',
+      sectors: 'Defence, Flame retardants',
+      desc: 'Second-largest antimony producer. Combined with China controls 80%+ of global supply. Defence-critical.' },
     { lat: -4.04, lng: 21.76, risk: 'critical', title: 'DRC — Cobalt & Tantalum',
-      tag: 'mpt-critical', tagText: 'Critical',
+      tag: 'mpt-critical', tagText: 'Conflict Minerals',
+      materials: 'Cobalt, Tantalum',
+      sectors: 'Battery, Electronics, Defence',
       desc: '70% of global cobalt, 60%+ tantalum. Artisanal mining ESG risk. Conflict mineral regulations apply.' },
-
-    // ELEVATED — Concentrated supply
     { lat: -0.79, lng: 113.92, risk: 'elevated', title: 'Indonesia — Nickel',
-      tag: 'mpt-elevated', tagText: 'Elevated',
+      tag: 'mpt-elevated', tagText: 'Concentration',
+      materials: 'Nickel',
+      sectors: 'Battery, Stainless steel',
       desc: '50%+ of global nickel supply. Processing dominance. Class 1 vs Class 2 split creating market friction.' },
-    { lat: -28.48, lng: 24.68, risk: 'elevated', title: 'South Africa — Platinum & Manganese',
-      tag: 'mpt-elevated', tagText: 'Elevated',
-      desc: '70%+ of global platinum (hydrogen fuel cells). Major manganese producer. Eskom grid instability affects output.' },
+    { lat: -28.48, lng: 24.68, risk: 'elevated', title: 'South Africa — PGMs & Manganese',
+      tag: 'mpt-elevated', tagText: 'Concentration',
+      materials: 'Platinum, Manganese, Palladium',
+      sectors: 'Hydrogen, Steel, Battery',
+      desc: '70%+ of global platinum. Major manganese producer. Eskom grid instability affects mine output.' },
     { lat: -23.44, lng: -68.93, risk: 'elevated', title: 'Chile — Lithium & Copper',
-      tag: 'mpt-elevated', tagText: 'Elevated',
-      desc: 'State participation mandate on new lithium contracts. Copper output critical — structural deficit looming by 2027.' },
+      tag: 'mpt-elevated', tagText: 'Policy Shift',
+      materials: 'Lithium, Copper',
+      sectors: 'Battery, Grid, Renewables',
+      desc: 'State participation mandate on new lithium contracts. Copper structural deficit looming by 2027.' },
     { lat: -16.29, lng: -68.15, risk: 'elevated', title: 'Bolivia — Lithium',
-      tag: 'mpt-elevated', tagText: 'Elevated',
+      tag: 'mpt-elevated', tagText: 'Concentration',
+      materials: 'Lithium',
+      sectors: 'Battery',
       desc: 'Largest undeveloped lithium reserves. State-controlled extraction. Infrastructure and political risk.' },
-    { lat: -25.27, lng: 133.78, risk: 'elevated', title: 'Australia — Lithium, REEs & Manganese',
-      tag: 'mpt-elevated', tagText: 'Elevated',
-      desc: 'Top lithium producer. Growing REE processing capacity. Critical Minerals Strategy 2024 reshaping investment.' },
+    { lat: -25.27, lng: 133.78, risk: 'elevated', title: 'Australia — Diversification Hub',
+      tag: 'mpt-elevated', tagText: 'Diversification',
+      materials: 'Lithium, REEs, Manganese',
+      sectors: 'Battery, Defence, Magnets',
+      desc: 'Top lithium producer. Growing REE processing. Critical Minerals Strategy reshaping investment.' },
     { lat: -1.24, lng: 11.61, risk: 'elevated', title: 'Gabon — Manganese',
-      tag: 'mpt-elevated', tagText: 'Elevated',
+      tag: 'mpt-elevated', tagText: 'Logistics Risk',
+      materials: 'Manganese',
+      sectors: 'Steel, Battery',
       desc: 'Major manganese exporter. Political instability and transport bottlenecks affect supply reliability.' },
-    { lat: 27.51, lng: 90.43, risk: 'elevated', title: 'Hormuz Strait / Persian Gulf',
-      tag: 'mpt-elevated', tagText: 'Elevated',
+    { lat: 27.51, lng: 56.27, risk: 'elevated', title: 'Hormuz Strait',
+      tag: 'mpt-elevated', tagText: 'Chokepoint',
+      materials: 'Oil, LNG',
+      sectors: 'Energy, Shipping, Insurance',
       desc: 'Insurance premiums +60% YoY. LNG rerouting underway. Chokepoint for 20% of global oil transit.' },
-
-    // WATCH — Emerging shifts
-    { lat: 62.0, lng: -135.0, risk: 'watch', title: 'Canada — Critical Minerals Strategy',
-      tag: 'mpt-watch', tagText: 'Watch',
+    { lat: 62.0, lng: -135.0, risk: 'watch', title: 'Canada — Minerals Strategy',
+      tag: 'mpt-watch', tagText: 'Emerging',
+      materials: 'Graphite, REEs, Nickel',
+      sectors: 'Battery, Defence, Processing',
       desc: 'C$3.8B critical minerals plan. Graphite, REE, nickel processing buildout. US-Canada supply chain alignment.' },
-    { lat: -22.91, lng: -43.17, risk: 'watch', title: 'Brazil — High-Purity Silicon & Niobium',
-      tag: 'mpt-watch', tagText: 'Watch',
+    { lat: -22.91, lng: -43.17, risk: 'watch', title: 'Brazil — Silicon & Niobium',
+      tag: 'mpt-watch', tagText: 'Emerging',
+      materials: 'Silicon (HP), Niobium, Graphite',
+      sectors: 'Semiconductors, Steel, Battery',
       desc: '90%+ of global niobium. Key HP silicon supplier for semiconductor wafers. Growing graphite output.' },
-    { lat: 24.47, lng: 54.37, risk: 'watch', title: 'UAE / Gulf — Green Ammonia & Hydrogen',
-      tag: 'mpt-watch', tagText: 'Watch',
+    { lat: 24.47, lng: 54.37, risk: 'watch', title: 'Gulf — Green Hydrogen',
+      tag: 'mpt-watch', tagText: 'Transition',
+      materials: 'Ammonia, Hydrogen',
+      sectors: 'Energy, Shipping, Chemicals',
       desc: 'NEOM-scale green hydrogen projects. Ammonia as hydrogen carrier. IMO 2030 marine fuel transition driver.' },
-
-    // POLICY — Regulatory action
-    { lat: 50.85, lng: 4.35, risk: 'policy', title: 'EU — CBAM & CRMA',
-      tag: 'mpt-policy', tagText: 'Policy',
-      desc: 'CBAM phase-in Q3 2026 (steel, aluminium, cement, fertiliser, hydrogen). Critical Raw Materials Act: 60 strategic projects. CSRD Wave 2: 49,000 companies in scope.' },
-    { lat: 38.91, lng: -77.04, risk: 'policy', title: 'US — Critical Minerals & Defence',
-      tag: 'mpt-policy', tagText: 'Policy',
-      desc: '$7.5B OBBB allocation. DoD stockpiling RFIs. Defence Production Act invocations. Permitting reform underway.' },
-    { lat: 50.45, lng: -3.53, risk: 'policy', title: 'UK — Supply Chain Due Diligence',
-      tag: 'mpt-policy', tagText: 'Policy',
+    { lat: 50.85, lng: 4.35, risk: 'policy', title: 'EU — CBAM, CRMA & CSRD',
+      tag: 'mpt-policy', tagText: 'Regulation',
+      materials: 'Steel, Aluminium, Cement, Hydrogen, Fertiliser',
+      sectors: 'All importers, Manufacturing, Mining',
+      desc: 'CBAM phase-in Q3 2026. CRMA: 60 strategic projects. CSRD Wave 2: 49,000 companies in scope.' },
+    { lat: 38.91, lng: -77.04, risk: 'policy', title: 'US — DPA & Stockpiling',
+      tag: 'mpt-policy', tagText: 'Defence Policy',
+      materials: 'Antimony, REEs, Gallium, Germanium',
+      sectors: 'Defence, Semiconductors, Mining',
+      desc: '$7.5B allocation. DoD stockpiling RFIs. Defence Production Act invocations. Permitting reform.' },
+    { lat: 50.45, lng: -3.53, risk: 'policy', title: 'UK — Due Diligence',
+      tag: 'mpt-policy', tagText: 'Regulation',
+      materials: 'Cross-material',
+      sectors: 'All sectors with supply chain exposure',
       desc: 'Modern Slavery Act expansion. Critical minerals strategy under review. CBAM shadow alignment with EU.' },
-    { lat: 35.68, lng: 139.69, risk: 'policy', title: 'Japan — Economic Security Act',
-      tag: 'mpt-policy', tagText: 'Policy',
+    { lat: 35.68, lng: 139.69, risk: 'policy', title: 'Japan — Economic Security',
+      tag: 'mpt-policy', tagText: 'Strategic Policy',
+      materials: 'REEs, Lithium, Cobalt',
+      sectors: 'Semiconductors, Battery, Defence',
       desc: 'Critical mineral stockpiling. Joint ventures in Australia, Canada for REE and lithium. Semiconductor reshoring.' },
     { lat: 36.5, lng: 127.0, risk: 'policy', title: 'South Korea — Mineral Security',
-      tag: 'mpt-policy', tagText: 'Policy',
-      desc: '35 critical minerals list. Overseas resource development push. Battery material supply chain diversification.' },
+      tag: 'mpt-policy', tagText: 'Strategic Policy',
+      materials: 'Lithium, Cobalt, Nickel, Graphite',
+      sectors: 'Battery, Semiconductors',
+      desc: '35 critical minerals list. Overseas resource development push. Battery supply chain diversification.' },
   ];
 
+  // Store markers for filtering
+  window._mapMarkers = [];
   points.forEach(p => {
     const marker = L.marker([p.lat, p.lng], { icon: mkIcon(riskColors[p.risk]) }).addTo(map);
     marker.bindPopup(
       '<div class="map-popup-tag ' + p.tag + '">' + p.tagText + '</div>' +
       '<div style="margin-bottom:0.3rem;"><strong>' + p.title + '</strong></div>' +
-      '<div style="color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.55;">' + p.desc + '</div>',
-      { maxWidth: 280 }
+      '<div style="color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.55;margin-bottom:0.5rem;">' + p.desc + '</div>' +
+      '<div style="font-family:var(--mono);font-size:0.48rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:0.2rem;">MATERIALS: ' + p.materials + '</div>' +
+      '<div style="font-family:var(--mono);font-size:0.48rem;color:rgba(255,255,255,0.4);letter-spacing:0.06em;">SECTORS: ' + p.sectors + '</div>',
+      { maxWidth: 300 }
     );
+    marker._riskType = p.risk;
+    window._mapMarkers.push(marker);
   });
+
+  window._mapRef = map;
 })();
+
+// Map filter function
+function filterMap(filter, btn) {
+  document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (!window._mapMarkers || !window._mapRef) return;
+  window._mapMarkers.forEach(m => {
+    if (filter === 'all' || m._riskType === filter) {
+      if (!window._mapRef.hasLayer(m)) window._mapRef.addLayer(m);
+    } else {
+      window._mapRef.removeLayer(m);
+    }
+  });
+}
 
 // ═══ SCROLL REVEAL ═══
 const observer = new IntersectionObserver(
