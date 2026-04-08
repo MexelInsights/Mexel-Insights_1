@@ -431,6 +431,72 @@ h1 .rust { color: var(--rust); }
 .wmn-disclaimer { font-family: var(--mono); font-size: 0.44rem; color: rgba(255,255,255,0.25); margin-top: 1.2rem; letter-spacing: 0.06em; }
 @media (max-width: 768px) { .wmn-grid { grid-template-columns: 1fr; } .wmn-full { grid-column: auto; } }
 
+/* ═══ SIGNAL FEED ═══ */
+.sf-sec { background: var(--bg-primary); padding: 4.5rem 3.5rem; }
+.sf-inner { max-width: 1320px; margin: 0 auto; }
+.sf-hdr { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+.sf-hdr h2 { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.2rem); color: var(--navy); font-weight: 400; margin: 0; }
+.sf-hdr h2 em { color: var(--rust); font-style: italic; }
+.sf-meta { font-family: var(--mono); font-size: 0.42rem; letter-spacing: 0.1em; color: var(--text-faint); text-transform: uppercase; }
+.sf-status { display: inline-flex; align-items: center; gap: 0.4rem; }
+.sf-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-bright); animation: pulse-dot 2s infinite; }
+.sf-status-dot.stale { background: var(--amber); animation: none; }
+.sf-status-dot.offline { background: var(--rust); animation: none; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.sf-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.sf-filter-btn {
+  font-family: var(--mono); font-size: 0.44rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.35rem 0.7rem; border-radius: 4px; border: 1px solid var(--border-subtle);
+  background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+}
+.sf-filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+.sf-filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.sf-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; }
+.sf-card {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: start;
+  padding: 1rem 1.2rem; background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 6px; transition: border-color 0.2s;
+}
+.sf-card:hover { border-color: var(--navy); }
+.sf-card-source {
+  font-family: var(--mono); font-size: 0.42rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-faint); writing-mode: vertical-lr; transform: rotate(180deg); white-space: nowrap;
+}
+.sf-card-body { min-width: 0; }
+.sf-card-title { font-size: 0.72rem; color: var(--text-primary); font-weight: 500; line-height: 1.5; margin-bottom: 0.3rem; }
+.sf-card-title a { color: inherit; text-decoration: none; }
+.sf-card-title a:hover { color: var(--rust); }
+.sf-card-summary { font-size: 0.56rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.5rem; }
+.sf-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.sf-tag {
+  font-family: var(--mono); font-size: 0.38rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.15rem 0.4rem; border-radius: 3px; background: rgba(20,37,65,0.06); color: var(--navy);
+}
+.sf-tag-material { background: rgba(196,126,48,0.1); color: var(--rust); }
+.sf-tag-sector { background: rgba(14,124,107,0.1); color: var(--teal); }
+.sf-card-meta {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem;
+  font-family: var(--mono); font-size: 0.4rem; color: var(--text-faint); white-space: nowrap;
+}
+.sf-score {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-family: var(--mono); font-size: 0.42rem; letter-spacing: 0.06em;
+}
+.sf-score-bar { width: 40px; height: 4px; background: var(--border-subtle); border-radius: 2px; overflow: hidden; }
+.sf-score-fill { height: 100%; border-radius: 2px; }
+.sf-empty { text-align: center; padding: 3rem 1rem; color: var(--text-faint); font-family: var(--mono); font-size: 0.5rem; }
+.sf-trust {
+  font-family: var(--mono); font-size: 0.4rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+}
+@media (max-width: 768px) {
+  .sf-sec { padding: 3rem 1.5rem; }
+  .sf-card { grid-template-columns: 1fr; }
+  .sf-card-source { writing-mode: horizontal-tb; transform: none; }
+  .sf-card-meta { flex-direction: row; align-items: center; }
+}
+
 /* ═══ TICKER ═══ */
 .ticker {
   background: var(--bg-dark);
@@ -1158,6 +1224,34 @@ footer .logo-mark { background: var(--gold); }
       </div>
     </div>
     <div class="wmn-disclaimer">Mexel Insights assessment. For informational purposes only. Not investment advice. Based on publicly available sources and proprietary analysis as of April 2026.</div>
+  </div>
+</section>
+
+<!-- ═══ SIGNAL FEED ═══ -->
+<section class="sf-sec rv" id="signal-feed">
+  <div class="sf-inner">
+    <div class="sf-hdr">
+      <div>
+        <div class="ey">LIVE SIGNAL FEED</div>
+        <h2>What changed in the<br>last <em>24 hours.</em></h2>
+      </div>
+      <div class="sf-meta">
+        <div class="sf-status"><span class="sf-status-dot" id="sf-status-dot"></span> <span id="sf-status-text">Connecting...</span></div>
+        <div id="sf-last-updated"></div>
+      </div>
+    </div>
+    <div class="sf-filters" id="sf-filters">
+      <button class="sf-filter-btn active" data-filter="all" onclick="filterFeed('all',this)">All</button>
+      <button class="sf-filter-btn" data-filter="geopolitics" onclick="filterFeed('geopolitics',this)">Geopolitics</button>
+      <button class="sf-filter-btn" data-filter="critical minerals" onclick="filterFeed('critical minerals',this)">Minerals</button>
+      <button class="sf-filter-btn" data-filter="oil / gas / LNG" onclick="filterFeed('oil / gas / LNG',this)">Energy</button>
+      <button class="sf-filter-btn" data-filter="ESG / sustainability policy" onclick="filterFeed('ESG / sustainability policy',this)">ESG / Policy</button>
+      <button class="sf-filter-btn" data-filter="industrial policy" onclick="filterFeed('industrial policy',this)">Industrial</button>
+    </div>
+    <div class="sf-grid" id="sf-grid">
+      <div class="sf-empty">Loading signal feed...</div>
+    </div>
+    <div class="sf-trust" id="sf-trust"></div>
   </div>
 </section>
 
@@ -2326,6 +2420,244 @@ async function runPPI() {
     setLoading('ppi-btn', 'ppi-icon', false);
   }
 }
+
+// ═══ RESEARCH PIPELINE INTEGRATION ═══
+let _feedItems = [];
+let _feedFilter = 'all';
+
+async function loadSignalFeed() {
+  try {
+    const res = await fetch('/api/research/feed?limit=30');
+    if (!res.ok) throw new Error('Feed unavailable');
+    const data = await res.json();
+    _feedItems = data.items || [];
+
+    // Update status indicator
+    const dot = document.getElementById('sf-status-dot');
+    const statusText = document.getElementById('sf-status-text');
+    const lastUpdated = document.getElementById('sf-last-updated');
+
+    if (_feedItems.length > 0) {
+      dot.className = 'sf-status-dot';
+      statusText.textContent = `${_feedItems.length} signals`;
+      if (data.last_updated) {
+        const ago = timeAgo(new Date(data.last_updated));
+        lastUpdated.textContent = `Updated ${ago}`;
+      }
+    } else {
+      dot.className = 'sf-status-dot stale';
+      statusText.textContent = 'Warming up';
+      lastUpdated.textContent = 'Pipeline initializing...';
+    }
+
+    renderFeed();
+    renderTrustFooter(data);
+  } catch (err) {
+    const dot = document.getElementById('sf-status-dot');
+    const statusText = document.getElementById('sf-status-text');
+    if (dot) dot.className = 'sf-status-dot offline';
+    if (statusText) statusText.textContent = 'Offline';
+    document.getElementById('sf-grid').innerHTML = '<div class="sf-empty">Signal feed is initializing. Research pipeline will populate on next server refresh.</div>';
+  }
+}
+
+function renderFeed() {
+  const grid = document.getElementById('sf-grid');
+  if (!grid) return;
+
+  let items = _feedItems;
+  if (_feedFilter !== 'all') {
+    items = items.filter(i => (i.themes || []).some(t => t.toLowerCase().includes(_feedFilter.toLowerCase())));
+  }
+
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="sf-empty">No signals matching this filter. Try "All" or wait for the next pipeline refresh.</div>';
+    return;
+  }
+
+  grid.innerHTML = items.slice(0, 20).map(item => {
+    const source = item.source || 'Unknown';
+    const title = escHtml(item.title || 'Untitled');
+    const summary = escHtml((item.summary || '').slice(0, 200));
+    const url = item.url || '#';
+    const published = item.published_at ? timeAgo(new Date(item.published_at)) : '';
+    const status = item.data_status || 'periodic';
+    const scores = item.scores || {};
+    const urgency = scores.urgency || 0;
+    const relevance = scores.relevance || 0;
+    const confidence = scores.confidence || 0;
+
+    const themeTags = (item.themes || []).slice(0, 2).map(t =>
+      `<span class="sf-tag">${escHtml(t)}</span>`
+    ).join('');
+    const matTags = (item.materials || []).slice(0, 3).map(m =>
+      `<span class="sf-tag sf-tag-material">${escHtml(m)}</span>`
+    ).join('');
+    const secTags = (item.sectors || []).slice(0, 2).map(s =>
+      `<span class="sf-tag sf-tag-sector">${escHtml(s)}</span>`
+    ).join('');
+
+    const urgencyColor = urgency >= 7 ? 'var(--rust)' : urgency >= 4 ? 'var(--amber)' : 'var(--teal)';
+
+    return `<div class="sf-card">
+      <div class="sf-card-source">${escHtml(source)}</div>
+      <div class="sf-card-body">
+        <div class="sf-card-title"><a href="${escHtml(url)}" target="_blank" rel="noopener">${title}</a></div>
+        <div class="sf-card-summary">${summary}</div>
+        <div class="sf-card-tags">${themeTags}${matTags}${secTags}</div>
+      </div>
+      <div class="sf-card-meta">
+        <span>${published}</span>
+        <span style="text-transform:uppercase;font-size:0.36rem;opacity:0.6;">${status}</span>
+        <div class="sf-score">
+          <span style="color:${urgencyColor}">U:${urgency.toFixed(1)}</span>
+          <div class="sf-score-bar"><div class="sf-score-fill" style="width:${urgency*10}%;background:${urgencyColor}"></div></div>
+        </div>
+        <div class="sf-score">
+          <span>R:${relevance.toFixed(1)}</span>
+          <div class="sf-score-bar"><div class="sf-score-fill" style="width:${relevance*10}%;background:var(--navy)"></div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTrustFooter(data) {
+  const el = document.getElementById('sf-trust');
+  if (!el) return;
+  const count = (data.items || []).length;
+  const sources = [...new Set((data.items || []).map(i => i.source))];
+  const statuses = [...new Set((data.items || []).map(i => i.data_status))];
+  el.innerHTML = `<span>Sources: ${sources.join(' · ') || 'None'}</span><span>Items: ${count}</span><span>Data: ${statuses.join(' / ') || 'N/A'}</span><span>${data.last_updated ? 'Last refresh: ' + new Date(data.last_updated).toLocaleTimeString() : 'Awaiting first refresh'}</span>`;
+}
+
+function filterFeed(filter, btn) {
+  _feedFilter = filter;
+  document.querySelectorAll('.sf-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFeed();
+}
+
+// Load synthesis for "What Matters Now" dynamic update
+async function loadLatestSynthesis() {
+  try {
+    const res = await fetch('/api/research/latest');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.synthesis) return;
+
+    const s = data.synthesis;
+    const wmGrid = document.querySelector('.wmn-grid');
+    if (!wmGrid) return;
+
+    // Only update if synthesis is newer than hardcoded content
+    if (s.what_changed && s.why_it_matters) {
+      const liveNote = '<div style="font-family:var(--mono);font-size:0.38rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">LIVE — Pipeline synthesis</div>';
+
+      // Update first two cards with live synthesis
+      const cards = wmGrid.querySelectorAll('.wmn-card');
+      if (cards[0]) {
+        cards[0].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + escHtml(s.what_changed) + '</strong>';
+      }
+      if (cards[1]) {
+        cards[1].querySelector('.wmn-text').innerHTML = liveNote + escHtml(s.why_it_matters);
+      }
+    }
+
+    // Update disclaimer with live timestamp
+    const disc = document.querySelector('.wmn-disclaimer');
+    if (disc && s.created_at) {
+      disc.textContent = `Mexel Insights live synthesis. Sources: ${(s.sources || []).join(', ')}. Generated ${new Date(s.created_at).toLocaleString()}. Not investment advice.`;
+    }
+  } catch (err) {
+    // Fail silently — hardcoded content remains
+  }
+}
+
+// Load live map points from research pipeline
+async function loadLiveMapPoints() {
+  try {
+    const res = await fetch('/api/research/map');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.points || data.points.length === 0) return;
+    if (!window._mapRef) return;
+
+    const riskColors = { critical: '#C04A28', elevated: '#C47E30', watch: '#0E7C6B', policy: '#3B82F6', live: '#10B981' };
+
+    function mkLiveIcon(color) {
+      return L.divIcon({
+        className: '',
+        html: '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';box-shadow:0 0 12px ' + color + ';border:2px solid rgba(255,255,255,0.4);animation:pulse-dot 2s infinite;"></div>',
+        iconSize: [10, 10],
+        iconAnchor: [5, 5],
+      });
+    }
+
+    data.points.forEach(p => {
+      const color = riskColors.live;
+      const marker = L.marker([p.lat, p.lon], { icon: mkLiveIcon(color) }).addTo(window._mapRef);
+      const matStr = (p.materials || []).join(', ') || 'N/A';
+      const secStr = (p.sectors || []).join(', ') || 'N/A';
+      marker.bindPopup(
+        '<div class="map-popup-tag" style="background:rgba(16,185,129,0.15);color:#10B981;">LIVE — ' + escHtml(p.source) + '</div>' +
+        '<div style="margin-bottom:0.3rem;"><strong>' + escHtml(p.title) + '</strong></div>' +
+        '<div style="color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.55;margin-bottom:0.5rem;">' + escHtml(p.summary).slice(0, 200) + '</div>' +
+        (matStr !== 'N/A' ? '<div style="font-family:var(--mono);font-size:0.48rem;color:var(--gold);letter-spacing:0.06em;margin-bottom:0.2rem;">MATERIALS: ' + escHtml(matStr) + '</div>' : '') +
+        (secStr !== 'N/A' ? '<div style="font-family:var(--mono);font-size:0.48rem;color:rgba(255,255,255,0.4);letter-spacing:0.06em;">SECTORS: ' + escHtml(secStr) + '</div>' : '') +
+        '<div style="font-family:var(--mono);font-size:0.36rem;color:rgba(255,255,255,0.3);margin-top:0.4rem;">Live · ' + (p.published_at ? timeAgo(new Date(p.published_at)) : 'Recent') + '</div>',
+        { maxWidth: 300 }
+      );
+      marker._riskType = 'live';
+      if (window._mapMarkers) window._mapMarkers.push(marker);
+    });
+  } catch (err) {
+    // Fail silently — static map points remain
+  }
+}
+
+// Pipeline status badge in header
+async function loadPipelineStatus() {
+  try {
+    const res = await fetch('/api/research/stats');
+    if (!res.ok) return;
+    const data = await res.json();
+    const statusEl = document.querySelector('.nav-status');
+    if (statusEl && data.totalItems > 0) {
+      statusEl.innerHTML = '<span class="status-dot"></span>' + data.totalItems + ' SIGNALS ACTIVE';
+    }
+  } catch {}
+}
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function timeAgo(date) {
+  const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (secs < 60) return 'just now';
+  if (secs < 3600) return Math.floor(secs / 60) + 'm ago';
+  if (secs < 86400) return Math.floor(secs / 3600) + 'h ago';
+  return Math.floor(secs / 86400) + 'd ago';
+}
+
+// Initialize research pipeline on page load
+(function initResearch() {
+  // Load all pipeline data
+  loadSignalFeed();
+  loadLatestSynthesis();
+  loadLiveMapPoints();
+  loadPipelineStatus();
+
+  // Auto-refresh signal feed every 5 minutes
+  setInterval(loadSignalFeed, 5 * 60 * 1000);
+  // Refresh map points every 15 minutes
+  setInterval(loadLiveMapPoints, 15 * 60 * 1000);
+  // Refresh synthesis every 30 minutes
+  setInterval(loadLatestSynthesis, 30 * 60 * 1000);
+})();
 </script>
 </body>
 </html>

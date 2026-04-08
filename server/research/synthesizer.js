@@ -1,0 +1,162 @@
+// Mexel Synthesis Layer — converts public-source inputs into original intelligence objects
+// Uses Claude API to produce original Mexel analysis from ingested research items
+const crypto = require('crypto');
+
+const SYNTHESIS_SYSTEM_PROMPT = `You are the Mexel Insights synthesis engine. Your role is to transform raw public-source intelligence items into original, decision-grade analysis for institutional clients.
+
+You receive batches of normalized research items (titles, summaries, sources, themes, materials, sectors). You must produce original Mexel synthesis — NOT summaries of the source text.
+
+Output ONLY valid JSON. No markdown, no code fences.
+
+For each synthesis object, produce:
+{
+  "what_changed": "One sentence: what shifted in the last 24 hours",
+  "why_it_matters": "2-3 sentences: transmission mechanism to markets, portfolios, or procurement",
+  "transmission_mechanism": "How this event propagates: e.g. 'export control → supply shortage → price spike → procurement cost'",
+  "commodity_implications": ["Affected commodities with direction"],
+  "materials_implications": ["Affected materials with supply/demand impact"],
+  "sector_implications": ["Affected sectors with expected impact direction"],
+  "policy_relevance": "Connection to active policy frameworks (CBAM, CSRD, IRA, CRMA, etc.)",
+  "time_horizons": {
+    "1_week": "Immediate expected developments",
+    "1_month": "Near-term trajectory",
+    "3_months": "Medium-term structural implications"
+  },
+  "triggers": ["Specific events that would escalate this"],
+  "invalidation": ["What would prove this assessment wrong"],
+  "confidence": "High|Medium|Low",
+  "confidence_reason": "Why this confidence level",
+  "themes": ["primary themes"],
+  "materials": ["affected materials"],
+  "sectors": ["affected sectors"],
+  "source_count": number,
+  "sources": ["Source names used"]
+}
+
+Rules:
+- Be specific, not generic. Name materials, jurisdictions, companies, and timelines.
+- Every claim must trace to the input items. Do not hallucinate events.
+- If inputs are thin, say so. Lower confidence accordingly.
+- Prioritise actionable implications over description.
+- Use Mexel's framework: Context → Signals → Transmission → Implication → Decision.`;
+
+// Group items into synthesis clusters by theme overlap
+function clusterItems(items, maxPerCluster = 8) {
+  if (items.length === 0) return [];
+
+  const clusters = [];
+  const used = new Set();
+
+  // Sort by composite score descending
+  const sorted = [...items].sort((a, b) =>
+    (b.scores?.composite || 0) - (a.scores?.composite || 0)
+  );
+
+  for (const item of sorted) {
+    if (used.has(item.id)) continue;
+
+    const cluster = [item];
+    used.add(item.id);
+
+    const itemThemes = new Set(item.themes || []);
+    const itemMaterials = new Set(item.materials || []);
+
+    // Find related items
+    for (const other of sorted) {
+      if (used.has(other.id)) continue;
+      if (cluster.length >= maxPerCluster) break;
+
+      const themeOverlap = (other.themes || []).some(t => itemThemes.has(t));
+      const materialOverlap = (other.materials || []).some(m => itemMaterials.has(m));
+
+      if (themeOverlap || materialOverlap) {
+        cluster.push(other);
+        used.add(other.id);
+      }
+    }
+
+    if (cluster.length >= 1) {
+      clusters.push(cluster);
+    }
+  }
+
+  return clusters.slice(0, 6); // Max 6 synthesis clusters
+}
+
+async function synthesize(items, anthropicClient) {
+  if (!anthropicClient) {
+    console.error('[Synthesizer] No Anthropic client available');
+    return [];
+  }
+
+  const clusters = clusterItems(items);
+  if (clusters.length === 0) return [];
+
+  const syntheses = [];
+
+  for (const cluster of clusters) {
+    try {
+      // Prepare cluster summary for Claude
+      const clusterSummary = cluster.map(item => ({
+        title: item.title,
+        summary: item.summary,
+        source: item.source,
+        themes: item.themes,
+        materials: item.materials,
+        sectors: item.sectors,
+        channels: item.channels,
+        region: item.region,
+        published_at: item.published_at,
+        scores: item.scores
+      }));
+
+      const userPrompt = `Synthesize these ${cluster.length} intelligence items into ONE Mexel synthesis object. Return a single JSON object (not an array).
+
+Items:
+${JSON.stringify(clusterSummary, null, 2)}`;
+
+      const response = await anthropicClient.messages.create({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: SYNTHESIS_SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userPrompt }]
+      });
+
+      const text = response.content?.[0]?.text || '';
+
+      // Parse JSON from response
+      let synthesis;
+      try {
+        synthesis = JSON.parse(text.trim());
+      } catch {
+        // Try to extract JSON from response
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          synthesis = JSON.parse(jsonMatch[0]);
+        } else {
+          console.error('[Synthesizer] Failed to parse synthesis JSON');
+          continue;
+        }
+      }
+
+      // Add metadata
+      synthesis.id = crypto.createHash('md5')
+        .update(cluster.map(i => i.id).join(':'))
+        .digest('hex')
+        .slice(0, 16);
+      synthesis.created_at = new Date().toISOString();
+      synthesis.source_items = cluster.map(i => i.id);
+      synthesis.source_count = cluster.length;
+      synthesis.sources = [...new Set(cluster.map(i => i.source))];
+      synthesis.data_status = 'synthesized';
+
+      syntheses.push(synthesis);
+    } catch (err) {
+      console.error('[Synthesizer] Cluster synthesis failed:', err.message);
+    }
+  }
+
+  return syntheses;
+}
+
+module.exports = { synthesize, clusterItems };

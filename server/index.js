@@ -11,6 +11,10 @@ const rateLimit = require('express-rate-limit');
 const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
 
+// Research pipeline
+const store = require('./research/store');
+const { startScheduler, runFullPipeline, refreshSource, setAnthropicClient } = require('./research/scheduler');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -18,6 +22,10 @@ const PORT = process.env.PORT || 3000;
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
+
+// Initialize research pipeline
+store.init();
+setAnthropicClient(anthropic);
 
 // â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(express.json());
@@ -383,13 +391,153 @@ app.post('/api/chat', aiLimiter, async (req, res) => {
   }
 });
 
+// ═══ RESEARCH PIPELINE API ═══════════════════════════════════════════
+
+/**
+ * GET /api/research/feed
+ * Signal feed — latest research items with optional filters
+ * Query: ?theme=...&source=...&material=...&sector=...&channel=...&limit=50&since=ISO
+ */
+app.get('/api/research/feed', (req, res) => {
+  const { theme, source, material, sector, channel, limit, since } = req.query;
+  const items = store.getItems({
+    theme, source, material, sector, channel,
+    limit: parseInt(limit) || 50,
+    since
+  });
+  res.json({
+    items,
+    count: items.length,
+    last_updated: store.getStats().lastFullRefresh,
+    data_status: items.length > 0 ? 'live' : 'awaiting_first_fetch'
+  });
+});
+
+/**
+ * GET /api/research/synthesis
+ * Latest Mexel synthesis objects
+ * Query: ?limit=20
+ */
+app.get('/api/research/synthesis', (req, res) => {
+  const limit = parseInt(req.query.limit) || 20;
+  const syntheses = store.getSyntheses({ limit });
+  res.json({
+    syntheses,
+    count: syntheses.length,
+    data_status: syntheses.length > 0 ? 'synthesized' : 'awaiting_synthesis'
+  });
+});
+
+/**
+ * GET /api/research/latest
+ * Most recent synthesis for “What Matters Now”
+ */
+app.get('/api/research/latest', (req, res) => {
+  const latest = store.getLatestSynthesis();
+  if (!latest) {
+    return res.json({
+      synthesis: null,
+      data_status: 'awaiting_synthesis',
+      message: 'No synthesis available yet. Pipeline is warming up.'
+    });
+  }
+  res.json({ synthesis: latest, data_status: 'synthesized' });
+});
+
+/**
+ * GET /api/research/map
+ * Geo-tagged research items for the intelligence map
+ */
+app.get('/api/research/map', (req, res) => {
+  const geoItems = store.getGeoItems();
+  res.json({
+    points: geoItems,
+    count: geoItems.length,
+    data_status: geoItems.length > 0 ? 'live' : 'awaiting_geo_data'
+  });
+});
+
+/**
+ * GET /api/research/stats
+ * Pipeline status and health
+ */
+app.get('/api/research/stats', (req, res) => {
+  const stats = store.getStats();
+  const fetchLog = store.getFetchLog({ limit: 20 });
+
+  // Build source health report
+  const sourceHealth = {};
+  for (const entry of fetchLog) {
+    if (!sourceHealth[entry.source] || entry.timestamp > sourceHealth[entry.source].timestamp) {
+      sourceHealth[entry.source] = {
+        lastFetch: entry.timestamp,
+        success: entry.success,
+        count: entry.count,
+        error: entry.error
+      };
+    }
+  }
+
+  res.json({
+    ...stats,
+    sourceHealth,
+    pipeline_status: stats.totalItems > 0 ? 'active' : 'warming_up'
+  });
+});
+
+/**
+ * POST /api/research/refresh
+ * Manual trigger for pipeline refresh (single source or all)
+ * Body: { source?: string }
+ */
+app.post('/api/research/refresh', aiLimiter, async (req, res) => {
+  const { source } = req.body;
+
+  try {
+    if (source) {
+      const result = await refreshSource(source);
+      res.json({ success: result.success, source, items: result.items.length, elapsed: result.elapsed });
+    } else {
+      // Async — don't wait for full pipeline
+      runFullPipeline().catch(err => console.error('[Manual refresh] Error:', err.message));
+      res.json({ success: true, message: 'Full pipeline refresh started' });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * GET /api/research/sources
+ * Source registry metadata
+ */
+app.get('/api/research/sources', (req, res) => {
+  const sources = require('./research/sources.json');
+  const stats = store.getStats();
+
+  const enriched = sources.sources.map(s => ({
+    ...s,
+    itemCount: stats.sourceCounts[s.shortName] || stats.sourceCounts[s.name] || 0,
+    lastFetch: stats.lastFetchBySource[s.id] || null
+  }));
+
+  res.json({ sources: enriched, themes: sources.themes, materials: sources.materials, sectors: sources.sectors });
+});
+
 // â”€â”€ HEALTH CHECK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.get('/api/health', (req, res) => {
+  const stats = store.getStats();
   res.json({
     status: 'operational',
     model: 'claude-opus-4-5',
     firm: 'Mexel Insights',
     timestamp: new Date().toISOString(),
+    research_pipeline: {
+      status: stats.totalItems > 0 ? 'active' : 'warming_up',
+      totalItems: stats.totalItems,
+      totalSyntheses: stats.totalSyntheses,
+      lastRefresh: stats.lastFullRefresh
+    }
   });
 });
 
@@ -400,9 +548,16 @@ app.get('*', (req, res) => {
 
 // â”€â”€ START â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.listen(PORT, () => {
-  console.log(`\n  â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—`);
-  console.log(`  â•‘  MEXEL INSIGHTS â€” Intelligence API   â•‘`);
-  console.log(`  â•‘  http://localhost:${PORT}               â•‘`);
-  console.log(`  â•‘  Model: claude-opus-4-5            â•‘`);
-  console.log(`  â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•\n`);
+  console.log('MEXEL INSIGHTS - Intelligence API');
+  console.log('http://localhost:' + PORT);
+  console.log('Research Pipeline: Active');
+
+  // Start research pipeline scheduler
+  startScheduler();
+
+  // Run initial pipeline fetch (non-blocking)
+  console.log('[Startup] Running initial research pipeline...');
+  runFullPipeline().catch(err => {
+    console.error('[Startup] Initial pipeline error:', err.message);
+  });
 });
