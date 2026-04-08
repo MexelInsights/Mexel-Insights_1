@@ -19,13 +19,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // â”€â”€ ANTHROPIC CLIENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error('\n  *** WARNING: ANTHROPIC_API_KEY is not set ***');
+  console.error('  AI tools (RRM, Scenario, MMR, PPI, Chat) will not work.');
+  console.error('  Set it in Render dashboard: Environment > Add Variable\n');
+}
+
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY || 'missing-key',
 });
 
 // Initialize research pipeline
 store.init();
-setAnthropicClient(anthropic);
+setAnthropicClient(process.env.ANTHROPIC_API_KEY ? anthropic : null);
 
 // â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(express.json());
