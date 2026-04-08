@@ -2113,14 +2113,22 @@ if (ttk) { const cl = ttk.cloneNode(true); cl.id = ''; ttk.parentElement.appendC
 
 // ═══ API ═══
 async function callAPI(endpoint, body) {
-  const res = await fetch('/api/' + endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+  let res;
+  try {
+    res = await fetch('/api/' + endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch (netErr) {
+    throw new Error('Network error — check your connection or the server may be down.');
+  }
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || 'Request failed');
+    let errData;
+    try { errData = await res.json(); } catch { errData = {}; }
+    const code = errData.code || 'UNKNOWN';
+    const msg = errData.error || `Server error (${res.status})`;
+    throw new Error(`[${code}] ${msg}`);
   }
   return res.json();
 }

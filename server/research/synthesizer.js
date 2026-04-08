@@ -116,7 +116,7 @@ Items:
 ${JSON.stringify(clusterSummary, null, 2)}`;
 
       const response = await anthropicClient.messages.create({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5-20250514',
         max_tokens: 1500,
         system: SYNTHESIS_SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userPrompt }]
