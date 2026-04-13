@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexel Insights — Risk Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<header id="header">
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div class="logo-text">MEXEL <span>INSIGHTS</span></div>
+  </a>
+  <nav>
+    <a href="/" class="hm">Home</a>
+    <a href="/scenario-lab" class="hm">Scenario Lab</a>
+    <a href="/materials-watch" class="hm">Materials Watch</a>
+    <a href="/policy-monitor" class="hm">Policy Monitor</a>
+    <a href="/risk-map" class="hm active">Risk Map</a>
+    <a href="/ai-tools" class="hm">AI Tools</a>
+    <a href="/pricing" class="hm">Pricing</a>
+    <div class="nav-status"><span class="status-dot"></span>SYSTEMS ACTIVE</div>
+    <a href="/pricing" class="nav-cta">Get Access</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/scenario-lab" onclick="toggleMenu()">Scenario Lab</a>
+  <a href="/materials-watch" onclick="toggleMenu()">Materials Watch</a>
+  <a href="/policy-monitor" onclick="toggleMenu()">Policy Monitor</a>
+  <a href="/risk-map" onclick="toggleMenu()">Risk Map</a>
+  <a href="/ai-tools" onclick="toggleMenu()">AI Tools</a>
+  <a href="/pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="/pricing" class="nav-cta" onclick="toggleMenu()">Get Access</a>
+</div>
+
+<section class="page-header">
+  <div class="inner">
+    <div class="ey">RISK</div>
+    <h1>Risk <em>Map</em></h1>
+    <p class="page-desc">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter to your portfolio and procurement.</p>
+  </div>
+</section>
+
+<!-- ═══ INTELLIGENCE MAP ═══ -->
+<section class="map-sec rv" id="map">
+  <div class="map-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">SUPPLY CHAIN RISK MAP</div>
+        <h2>Global chokepoints,<br><em>visualised.</em></h2>
+      </div>
+    </div>
+    <p class="map-subtitle">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter to your portfolio and procurement.</p>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.2rem;" id="map-filters">
+      <button class="map-filter-btn active" data-filter="all" onclick="filterMap('all',this)">All</button>
+      <button class="map-filter-btn" data-filter="critical" onclick="filterMap('critical',this)">Export Controls</button>
+      <button class="map-filter-btn" data-filter="elevated" onclick="filterMap('elevated',this)">Supply Concentration</button>
+      <button class="map-filter-btn" data-filter="watch" onclick="filterMap('watch',this)">Emerging Shifts</button>
+      <button class="map-filter-btn" data-filter="policy" onclick="filterMap('policy',this)">Policy & Regulation</button>
+    </div>
+    <div id="intel-map"></div>
+    <div class="map-legend">
+      <div class="map-legend-item"><div class="map-legend-dot ml-red"></div>Critical — Export controlled / supply crisis</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-amber"></div>Elevated — Concentrated supply / rising risk</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-teal"></div>Watch — Emerging shifts</div>
+      <div class="map-legend-item"><div class="map-legend-dot ml-blue"></div>Policy — Regulatory action</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi-inner">
+    <div class="ft">
+      <div class="fb">
+        <div class="logo-wrap" style="margin-bottom:0.7rem;">
+          <div class="logo-mark" style="width:22px;height:22px;"></div>
+          <div class="logo-text" style="font-size:0.72rem;">MEXEL <span>INSIGHTS</span></div>
+        </div>
+        <p>Independent geopolitical intelligence for energy transition, critical minerals, ESG compliance, and AI infrastructure supply chains.</p>
+      </div>
+      <div><div class="fc-t">Products</div><ul class="fl"><li><a href="/scenario-lab">Scenario Lab</a></li><li><a href="/materials-watch">Materials Watch</a></li><li><a href="/policy-monitor">Policy Monitor</a></li><li><a href="/risk-map">Risk Map</a></li><li><a href="/ai-tools">AI Tools</a></li></ul></div>
+      <div><div class="fc-t">Sectors</div><ul class="fl"><li><a href="/materials-watch">Energy & Utilities</a></li><li><a href="/materials-watch">Chemicals</a></li><li><a href="/materials-watch">Mining & Metals</a></li><li><a href="/ai-tools">Technology</a></li><li><a href="/pricing">Financial Services</a></li></ul></div>
+      <div><div class="fc-t">Company</div><ul class="fl"><li><a href="/">About Mexel</a></li><li><a href="/">Methodology</a></li><li><a href="/pricing">Pricing</a></li><li><a href="mailto:info@mexelinsights.com">Contact</a></li></ul></div>
+    </div>
+    <div class="fb-row">
+      <div class="fc">&copy; 2026 Mexel Insights Ltd. &middot; Decision-Grade Intelligence for the Energy Transition</div>
+      <div class="fl-row"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/shared.js"></script>
+<script src="/js/map.js"></script>
+<script>
+loadLiveMapPoints();
+setInterval(loadLiveMapPoints, 15 * 60 * 1000);
+</script>
+</body>
+</html>

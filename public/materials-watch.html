@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexel Insights — Materials Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header id="header">
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div class="logo-text">MEXEL <span>INSIGHTS</span></div>
+  </a>
+  <nav>
+    <a href="/" class="hm">Home</a>
+    <a href="/scenario-lab" class="hm">Scenario Lab</a>
+    <a href="/materials-watch" class="hm active">Materials Watch</a>
+    <a href="/policy-monitor" class="hm">Policy Monitor</a>
+    <a href="/risk-map" class="hm">Risk Map</a>
+    <a href="/ai-tools" class="hm">AI Tools</a>
+    <a href="/pricing" class="hm">Pricing</a>
+    <div class="nav-status"><span class="status-dot"></span>SYSTEMS ACTIVE</div>
+    <a href="/pricing" class="nav-cta">Get Access</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/scenario-lab" onclick="toggleMenu()">Scenario Lab</a>
+  <a href="/materials-watch" onclick="toggleMenu()">Materials Watch</a>
+  <a href="/policy-monitor" onclick="toggleMenu()">Policy Monitor</a>
+  <a href="/risk-map" onclick="toggleMenu()">Risk Map</a>
+  <a href="/ai-tools" onclick="toggleMenu()">AI Tools</a>
+  <a href="/pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="/pricing" class="nav-cta" onclick="toggleMenu()">Get Access</a>
+</div>
+
+<section class="page-header">
+  <div class="inner">
+    <div class="ey">MATERIALS</div>
+    <h1>Materials <em>Watch</em></h1>
+    <p class="page-desc">Tracking the materials and chemicals that sit at the chokepoints of energy transition, AI infrastructure, defence, and industrial supply chains — most of which remain invisible to mainstream analysis.</p>
+  </div>
+</section>
+
+<!-- ═══ CRITICAL COMMODITIES & CHEMICALS WATCH ═══ -->
+<section class="ccw-sec rv" id="commodities">
+  <div class="ccw-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">STRATEGIC MATERIALS INTELLIGENCE</div>
+        <h2>Critical Commodities &<br>Chemicals <em>Watch</em></h2>
+      </div>
+    </div>
+    <p class="ccw-subtitle">Tracking the materials and chemicals that sit at the chokepoints of energy transition, AI infrastructure, defence, and industrial supply chains — most of which remain invisible to mainstream analysis.</p>
+
+    <!-- SEMICONDUCTOR & AI -->
+    <div class="ccw-cat-label">Semiconductor & AI</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Gallium</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">High-speed chips (GaN/GaAs). Export controlled since July 2023.</div>
+        <div class="ccw-stat">China: 98% of production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Germanium</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Fiber optics, IR optics. Export controlled alongside gallium.</div>
+        <div class="ccw-stat">China: 60% of refining</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Indium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Phosphide semiconductors, ITO displays. Limited substitutes.</div>
+        <div class="ccw-stat">Concentrated supply, low recycling</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Hafnium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Transistor gate dielectrics. Nuclear-grade. Concentrated supply.</div>
+        <div class="ccw-stat">Byproduct of zirconium refining</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Silicon (HP)</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Semiconductor</div>
+        <div class="ccw-desc">Wafer fabrication. Reliant on Germany, Taiwan, Brazil.</div>
+        <div class="ccw-stat">Fab-grade purity bottleneck</div>
+      </div>
+    </div>
+
+    <!-- BATTERY & ENERGY STORAGE -->
+    <div class="ccw-cat-label">Battery & Energy Storage</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Lithium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">LFP/NMC cathodes. Price collapsed 80% since 2022. Oversupply risk.</div>
+        <div class="ccw-stat">Oversupply cycle — watch restocking</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Cobalt</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">Cathode stabilizer. 70% from DRC. Artisanal mining ESG risk.</div>
+        <div class="ccw-stat">DRC: 70% of global supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Nickel</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">High-energy density batteries. Indonesia dominance. Class 1 vs Class 2 split.</div>
+        <div class="ccw-stat">Indonesia: 50%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Graphite</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Battery</div>
+        <div class="ccw-desc">Anodes. China dominates production. CBAM-relevant.</div>
+        <div class="ccw-stat">China: 70% of production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Vanadium</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Energy Storage</div>
+        <div class="ccw-desc">Flow batteries, grid storage. Steel alloy demand competing.</div>
+        <div class="ccw-stat">Grid storage demand rising</div>
+      </div>
+    </div>
+
+    <!-- DEFENCE & STRATEGIC -->
+    <div class="ccw-cat-label">Defence & Strategic</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Antimony</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Ammunition, flame retardants. China/Tajikistan: 80%+.</div>
+        <div class="ccw-stat">US: 100% import-dependent</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tungsten</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Armor-piercing, tooling. Export restricted.</div>
+        <div class="ccw-stat">China: 80% of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tantalum</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Capacitors in every server/weapon system.</div>
+        <div class="ccw-stat">DRC: 60%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Rare Earth Elements</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Defence</div>
+        <div class="ccw-desc">Permanent magnets (Nd, Pr, Dy). Critical for motors, wind, defence.</div>
+        <div class="ccw-stat">China: 90% of refining</div>
+      </div>
+    </div>
+
+    <!-- INDUSTRIAL CHEMICALS -->
+    <div class="ccw-cat-label">Industrial Chemicals</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Ammonia</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Fertilizer, hydrogen carrier. Green ammonia emerging.</div>
+        <div class="ccw-stat">Energy transition pivot</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Methanol</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Chemical feedstock, marine fuel transition.</div>
+        <div class="ccw-stat">IMO 2030 marine fuel driver</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Sulfuric Acid</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Mining leach agent. Tight supply = mining bottleneck.</div>
+        <div class="ccw-stat">Supply constrains mine output</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Chlor-Alkali</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">PVC, water treatment, alumina refining. Chlorine/Caustic pair.</div>
+        <div class="ccw-stat">Energy-intensive production</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Fluorspar</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Industrial Chemical</div>
+        <div class="ccw-desc">Steelmaking flux, refrigerants, lithium processing.</div>
+        <div class="ccw-stat">Critical to lithium refining</div>
+      </div>
+    </div>
+
+    <!-- ENERGY TRANSITION -->
+    <div class="ccw-cat-label">Energy Transition</div>
+    <div class="ccw-grid">
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Copper</div><div class="ccw-risk ccw-risk-red"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Electrification backbone. Grid, EVs, renewables. Structural deficit looming.</div>
+        <div class="ccw-stat">Structural supply deficit by 2027</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Uranium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Nuclear renaissance. SMRs, data center power. Supply constrained.</div>
+        <div class="ccw-stat">SMR + data center demand surge</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Tellurium</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">CdTe solar, thermoelectric cooling. Byproduct supply only.</div>
+        <div class="ccw-stat">Byproduct — no primary mines</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Platinum</div><div class="ccw-risk ccw-risk-amber"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Hydrogen fuel cells. Concentrated supply.</div>
+        <div class="ccw-stat">South Africa: 70%+ of supply</div>
+      </div>
+      <div class="ccw-card">
+        <div class="ccw-card-top"><div class="ccw-name">Manganese</div><div class="ccw-risk ccw-risk-green"></div></div>
+        <div class="ccw-tag">Energy</div>
+        <div class="ccw-desc">Battery cathodes, steel. South Africa, Gabon, Australia.</div>
+        <div class="ccw-stat">Diversified supply base</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tools-sec">
+  <div class="inner">
+    <div class="shdr rv"><div><div class="ey">MMR SIGNAL ANALYSER</div><h2>Analyse a <em>signal.</em></h2></div></div>
+    <div class="tools-grid rv" style="grid-template-columns:1fr;max-width:680px;">
+      <!-- MMR -->
+      <div class="tool-card">
+        <div class="tool-label">Product 04 · <span>AI-assisted</span></div>
+        <div class="tool-title">MMR Signal Analyser</div>
+        <div class="tool-desc">Paste a raw signal — news, export controls, port disruptions. Mexel analyses it across 30+ materials including gallium, germanium, antimony, tellurium, and other deep-scale inputs most analysts miss.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Commodity analysts, procurement teams</div>
+          <div><span style="color:var(--gold);">Decision:</span> Assess supply chain exposure fast</div>
+          <div><span style="color:var(--gold);">Output:</span> Risk-rated signal with recommended action</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised signal triage</div>
+        </div>
+        <div class="form-row">
+          <textarea class="fi" id="mmr-sig" rows="3" placeholder="e.g. Chile's government has announced it will require state participation in all new lithium extraction contracts..."></textarea>
+          <input class="fi" id="mmr-mat" placeholder="Material (e.g. Lithium)" value="Lithium" list="mmr-materials">
+          <datalist id="mmr-materials">
+            <option value="Lithium">
+            <option value="Copper">
+            <option value="Graphite">
+            <option value="Cobalt">
+            <option value="Nickel">
+            <option value="Rare Earth Elements (REE)">
+            <option value="Gallium">
+            <option value="Germanium">
+            <option value="Indium">
+            <option value="Antimony">
+            <option value="Tungsten">
+            <option value="Tantalum">
+            <option value="Niobium">
+            <option value="Vanadium">
+            <option value="Tellurium">
+            <option value="Selenium">
+            <option value="Molybdenum">
+            <option value="Fluorspar">
+            <option value="Hafnium">
+            <option value="Rhenium">
+            <option value="Scandium">
+            <option value="Beryllium">
+            <option value="Palladium">
+            <option value="Iridium">
+            <option value="Silicon (High-Purity)">
+            <option value="Bismuth">
+            <option value="Manganese">
+            <option value="Platinum">
+            <option value="Uranium">
+            <option value="Zirconium">
+          </datalist>
+          <button class="run-btn" id="mmr-btn" onclick="runMMR()">
+            <span id="mmr-icon">⚡</span> Analyse Signal
+          </button>
+        </div>
+        <div id="mmr-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SIGNAL FEED ═══ -->
+<section class="sf-sec rv" id="signal-feed">
+  <div class="sf-inner">
+    <div class="sf-hdr">
+      <div>
+        <div class="ey">LIVE SIGNAL FEED</div>
+        <h2>What changed in the<br>last <em>24 hours.</em></h2>
+      </div>
+      <div class="sf-meta">
+        <div class="sf-status"><span class="sf-status-dot" id="sf-status-dot"></span> <span id="sf-status-text">Connecting...</span></div>
+        <div id="sf-last-updated"></div>
+      </div>
+    </div>
+    <div class="sf-filters" id="sf-filters">
+      <button class="sf-filter-btn active" data-filter="all" onclick="filterFeed('all',this)">All</button>
+      <button class="sf-filter-btn" data-filter="geopolitics" onclick="filterFeed('geopolitics',this)">Geopolitics</button>
+      <button class="sf-filter-btn" data-filter="critical minerals" onclick="filterFeed('critical minerals',this)">Minerals</button>
+      <button class="sf-filter-btn" data-filter="oil / gas / LNG" onclick="filterFeed('oil / gas / LNG',this)">Energy</button>
+      <button class="sf-filter-btn" data-filter="ESG / sustainability policy" onclick="filterFeed('ESG / sustainability policy',this)">ESG / Policy</button>
+      <button class="sf-filter-btn" data-filter="industrial policy" onclick="filterFeed('industrial policy',this)">Industrial</button>
+    </div>
+    <div class="sf-grid" id="sf-grid">
+      <div class="sf-empty">Loading signal feed...</div>
+    </div>
+    <div class="sf-trust" id="sf-trust"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi-inner">
+    <div class="ft">
+      <div class="fb">
+        <div class="logo-wrap" style="margin-bottom:0.7rem;">
+          <div class="logo-mark" style="width:22px;height:22px;"></div>
+          <div class="logo-text" style="font-size:0.72rem;">MEXEL <span>INSIGHTS</span></div>
+        </div>
+        <p>Independent geopolitical intelligence for energy transition, critical minerals, ESG compliance, and AI infrastructure supply chains.</p>
+      </div>
+      <div><div class="fc-t">Products</div><ul class="fl"><li><a href="/scenario-lab">Scenario Lab</a></li><li><a href="/materials-watch">Materials Watch</a></li><li><a href="/policy-monitor">Policy Monitor</a></li><li><a href="/risk-map">Risk Map</a></li><li><a href="/ai-tools">AI Tools</a></li></ul></div>
+      <div><div class="fc-t">Sectors</div><ul class="fl"><li><a href="/materials-watch">Energy & Utilities</a></li><li><a href="/materials-watch">Chemicals</a></li><li><a href="/materials-watch">Mining & Metals</a></li><li><a href="/ai-tools">Technology</a></li><li><a href="/pricing">Financial Services</a></li></ul></div>
+      <div><div class="fc-t">Company</div><ul class="fl"><li><a href="/">About Mexel</a></li><li><a href="/">Methodology</a></li><li><a href="/pricing">Pricing</a></li><li><a href="mailto:info@mexelinsights.com">Contact</a></li></ul></div>
+    </div>
+    <div class="fb-row">
+      <div class="fc">&copy; 2026 Mexel Insights Ltd. &middot; Decision-Grade Intelligence for the Energy Transition</div>
+      <div class="fl-row"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/shared.js"></script>
+<script src="/js/tools.js"></script>
+<script src="/js/feed.js"></script>
+<script>
+loadSignalFeed();
+setInterval(loadSignalFeed, 5 * 60 * 1000);
+</script>
+</body>
+</html>

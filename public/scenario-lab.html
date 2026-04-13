@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexel Insights — Scenario Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header id="header">
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div class="logo-text">MEXEL <span>INSIGHTS</span></div>
+  </a>
+  <nav>
+    <a href="/" class="hm">Home</a>
+    <a href="/scenario-lab" class="hm active">Scenario Lab</a>
+    <a href="/materials-watch" class="hm">Materials Watch</a>
+    <a href="/policy-monitor" class="hm">Policy Monitor</a>
+    <a href="/risk-map" class="hm">Risk Map</a>
+    <a href="/ai-tools" class="hm">AI Tools</a>
+    <a href="/pricing" class="hm">Pricing</a>
+    <div class="nav-status"><span class="status-dot"></span>SYSTEMS ACTIVE</div>
+    <a href="/pricing" class="nav-cta">Get Access</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/scenario-lab" onclick="toggleMenu()">Scenario Lab</a>
+  <a href="/materials-watch" onclick="toggleMenu()">Materials Watch</a>
+  <a href="/policy-monitor" onclick="toggleMenu()">Policy Monitor</a>
+  <a href="/risk-map" onclick="toggleMenu()">Risk Map</a>
+  <a href="/ai-tools" onclick="toggleMenu()">AI Tools</a>
+  <a href="/pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="/pricing" class="nav-cta" onclick="toggleMenu()">Get Access</a>
+</div>
+
+<section class="page-header">
+  <div class="inner">
+    <div class="ey">SCENARIO</div>
+    <h1>Scenario <em>Lab</em></h1>
+    <p class="page-desc">Model geopolitical scenarios from trigger event to market implication. Each briefing maps conflict, policy, or supply shocks through commodity, energy, and financial transmission channels — with time-horizon views at 1 week, 1 month, and 3 months.</p>
+  </div>
+</section>
+
+<section class="sec tools-sec">
+  <div class="inner">
+    <div class="tools-grid rv">
+      <!-- Scenario -->
+      <div class="tool-card">
+        <div class="tool-label">Product 02 · <span>AI-assisted</span></div>
+        <div class="tool-title">Scenario Briefing Generator</div>
+        <div class="tool-desc">Model geopolitical scenarios from trigger event to market implication. Each briefing maps conflict, policy, or supply shocks through commodity, energy, and financial transmission channels — with time-horizon views at 1 week, 1 month, and 3 months.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Portfolio managers, macro strategists</div>
+          <div><span style="color:var(--gold);">Decision:</span> Position ahead of regime shifts</div>
+          <div><span style="color:var(--gold);">Output:</span> 3-scenario briefing with probabilities</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised scenario modelling</div>
+        </div>
+        <div class="sc-form">
+          <input class="fi" id="sc-topic" placeholder="e.g. Hormuz Strait closure risk and oil market impact" value="Iran nuclear escalation and Gulf energy supply impact">
+          <div class="fi-row">
+            <input class="fi" id="sc-sector" placeholder="Sector" value="Energy & Utilities">
+            <input class="fi" id="sc-tf" placeholder="Timeframe" value="12 months">
+          </div>
+          <button class="run-btn" id="sc-btn" onclick="runScenario()">
+            <span id="sc-icon">⚡</span> Generate Scenarios
+          </button>
+        </div>
+        <div style="background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:1.4rem 1.6rem;margin-top:1.2rem;">
+          <div style="font-family:var(--mono);font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:0.9rem;">Output includes</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem 1.5rem;">
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; What changed</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Why it matters</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Transmission mechanism</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; 3 scenarios (Base / Stress / Tail)</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Best/worst relative sectors</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Commodity & material implications</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Key triggers to watch</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Invalidation conditions</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Confidence level</div>
+            <div style="font-family:var(--mono);font-size:0.68rem;color:var(--text-muted);">&#10003; Time horizons (1W / 1M / 3M)</div>
+          </div>
+        </div>
+        <div id="sc-result"></div>
+      </div>
+      <!-- RRM -->
+      <div class="tool-card">
+        <div class="tool-label">Product 01 · <span>AI-assisted</span></div>
+        <div class="tool-title">Rapid Response Memo Generator</div>
+        <div class="tool-desc">Describe a geopolitical or regulatory event. Mexel generates a structured RRM with Context, Signals, Moves, and Uncertainty Flags.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.3rem 1rem;margin:0.8rem 0;padding:0.7rem 0.9rem;background:var(--bg-elevated);border-radius:6px;font-family:var(--mono);font-size:0.52rem;color:var(--text-muted);">
+          <div><span style="color:var(--gold);">Who:</span> Strategy, risk, procurement leads</div>
+          <div><span style="color:var(--gold);">Decision:</span> Respond to breaking events</div>
+          <div><span style="color:var(--gold);">Output:</span> Structured JSON/prose brief</div>
+          <div><span style="color:var(--gold);">Type:</span> AI-synthesised scenario analysis</div>
+        </div>
+        <div class="form-row">
+          <textarea class="fi" id="rrm-event" rows="3" placeholder="e.g. China has announced new export controls on graphite, effective in 30 days..."></textarea>
+          <div class="fi-row">
+            <input class="fi" id="rrm-sector" placeholder="Sector" value="Automotive / EV">
+            <input class="fi" id="rrm-region" placeholder="Region" value="China / Global">
+          </div>
+          <button class="run-btn" id="rrm-btn" onclick="runRRM()">
+            <span id="rrm-icon">⚡</span> Generate RRM
+          </button>
+        </div>
+        <div id="rrm-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi-inner">
+    <div class="ft">
+      <div class="fb">
+        <div class="logo-wrap" style="margin-bottom:0.7rem;">
+          <div class="logo-mark" style="width:22px;height:22px;"></div>
+          <div class="logo-text" style="font-size:0.72rem;">MEXEL <span>INSIGHTS</span></div>
+        </div>
+        <p>Independent geopolitical intelligence for energy transition, critical minerals, ESG compliance, and AI infrastructure supply chains.</p>
+      </div>
+      <div><div class="fc-t">Products</div><ul class="fl"><li><a href="/scenario-lab">Scenario Lab</a></li><li><a href="/materials-watch">Materials Watch</a></li><li><a href="/policy-monitor">Policy Monitor</a></li><li><a href="/risk-map">Risk Map</a></li><li><a href="/ai-tools">AI Tools</a></li></ul></div>
+      <div><div class="fc-t">Sectors</div><ul class="fl"><li><a href="/materials-watch">Energy & Utilities</a></li><li><a href="/materials-watch">Chemicals</a></li><li><a href="/materials-watch">Mining & Metals</a></li><li><a href="/ai-tools">Technology</a></li><li><a href="/pricing">Financial Services</a></li></ul></div>
+      <div><div class="fc-t">Company</div><ul class="fl"><li><a href="/">About Mexel</a></li><li><a href="/">Methodology</a></li><li><a href="/pricing">Pricing</a></li><li><a href="mailto:info@mexelinsights.com">Contact</a></li></ul></div>
+    </div>
+    <div class="fb-row">
+      <div class="fc">&copy; 2026 Mexel Insights Ltd. &middot; Decision-Grade Intelligence for the Energy Transition</div>
+      <div class="fl-row"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/shared.js"></script>
+<script src="/js/tools.js"></script>
+</body>
+</html>

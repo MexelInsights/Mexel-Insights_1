@@ -4,12 +4,15 @@
  * Keeps API key secure on the server side
  */
 
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '..', '.env') });
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const Anthropic = require('@anthropic-ai/sdk');
 const path = require('path');
+
+// LLM provider abstraction
+const { PROVIDER, createLLM, logProviderConfig, classifyError } = require('./llm-provider');
 
 // Research pipeline
 const store = require('./research/store');
@@ -18,20 +21,23 @@ const { startScheduler, runFullPipeline, refreshSource, setAnthropicClient } = r
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// â”€â”€ ANTHROPIC CLIENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-if (!process.env.ANTHROPIC_API_KEY) {
-  console.error('\n  *** WARNING: ANTHROPIC_API_KEY is not set ***');
-  console.error('  AI tools (RRM, Scenario, MMR, PPI, Chat) will not work.');
-  console.error('  Set it in Render dashboard: Environment > Add Variable\n');
+// ── LLM CLIENT ──────────────────────────────────────────────────
+let anthropic = null;
+if (PROVIDER === 'anthropic') {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('\n  *** WARNING: ANTHROPIC_API_KEY is not set ***');
+    console.error('  AI tools (RRM, Scenario, MMR, PPI, Chat) will not work.');
+    console.error('  Set it in Render dashboard: Environment > Add Variable\n');
+  }
+  anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY || 'missing-key' });
 }
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || 'missing-key',
-});
+const llm = createLLM(anthropic);
+logProviderConfig();
 
 // Initialize research pipeline
 store.init();
-setAnthropicClient(process.env.ANTHROPIC_API_KEY ? anthropic : null);
+setAnthropicClient(PROVIDER === 'anthropic' && process.env.ANTHROPIC_API_KEY ? anthropic : null);
 
 // â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(express.json());
@@ -52,34 +58,7 @@ const aiLimiter = rateLimit({
 // Serve static files from /public
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Error classifier for Anthropic API errors
-function classifyApiError(err) {
-  const msg = err.message || '';
-  const status = err.status || err.statusCode || 500;
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return { code: 'CONFIG_ERROR', message: 'API key not configured. Set ANTHROPIC_API_KEY environment variable.', status: 503 };
-  }
-  if (status === 401 || msg.includes('auth') || msg.includes('API key')) {
-    return { code: 'AUTH_ERROR', message: 'API authentication failed. Check ANTHROPIC_API_KEY.', status: 401 };
-  }
-  if (status === 404 || msg.includes('model') || msg.includes('not found')) {
-    return { code: 'MODEL_ERROR', message: 'Model not available. ' + msg, status: 502 };
-  }
-  if (status === 429 || msg.includes('rate') || msg.includes('limit') || msg.includes('quota')) {
-    return { code: 'RATE_LIMIT', message: 'Rate limit reached. Please wait a moment and retry.', status: 429 };
-  }
-  if (status === 529 || msg.includes('overloaded')) {
-    return { code: 'OVERLOADED', message: 'AI service is temporarily overloaded. Please retry in a few seconds.', status: 503 };
-  }
-  if (msg.includes('timeout') || msg.includes('ETIMEDOUT') || msg.includes('ECONNREFUSED')) {
-    return { code: 'TIMEOUT', message: 'Request timed out. The AI service may be slow — please retry.', status: 504 };
-  }
-  if (msg.includes('JSON') || msg.includes('parse') || msg.includes('Unexpected token')) {
-    return { code: 'PARSE_ERROR', message: 'AI returned an unparseable response. Please retry.', status: 502 };
-  }
-  return { code: 'INTERNAL', message: 'Generation failed: ' + msg.slice(0, 150), status: 500 };
-}
+// Error classifier imported from llm-provider.js as classifyError
 
 // â”€â”€ SYSTEM PROMPT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const MEXEL_SYSTEM_PROMPT = `You are the lead intelligence analyst at Mexel Insights â€” an independent geopolitical intelligence firm specialising in energy transition, critical minerals, regulatory pressure, and geopolitical risk.
@@ -123,29 +102,12 @@ app.post('/api/generate', aiLimiter, async (req, res) => {
   }
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 2000,
-      system: MEXEL_SYSTEM_PROMPT,
-      messages: [
-        {
-          role: 'user',
-          content: context
-            ? `Context: ${context}\n\n${prompt}`
-            : prompt,
-        },
-      ],
-    });
-
-    const text = response.content
-      .filter(b => b.type === 'text')
-      .map(b => b.text)
-      .join('\n');
-
+    const userPrompt = context ? `Context: ${context}\n\n${prompt}` : prompt;
+    const text = await llm.generate(MEXEL_SYSTEM_PROMPT, userPrompt, 2000);
     res.json({ result: text, outputType });
   } catch (err) {
     console.error('Generate error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -191,26 +153,11 @@ Return ONLY valid JSON in this exact structure (no markdown, no backticks):
 }`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 2000,
-      system: MEXEL_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }],
-    });
-
-    const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    let parsed;
-    try {
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      console.error('RRM JSON parse error. Raw response:', clean.slice(0, 500));
-      return res.status(502).json({ error: 'AI returned invalid JSON. Please retry.', code: 'PARSE_ERROR' });
-    }
+    const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 2000);
     res.json({ rrm: parsed });
   } catch (err) {
     console.error('RRM error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -287,26 +234,11 @@ Return ONLY valid JSON (no markdown):
 }`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 4000,
-      system: MEXEL_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }],
-    });
-
-    const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    let parsed;
-    try {
-      parsed = JSON.parse(clean);
-    } catch (parseErr) {
-      console.error('Scenario JSON parse error. Raw response:', clean.slice(0, 500));
-      return res.status(502).json({ error: 'AI returned invalid JSON. Please retry.', code: 'PARSE_ERROR' });
-    }
+    const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 4000);
     res.json({ scenario: parsed });
   } catch (err) {
     console.error('Scenario error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -341,20 +273,11 @@ Return ONLY valid JSON:
 }`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 1000,
-      system: MEXEL_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }],
-    });
-
-    const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 1000);
     res.json({ signal: parsed });
   } catch (err) {
     console.error('MMR error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -397,20 +320,11 @@ Return ONLY valid JSON:
 }`;
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 1000,
-      system: MEXEL_SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: prompt }],
-    });
-
-    const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 1000);
     res.json({ ppi: parsed });
   } catch (err) {
     console.error('PPI error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -428,18 +342,14 @@ app.post('/api/chat', aiLimiter, async (req, res) => {
   }
 
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250514',
-      max_tokens: 1500,
-      system: MEXEL_SYSTEM_PROMPT + '\n\nYou are responding in a chat interface. Be concise but substantive. Use the Mexel Insights voice and always end with a specific recommended action if relevant.',
-      messages: messages.slice(-10), // last 10 messages for context
-    });
-
-    const text = response.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const chatSystem = MEXEL_SYSTEM_PROMPT + '\n\nYou are responding in a chat interface. Be concise but substantive. Use the Mexel Insights voice and always end with a specific recommended action if relevant.';
+    const lastMessages = messages.slice(-10);
+    const userPrompt = lastMessages.map(m => `${m.role}: ${m.content}`).join('\n\n');
+    const text = await llm.generate(chatSystem, userPrompt, 1500);
     res.json({ reply: text });
   } catch (err) {
     console.error('Chat error:', err.message, err.status || '');
-    const classified = classifyApiError(err);
+    const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
 });
@@ -578,11 +488,17 @@ app.get('/api/research/sources', (req, res) => {
 });
 
 // â”€â”€ HEALTH CHECK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
   const stats = store.getStats();
+  const llmHealth = await llm.checkHealth();
   res.json({
     status: 'operational',
-    model: 'claude-sonnet-4-5-20250514',
+    llm: {
+      provider: llm.provider,
+      model: llm.model,
+      baseUrl: llm.baseUrl,
+      ...llmHealth
+    },
     firm: 'Mexel Insights',
     timestamp: new Date().toISOString(),
     research_pipeline: {
@@ -595,8 +511,21 @@ app.get('/api/health', (req, res) => {
 });
 
 // â”€â”€ SERVE FRONTEND â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Explicit page routes for multi-page site
+const pageRoutes = ['/', '/scenario-lab', '/materials-watch', '/policy-monitor', '/risk-map', '/ai-tools', '/pricing'];
+pageRoutes.forEach(route => {
+  const filename = route === '/' ? 'index.html' : route.slice(1) + '.html';
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', filename));
+  });
+});
+
+// Fallback: redirect unknown routes to home
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  res.redirect('/');
 });
 
 // â”€â”€ START â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
