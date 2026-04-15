@@ -15,16 +15,16 @@ async function loadSignalFeed() {
     const lastUpdated = document.getElementById('sf-last-updated');
 
     if (_feedItems.length > 0) {
-      dot.className = 'sf-status-dot';
-      statusText.textContent = `${_feedItems.length} signals`;
-      if (data.last_updated) {
+      if (dot) dot.className = 'sf-status-dot';
+      if (statusText) statusText.textContent = `${_feedItems.length} signals`;
+      if (data.last_updated && lastUpdated) {
         const ago = timeAgo(new Date(data.last_updated));
         lastUpdated.textContent = `Updated ${ago}`;
       }
     } else {
-      dot.className = 'sf-status-dot stale';
-      statusText.textContent = 'Warming up';
-      lastUpdated.textContent = 'Pipeline initializing...';
+      if (dot) dot.className = 'sf-status-dot stale';
+      if (statusText) statusText.textContent = 'Warming up';
+      if (lastUpdated) lastUpdated.textContent = 'Pipeline initializing...';
     }
 
     renderFeed();
@@ -34,7 +34,8 @@ async function loadSignalFeed() {
     const statusText = document.getElementById('sf-status-text');
     if (dot) dot.className = 'sf-status-dot offline';
     if (statusText) statusText.textContent = 'Offline';
-    document.getElementById('sf-grid').innerHTML = '<div class="sf-empty">Signal feed is initializing. Research pipeline will populate on next server refresh.</div>';
+    const grid = document.getElementById('sf-grid');
+    if (grid) grid.innerHTML = '<div class="sf-empty">Signal feed is initializing. Research pipeline will populate on next server refresh.</div>';
   }
 }
 
@@ -77,7 +78,10 @@ function renderFeed() {
     const urgencyColor = urgency >= 7 ? 'var(--rust)' : urgency >= 4 ? 'var(--amber)' : 'var(--teal)';
 
     return `<div class="sf-card">
-      <div class="sf-card-source">${escHtml(source)}</div>
+      <div class="sf-card-source">
+        <span>${escHtml(source)}</span>
+        <span class="sf-status-badge sf-status-${status}">${status}</span>
+      </div>
       <div class="sf-card-body">
         <div class="sf-card-title"><a href="${escHtml(url)}" target="_blank" rel="noopener">${title}</a></div>
         <div class="sf-card-summary">${summary}</div>
@@ -85,7 +89,6 @@ function renderFeed() {
       </div>
       <div class="sf-card-meta">
         <span>${published}</span>
-        <span style="text-transform:uppercase;font-size:0.36rem;opacity:0.6;">${status}</span>
         <div class="sf-score">
           <span style="color:${urgencyColor}">U:${urgency.toFixed(1)}</span>
           <div class="sf-score-bar"><div class="sf-score-fill" style="width:${urgency*10}%;background:${urgencyColor}"></div></div>
@@ -93,6 +96,10 @@ function renderFeed() {
         <div class="sf-score">
           <span>R:${relevance.toFixed(1)}</span>
           <div class="sf-score-bar"><div class="sf-score-fill" style="width:${relevance*10}%;background:var(--navy)"></div></div>
+        </div>
+        <div class="sf-score">
+          <span>C:${confidence.toFixed(1)}</span>
+          <div class="sf-score-bar"><div class="sf-score-fill" style="width:${confidence*10}%;background:var(--teal)"></div></div>
         </div>
       </div>
     </div>`;
@@ -127,26 +134,63 @@ async function loadLatestSynthesis() {
     const wmGrid = document.querySelector('.wmn-grid');
     if (!wmGrid) return;
 
-    // Only update if synthesis is newer than hardcoded content
-    if (s.what_changed && s.why_it_matters) {
-      const liveNote = '<div style="font-family:var(--mono);font-size:0.38rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">LIVE — Pipeline synthesis</div>';
+    const cards = wmGrid.querySelectorAll('.wmn-card');
+    const liveNote = '<div style="font-family:var(--mono);font-size:0.38rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">LIVE — Pipeline synthesis</div>';
 
-      // Update first two cards with live synthesis
-      const cards = wmGrid.querySelectorAll('.wmn-card');
-      if (cards[0]) {
-        cards[0].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + escHtml(s.what_changed) + '</strong>';
+    // Card 0: What changed
+    if (cards[0] && s.what_changed) {
+      cards[0].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + escHtml(s.what_changed) + '</strong>';
+    }
+
+    // Card 1: Why it matters
+    if (cards[1] && s.why_it_matters) {
+      cards[1].querySelector('.wmn-text').innerHTML = liveNote + escHtml(s.why_it_matters);
+    }
+
+    // Card 2: Best relative expressions
+    if (cards[2]) {
+      const best = s.best_relative_expressions || s.sector_implications || [];
+      if (best.length > 0) {
+        cards[2].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + best.map(b => escHtml(b)).join('</strong>, <strong>') + '</strong>';
       }
-      if (cards[1]) {
-        cards[1].querySelector('.wmn-text').innerHTML = liveNote + escHtml(s.why_it_matters);
+    }
+
+    // Card 3: Most pressured expressions
+    if (cards[3]) {
+      const pressured = s.most_pressured_expressions || s.materials_implications || [];
+      if (pressured.length > 0) {
+        cards[3].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + pressured.map(p => escHtml(p)).join('</strong>, <strong>') + '</strong>';
       }
+    }
+
+    // Card 4: Key trigger
+    if (cards[4]) {
+      const triggers = s.triggers || [];
+      if (triggers.length > 0) {
+        cards[4].querySelector('.wmn-text').innerHTML = liveNote + '<strong>' + escHtml(triggers[0]) + '</strong>' + (triggers.length > 1 ? '. Also: ' + triggers.slice(1).map(t => escHtml(t)).join('; ') : '');
+      }
+    }
+
+    // Card 5: Invalidation
+    if (cards[5]) {
+      const inv = s.invalidation || [];
+      if (inv.length > 0) {
+        cards[5].querySelector('.wmn-text').innerHTML = liveNote + inv.map(i => escHtml(i)).join('. ') + '.';
+      }
+    }
+
+    // Update date line
+    const dateEl = document.querySelector('.wmn-date');
+    if (dateEl && s.created_at) {
+      dateEl.textContent = 'Mexel Insights · Live synthesis · ' + new Date(s.created_at).toLocaleString();
     }
 
     // Update disclaimer with live timestamp
     const disc = document.querySelector('.wmn-disclaimer');
     if (disc && s.created_at) {
-      disc.textContent = `Mexel Insights live synthesis. Sources: ${(s.sources || []).join(', ')}. Generated ${new Date(s.created_at).toLocaleString()}. Not investment advice.`;
+      disc.textContent = `Mexel Insights live synthesis. Sources: ${(s.sources || []).join(', ')}. Generated ${new Date(s.created_at).toLocaleString()}. Confidence: ${s.confidence || 'N/A'}. Not investment advice.`;
     }
   } catch (err) {
-    // Fail silently — hardcoded content remains
+    // Fail silently — hardcoded content remains as fallback
   }
 }

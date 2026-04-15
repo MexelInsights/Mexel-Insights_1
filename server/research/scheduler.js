@@ -7,12 +7,19 @@ const { synthesize } = require('./synthesizer');
 const store = require('./store');
 const { logFetchResult, logSynthesisResult } = require('./logger');
 
-let anthropicClient = null;
+let llmProvider = null;
 let isRunning = false;
 let scheduledJobs = [];
 
-function setAnthropicClient(client) {
-  anthropicClient = client;
+function setLLMProvider(llm) {
+  llmProvider = llm;
+  console.log(`[Scheduler] LLM provider set: ${llm?.provider || 'none'}`);
+}
+
+// Back-compat: accept old setAnthropicClient calls (ignored — use setLLMProvider)
+function setAnthropicClient(_client) {
+  // No-op — kept for backward compatibility
+  // Use setLLMProvider(llm) instead
 }
 
 // Run a single source refresh
@@ -51,6 +58,11 @@ async function runFullPipeline() {
     const fetchResult = await runAllFetchers();
     store.logFetch(fetchResult.fetchLog);
 
+    // Log per-source results
+    for (const log of fetchResult.fetchLog) {
+      console.log(`  [${log.source}] ${log.success ? 'OK' : 'FAIL'} — ${log.count} items in ${log.elapsed}ms${log.error ? ' — ' + log.error : ''}`);
+    }
+
     // Step 2: Classify
     const classified = classifyAll(fetchResult.items);
 
@@ -59,20 +71,24 @@ async function runFullPipeline() {
 
     // Step 4: Store items
     const totalStored = store.addItems(scored);
-    console.log(`[Scheduler] Stored ${totalStored} total items`);
+    console.log(`[Scheduler] Stored ${totalStored} total items (${scored.length} new this run)`);
 
-    // Step 5: Synthesize top items (only if we have enough and a client)
-    if (anthropicClient && scored.length >= 3) {
+    // Step 5: Synthesize top items (if LLM available and enough items)
+    if (llmProvider && scored.length >= 3) {
       const topItems = scored
         .sort((a, b) => (b.scores?.composite || 0) - (a.scores?.composite || 0))
         .slice(0, 30);
 
       const synthStart = Date.now();
-      const syntheses = await synthesize(topItems, anthropicClient);
+      console.log(`[Scheduler] Synthesizing top ${topItems.length} items...`);
+      const syntheses = await synthesize(topItems, llmProvider);
       if (syntheses.length > 0) {
         store.addSyntheses(syntheses);
         logSynthesisResult(topItems.length, syntheses.length, Date.now() - synthStart);
+        console.log(`[Scheduler] ${syntheses.length} syntheses generated in ${Date.now() - synthStart}ms`);
       }
+    } else if (!llmProvider) {
+      console.log('[Scheduler] Skipping synthesis — no LLM provider configured');
     }
 
     const elapsed = Date.now() - start;
@@ -150,5 +166,6 @@ function stopScheduler() {
 }
 
 module.exports = {
-  startScheduler, stopScheduler, runFullPipeline, refreshSource, setAnthropicClient
+  startScheduler, stopScheduler, runFullPipeline, refreshSource,
+  setAnthropicClient, setLLMProvider
 };

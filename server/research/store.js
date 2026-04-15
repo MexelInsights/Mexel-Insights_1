@@ -75,6 +75,18 @@ function addItems(newItems) {
     return t > cutoff;
   });
 
+  // Deduplicate by normalized title (keep highest-scored version)
+  const titleMap = new Map();
+  for (const item of items) {
+    const normTitle = (item.title || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 80);
+    if (!normTitle || normTitle.length < 10) { titleMap.set(item.id, item); continue; }
+    const existing = titleMap.get(normTitle);
+    if (!existing || (item.scores?.composite || 0) > (existing.scores?.composite || 0)) {
+      titleMap.set(normTitle, item);
+    }
+  }
+  items = [...titleMap.values()];
+
   // Sort by recency
   items.sort((a, b) => {
     const da = a.published_at ? new Date(a.published_at).getTime() : 0;

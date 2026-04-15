@@ -1,18 +1,7 @@
 // IEA fetcher — International Energy Agency
-// Fetches IEA news and publications via RSS
+// Scrapes IEA news page (RSS feed returns 404)
 const { normalizeItem } = require('./normalize');
-const { parseStringPromise } = require('xml2js');
 
-const FEEDS = [
-  {
-    url: 'https://www.iea.org/rss/news.xml',
-    label: 'IEA News',
-    themes: ['oil / gas / LNG', 'energy policy', 'ESG / sustainability policy'],
-    channels: ['supply chain', 'trade policy', 'power demand']
-  }
-];
-
-// IEA content is almost always relevant — just tag it
 const THEME_KEYWORDS = {
   'oil / gas / LNG': ['oil', 'gas', 'lng', 'petroleum', 'opec', 'crude', 'natural gas'],
   'energy policy': ['policy', 'outlook', 'forecast', 'investment', 'grid', 'electricity'],
@@ -34,72 +23,92 @@ function assignThemes(text) {
 async function fetchIea() {
   const items = [];
 
-  for (const feed of FEEDS) {
-    try {
-      const res = await fetch(feed.url, {
-        signal: AbortSignal.timeout(15000),
-        headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
-      });
-
-      if (!res.ok) {
-        // IEA may not have a public RSS — fallback to static entry
-        items.push(normalizeItem({
-          source: 'IEA',
-          sourceType: 'institutional',
-          title: 'IEA — Feed unavailable',
-          summary: 'IEA RSS feed is not currently accessible. Monitoring will resume when available.',
-          url: 'https://www.iea.org/news',
-          region: 'Global',
-          themes: feed.themes,
-          dataStatus: 'static',
-          importanceScore: 2
-        }));
-        continue;
+  try {
+    const res = await fetch('https://www.iea.org/news', {
+      signal: AbortSignal.timeout(15000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       }
+    });
 
-      const xml = await res.text();
-      const parsed = await parseStringPromise(xml, { explicitArray: false });
-
-      // Handle both RSS 2.0 and Atom formats
-      let rssItems = [];
-      if (parsed?.rss?.channel?.item) {
-        const raw = parsed.rss.channel.item;
-        rssItems = Array.isArray(raw) ? raw : [raw];
-      } else if (parsed?.feed?.entry) {
-        const raw = parsed.feed.entry;
-        rssItems = (Array.isArray(raw) ? raw : [raw]).map(e => ({
-          title: e.title?._ || e.title || '',
-          description: e.summary?._ || e.summary || e.content?._ || '',
-          link: e.link?.$.href || e.link || '',
-          pubDate: e.published || e.updated || null
-        }));
-      }
-
-      for (const item of rssItems.slice(0, 10)) {
-        const title = (typeof item.title === 'object' ? item.title._ : item.title) || '';
-        const description = ((typeof item.description === 'object' ? item.description._ : item.description) || '').replace(/<[^>]*>/g, '');
-        const link = item.link || '';
-        const pubDate = item.pubDate || null;
-        const themes = assignThemes(title + ' ' + description);
-
-        items.push(normalizeItem({
-          source: 'IEA',
-          sourceType: 'institutional',
-          title: title.slice(0, 300),
-          summary: description.slice(0, 800),
-          url: link,
-          publishedAt: pubDate,
-          region: 'Global',
-          themes,
-          channels: feed.channels,
-          dataStatus: 'periodic',
-          importanceScore: 6,
-          rawPayload: { feedLabel: feed.label }
-        }));
-      }
-    } catch (err) {
-      console.error(`[IEA] Feed "${feed.label}" failed:`, err.message);
+    if (!res.ok) {
+      console.error(`[IEA] News page returned ${res.status}`);
+      return items;
     }
+
+    const html = await res.text();
+
+    // Extract all <a> tags with href matching /news/ pattern
+    const linkRegex = /<a\s[^>]*href="(\/news\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+    const seen = new Set();
+    const articles = [];
+    let match;
+
+    while ((match = linkRegex.exec(html)) !== null) {
+      const href = match[1];
+      // Skip pagination, category, and anchor links
+      if (href === '/news' || href === '/news/' || href.includes('?') || href.includes('#')) continue;
+      if (seen.has(href)) continue;
+      seen.add(href);
+
+      // Strip HTML tags from inner content to get title text
+      const rawText = match[2].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+      if (!rawText) continue;
+
+      articles.push({ href, rawText });
+    }
+
+    // Extract dates from nearby content using DD Month YYYY pattern
+    const dateRegex = /(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})/gi;
+    const pageDates = [];
+    let dateMatch;
+    while ((dateMatch = dateRegex.exec(html)) !== null) {
+      pageDates.push({
+        index: dateMatch.index,
+        dateStr: `${dateMatch[1]} ${dateMatch[2]} ${dateMatch[3]}`
+      });
+    }
+
+    for (const article of articles.slice(0, 15)) {
+      const title = article.rawText.slice(0, 300);
+      const url = `https://www.iea.org${article.href}`;
+      const themes = assignThemes(title);
+
+      // Find the closest date that appears near this article's href in the HTML
+      let publishedAt = null;
+      const hrefIndex = html.indexOf(article.href);
+      if (hrefIndex !== -1 && pageDates.length > 0) {
+        let closestDate = null;
+        let closestDist = Infinity;
+        for (const pd of pageDates) {
+          const dist = Math.abs(pd.index - hrefIndex);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestDate = pd.dateStr;
+          }
+        }
+        // Only use the date if it's reasonably close (within 2000 chars)
+        if (closestDate && closestDist < 2000) {
+          publishedAt = new Date(closestDate).toISOString();
+        }
+      }
+
+      items.push(normalizeItem({
+        source: 'IEA',
+        sourceType: 'institutional',
+        title,
+        summary: '',
+        url,
+        publishedAt,
+        region: 'Global',
+        themes,
+        dataStatus: 'periodic',
+        importanceScore: 6
+      }));
+    }
+  } catch (err) {
+    console.error('[IEA] Scrape failed:', err.message);
   }
 
   return items;

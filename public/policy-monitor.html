@@ -107,6 +107,25 @@
   </div>
 </section>
 
+<!-- ═══ LIVE POLICY SIGNALS ═══ -->
+<section class="sec rv" style="background:var(--bg-elevated);">
+  <div class="inner">
+    <div class="shdr">
+      <div>
+        <div class="ey" style="color:var(--gold);">LIVE POLICY FEED</div>
+        <h2>Latest regulatory <em>signals</em></h2>
+      </div>
+      <div style="font-family:var(--mono);font-size:0.42rem;color:var(--text-muted);">
+        <span id="policy-feed-status">Loading...</span>
+      </div>
+    </div>
+    <div id="policy-feed-grid" style="display:grid;gap:0.6rem;margin-top:1.2rem;">
+      <div class="sf-empty">Loading policy signals from Federal Register, EUR-Lex, DOE, and IEA...</div>
+    </div>
+    <div id="policy-feed-trust" style="margin-top:1rem;font-family:var(--mono);font-size:0.38rem;color:var(--text-muted);display:flex;gap:1.5rem;flex-wrap:wrap;"></div>
+  </div>
+</section>
+
 <section class="sec tools-sec">
   <div class="inner">
     <div class="shdr rv"><div><div class="ey">POLICY PRESSURE INDEX</div><h2>Score regulatory <em>pressure.</em></h2></div></div>
@@ -186,5 +205,63 @@
 
 <script src="/js/shared.js"></script>
 <script src="/js/tools.js"></script>
+<script>
+// Load live policy signals from research pipeline
+async function loadPolicyFeed() {
+  try {
+    const res = await fetch('/api/research/feed?limit=20');
+    if (!res.ok) throw new Error('Feed unavailable');
+    const data = await res.json();
+    const items = (data.items || []).filter(i => {
+      const src = (i.source || '').toLowerCase();
+      const themes = (i.themes || []).map(t => t.toLowerCase());
+      return src.includes('federal register') || src.includes('eur-lex') || src.includes('doe') || src.includes('iea') ||
+             themes.some(t => t.includes('policy') || t.includes('esg') || t.includes('industrial'));
+    });
+
+    const grid = document.getElementById('policy-feed-grid');
+    const status = document.getElementById('policy-feed-status');
+    const trust = document.getElementById('policy-feed-trust');
+
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="sf-empty">No policy signals available yet. Pipeline is warming up.</div>';
+      status.textContent = 'Awaiting data';
+      return;
+    }
+
+    status.textContent = items.length + ' policy signals · Updated ' + (data.last_updated ? timeAgo(new Date(data.last_updated)) : 'recently');
+
+    grid.innerHTML = items.slice(0, 12).map(item => {
+      const scores = item.scores || {};
+      const urgency = scores.urgency || 0;
+      const urgencyColor = urgency >= 7 ? 'var(--rust)' : urgency >= 4 ? 'var(--amber)' : 'var(--teal)';
+      const published = item.published_at ? timeAgo(new Date(item.published_at)) : '';
+      const tags = (item.themes || []).slice(0, 2).map(t => '<span class="sf-tag">' + escHtml(t) + '</span>').join('');
+      const matTags = (item.materials || []).slice(0, 2).map(m => '<span class="sf-tag sf-tag-material">' + escHtml(m) + '</span>').join('');
+
+      return '<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;display:grid;gap:0.4rem;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-family:var(--mono);font-size:0.42rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">' + escHtml(item.source) + '</span>' +
+          '<span style="font-family:var(--mono);font-size:0.38rem;color:' + urgencyColor + ';">U:' + urgency.toFixed(1) + '</span>' +
+        '</div>' +
+        '<div style="font-weight:600;font-size:0.72rem;line-height:1.4;">' +
+          (item.url ? '<a href="' + escHtml(item.url) + '" target="_blank" rel="noopener" style="color:var(--navy);text-decoration:none;">' + escHtml(item.title) + '</a>' : escHtml(item.title)) +
+        '</div>' +
+        '<div style="font-size:0.58rem;color:var(--text-muted);line-height:1.5;">' + escHtml((item.summary || '').slice(0, 180)) + '</div>' +
+        '<div style="display:flex;gap:0.3rem;flex-wrap:wrap;align-items:center;">' + tags + matTags +
+          '<span style="margin-left:auto;font-family:var(--mono);font-size:0.38rem;color:var(--text-muted);">' + published + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    const sources = [...new Set(items.map(i => i.source))];
+    trust.innerHTML = '<span>Sources: ' + sources.join(' · ') + '</span><span>Signals: ' + items.length + '</span>';
+  } catch (err) {
+    document.getElementById('policy-feed-grid').innerHTML = '<div class="sf-empty">Policy feed initializing...</div>';
+  }
+}
+loadPolicyFeed();
+setInterval(loadPolicyFeed, 5 * 60 * 1000);
+</script>
 </body>
 </html>

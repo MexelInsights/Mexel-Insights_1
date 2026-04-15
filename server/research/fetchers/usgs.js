@@ -1,14 +1,19 @@
 // USGS Minerals fetcher — U.S. Geological Survey mineral commodity data
-// Fetches from USGS NMIC news/publications RSS
+// Fetches from USGS Publications Warehouse API
 const { normalizeItem } = require('./normalize');
-const { parseStringPromise } = require('xml2js');
 
-const FEEDS = [
+const API_BASE = 'https://pubs.er.usgs.gov/pubs-services/publication';
+
+const QUERIES = [
   {
-    url: 'https://www.usgs.gov/centers/national-minerals-information-center/science/rss.xml',
-    label: 'USGS Minerals',
+    q: 'minerals critical',
     themes: ['critical minerals'],
     channels: ['supply chain', 'stockpiling']
+  },
+  {
+    q: 'energy lithium cobalt',
+    themes: ['critical minerals', 'energy transition'],
+    channels: ['supply chain', 'battery supply']
   }
 ];
 
@@ -53,79 +58,89 @@ function extractMinerals(text) {
 
 async function fetchUsgs() {
   const items = [];
+  const seenIds = new Set();
 
-  for (const feed of FEEDS) {
+  for (const query of QUERIES) {
     try {
-      const res = await fetch(feed.url, {
+      const url = `${API_BASE}?q=${encodeURIComponent(query.q)}&pageSize=10&orderBy=lastModifiedDate+desc`;
+      const res = await fetch(url, {
         signal: AbortSignal.timeout(15000),
-        headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
+        headers: {
+          'Accept': 'application/json',
+          'User-Agent': 'MexelInsights/1.0 (research aggregator)'
+        }
       });
 
       if (!res.ok) {
-        // Fallback: provide static reference to MCS
-        items.push(normalizeItem({
-          source: 'USGS',
-          sourceType: 'official',
-          title: 'USGS Mineral Commodity Summaries 2025',
-          summary: 'Annual reference for US mineral production, consumption, trade, and reserves. Covers 90+ mineral commodities. Updated annually in January.',
-          url: 'https://pubs.usgs.gov/periodicals/mcs2025/',
-          region: 'US / Global',
-          themes: ['critical minerals'],
-          materials: Object.keys(MINERAL_MAP),
-          channels: ['supply chain', 'stockpiling'],
-          dataStatus: 'static',
-          importanceScore: 7
-        }));
+        console.error(`[USGS] API query "${query.q}" returned ${res.status}`);
         continue;
       }
 
-      const xml = await res.text();
-      const parsed = await parseStringPromise(xml, { explicitArray: false });
+      const data = await res.json();
+      const records = data.records || [];
 
-      let rssItems = [];
-      if (parsed?.rss?.channel?.item) {
-        const raw = parsed.rss.channel.item;
-        rssItems = Array.isArray(raw) ? raw : [raw];
-      } else if (parsed?.feed?.entry) {
-        const raw = parsed.feed.entry;
-        rssItems = (Array.isArray(raw) ? raw : [raw]).map(e => ({
-          title: e.title?._ || e.title || '',
-          description: e.summary?._ || e.summary || '',
-          link: e.link?.$.href || e.id || '',
-          pubDate: e.published || e.updated || null
-        }));
-      }
+      for (const rec of records) {
+        if (seenIds.has(rec.id)) continue;
+        seenIds.add(rec.id);
 
-      for (const item of rssItems.slice(0, 10)) {
-        const title = (typeof item.title === 'object' ? item.title._ : item.title) || '';
-        const description = ((typeof item.description === 'object' ? item.description._ : item.description) || '').replace(/<[^>]*>/g, '');
-        const link = item.link || '';
-        const pubDate = item.pubDate || null;
-        const fullText = title + ' ' + description;
+        const title = rec.title || '';
+        const summary = rec.text || title;
+        const pubYear = rec.publicationYear || '';
+        const pubType = rec.publicationType?.text || '';
+        const pubDate = rec.lastModifiedDate || null;
+
+        // Find first available link URL
+        let link = '';
+        if (Array.isArray(rec.links) && rec.links.length > 0) {
+          link = rec.links[0].url || '';
+        }
+        if (!link) {
+          link = `https://pubs.er.usgs.gov/publication/${rec.id}`;
+        }
+
+        const fullText = title + ' ' + summary;
         const materials = extractMinerals(fullText);
 
         items.push(normalizeItem({
           source: 'USGS',
           sourceType: 'official',
           title: title.slice(0, 300),
-          summary: description.slice(0, 800),
+          summary: summary.slice(0, 800),
           url: link,
           publishedAt: pubDate,
           region: 'US / Global',
-          themes: feed.themes,
+          themes: query.themes,
           materials,
-          channels: feed.channels,
+          channels: query.channels,
           dataStatus: 'periodic',
           importanceScore: materials.length > 0 ? 7 : 5,
-          rawPayload: { feedLabel: feed.label }
+          rawPayload: { queryTerm: query.q, publicationType: pubType, publicationYear: pubYear }
         }));
       }
     } catch (err) {
-      console.error(`[USGS] Feed "${feed.label}" failed:`, err.message);
+      console.error(`[USGS] API query "${query.q}" failed:`, err.message);
     }
   }
 
-  return items;
+  // If no items fetched, provide static fallback
+  if (items.length === 0) {
+    items.push(normalizeItem({
+      source: 'USGS',
+      sourceType: 'official',
+      title: 'USGS Mineral Commodity Summaries 2025',
+      summary: 'Annual reference for US mineral production, consumption, trade, and reserves. Covers 90+ mineral commodities. Updated annually in January.',
+      url: 'https://pubs.usgs.gov/periodicals/mcs2025/',
+      region: 'US / Global',
+      themes: ['critical minerals'],
+      materials: Object.keys(MINERAL_MAP),
+      channels: ['supply chain', 'stockpiling'],
+      dataStatus: 'static',
+      importanceScore: 7
+    }));
+  }
+
+  // Cap at 10 items total
+  return items.slice(0, 10);
 }
 
 module.exports = { fetchUsgs };

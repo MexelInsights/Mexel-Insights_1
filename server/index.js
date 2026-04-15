@@ -16,7 +16,7 @@ const { PROVIDER, createLLM, logProviderConfig, classifyError } = require('./llm
 
 // Research pipeline
 const store = require('./research/store');
-const { startScheduler, runFullPipeline, refreshSource, setAnthropicClient } = require('./research/scheduler');
+const { startScheduler, runFullPipeline, refreshSource, setAnthropicClient, setLLMProvider } = require('./research/scheduler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +38,7 @@ logProviderConfig();
 // Initialize research pipeline
 store.init();
 setAnthropicClient(PROVIDER === 'anthropic' && process.env.ANTHROPIC_API_KEY ? anthropic : null);
+setLLMProvider(llm);
 
 // â”€â”€ MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 app.use(express.json());

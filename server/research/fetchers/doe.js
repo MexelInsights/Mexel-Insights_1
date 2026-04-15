@@ -5,7 +5,7 @@ const { parseStringPromise } = require('xml2js');
 
 const FEEDS = [
   {
-    url: 'https://www.energy.gov/rss/articles.xml',
+    url: 'https://www.energy.gov/rss.xml',
     label: 'DOE Articles',
     themes: ['energy policy', 'critical minerals', 'industrial policy'],
     channels: ['trade policy', 'power demand', 'permitting']

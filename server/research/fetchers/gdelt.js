@@ -1,38 +1,19 @@
 // GDELT fetcher — Global event monitoring
 // Uses GDELT DOC 2.0 API for geopolitical event discovery
+// Rate limit: one request every 5 seconds — uses 6s delays + 429 retry
 const { normalizeItem } = require('./normalize');
 
 const QUERIES = [
   {
-    query: 'critical minerals export controls',
+    query: '(critical minerals OR export controls OR gallium OR germanium OR antimony OR lithium OR rare earth) (policy OR ban OR restriction OR shortage OR supply)',
     themes: ['critical minerals', 'geopolitics', 'industrial policy'],
-    materials: ['gallium', 'germanium', 'rare earths', 'antimony', 'lithium', 'cobalt'],
-    channels: ['export controls', 'sanctions']
+    materials: ['gallium', 'germanium', 'rare earths', 'antimony', 'lithium', 'cobalt', 'tungsten'],
+    channels: ['export controls', 'sanctions', 'supply chain']
   },
   {
-    query: 'oil supply disruption OPEC',
-    themes: ['oil / gas / LNG', 'geopolitics'],
-    channels: ['supply chain', 'inflation']
-  },
-  {
-    query: 'shipping chokepoint strait canal blockade',
-    themes: ['shipping / chokepoints', 'geopolitics'],
-    channels: ['freight', 'supply chain']
-  },
-  {
-    query: 'energy transition policy renewable',
-    themes: ['energy policy', 'ESG / sustainability policy', 'energy transition bottlenecks'],
-    channels: ['trade policy']
-  },
-  {
-    query: 'sanctions trade war tariff industrial policy',
-    themes: ['industrial policy', 'geopolitics', 'public equity implications'],
-    channels: ['sanctions', 'trade policy']
-  },
-  {
-    query: 'chemical export ban regulation hazardous',
-    themes: ['critical chemicals', 'industrial policy'],
-    channels: ['export controls', 'ESG compliance']
+    query: '(oil OR gas OR LNG OR OPEC OR shipping OR chokepoint OR strait OR canal OR sanctions OR tariff OR trade war OR chemical OR energy transition)',
+    themes: ['oil / gas / LNG', 'shipping / chokepoints', 'geopolitics', 'energy policy'],
+    channels: ['sanctions', 'trade policy', 'freight', 'supply chain']
   }
 ];
 
@@ -64,21 +45,48 @@ function extractGeo(article) {
   return { lat: null, lon: null, region: '' };
 }
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchWithRetry(url) {
+  const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
+
+  if (res.status === 429) {
+    console.warn('[GDELT] Rate limited (429), retrying after 10s...');
+    await delay(10000);
+    const retry = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    return retry;
+  }
+
+  return res;
+}
+
 async function fetchGdelt() {
   const items = [];
 
-  for (const q of QUERIES) {
+  for (let i = 0; i < QUERIES.length; i++) {
+    const q = QUERIES[i];
+
+    // Wait 6 seconds between queries to respect rate limit
+    if (i > 0) {
+      await delay(6000);
+    }
+
     try {
       const encoded = encodeURIComponent(q.query);
-      const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encoded}&mode=ArtList&maxrecords=10&format=json&timespan=24h`;
+      const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encoded}&mode=ArtList&maxrecords=15&format=json&timespan=24h`;
 
-      const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
-      if (!res.ok) continue;
+      const res = await fetchWithRetry(url);
+      if (!res.ok) {
+        console.error(`[GDELT] Query ${i + 1} returned ${res.status}`);
+        continue;
+      }
 
       const data = await res.json();
       const articles = data?.articles || [];
 
-      for (const article of articles.slice(0, 5)) {
+      for (const article of articles.slice(0, 8)) {
         const geo = extractGeo(article);
 
         items.push(normalizeItem({
@@ -101,7 +109,7 @@ async function fetchGdelt() {
       }
     } catch (err) {
       // Log but don't break the pipeline
-      console.error(`[GDELT] Query "${q.query}" failed:`, err.message);
+      console.error(`[GDELT] Query ${i + 1} failed:`, err.message);
     }
   }
 

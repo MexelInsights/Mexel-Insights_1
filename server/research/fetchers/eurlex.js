@@ -1,14 +1,27 @@
 // EUR-Lex fetcher — EU legislation and regulatory publications
-// Uses EUR-Lex RSS/Atom feeds for CBAM, CSRD, CRMA, energy directives
+// Uses EU Publications Office SPARQL endpoint
 const { normalizeItem } = require('./normalize');
-const { parseStringPromise } = require('xml2js');
 
-const FEEDS = [
+const SPARQL_ENDPOINT = 'https://publications.europa.eu/webapi/rdf/sparql';
+
+const CONCEPT_QUERIES = [
   {
-    url: 'https://eur-lex.europa.eu/EN/display-feed.html?rssId=LegSec&domain=eurlex&locale=en',
-    label: 'EU Legislation',
-    themes: ['ESG / sustainability policy', 'industrial policy', 'energy policy'],
-    channels: ['ESG compliance', 'trade policy']
+    conceptId: '2281',
+    label: 'Energy policy',
+    themes: ['energy policy', 'ESG / sustainability policy'],
+    channels: ['ESG compliance', 'energy transition']
+  },
+  {
+    conceptId: '5765',
+    label: 'Raw materials / minerals',
+    themes: ['critical minerals', 'industrial policy'],
+    channels: ['supply chain', 'trade policy']
+  },
+  {
+    conceptId: '3730',
+    label: 'Environmental policy',
+    themes: ['ESG / sustainability policy', 'energy transition'],
+    channels: ['ESG compliance', 'climate policy']
   }
 ];
 
@@ -21,60 +34,112 @@ const RELEVANCE_KEYWORDS = [
 ];
 
 function isRelevant(title, summary) {
-  const text = (title + ' ' + summary).toLowerCase();
+  const text = (title + ' ' + (summary || '')).toLowerCase();
   return RELEVANCE_KEYWORDS.some(kw => text.includes(kw));
+}
+
+function buildSparqlQuery(conceptId) {
+  return `
+PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+SELECT ?work ?title ?date WHERE {
+  ?work cdm:work_date_document ?date .
+  ?work cdm:work_is_about_concept_eurovoc <http://eurovoc.europa.eu/${conceptId}> .
+  ?exp cdm:expression_belongs_to_work ?work .
+  ?exp cdm:expression_title ?title .
+  FILTER(lang(?title) = "en")
+}
+ORDER BY DESC(?date) LIMIT 10`.trim();
+}
+
+function workUriToEurLexUrl(workUri) {
+  // Extract CELEX number from URI like http://publications.europa.eu/resource/cellar/...
+  // or build a generic link
+  const celexMatch = workUri.match(/\/celex\/(\w+)/i);
+  if (celexMatch) {
+    return `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:${celexMatch[1]}`;
+  }
+  return `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=${encodeURIComponent(workUri)}`;
 }
 
 async function fetchEurLex() {
   const items = [];
+  const seenUris = new Set();
 
-  for (const feed of FEEDS) {
+  for (const concept of CONCEPT_QUERIES) {
     try {
-      const res = await fetch(feed.url, {
-        signal: AbortSignal.timeout(15000),
-        headers: { 'Accept': 'application/rss+xml, application/xml, text/xml' }
+      const query = buildSparqlQuery(concept.conceptId);
+      const params = new URLSearchParams({ query });
+
+      const res = await fetch(SPARQL_ENDPOINT, {
+        method: 'POST',
+        signal: AbortSignal.timeout(20000),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'MexelInsights/1.0 (research aggregator)'
+        },
+        body: params.toString()
       });
-      if (!res.ok) continue;
 
-      const xml = await res.text();
-      const parsed = await parseStringPromise(xml, { explicitArray: false });
+      if (!res.ok) {
+        console.error(`[EUR-Lex] SPARQL query for concept ${concept.conceptId} (${concept.label}) returned ${res.status}`);
+        continue;
+      }
 
-      // Handle RSS 2.0 format
-      const channel = parsed?.rss?.channel;
-      if (!channel) continue;
+      const data = await res.json();
+      const bindings = data?.results?.bindings || [];
 
-      const rssItems = Array.isArray(channel.item) ? channel.item : (channel.item ? [channel.item] : []);
+      for (const binding of bindings) {
+        const workUri = binding.work?.value || '';
+        if (!workUri || seenUris.has(workUri)) continue;
+        seenUris.add(workUri);
 
-      for (const item of rssItems.slice(0, 15)) {
-        const title = item.title || '';
-        const description = item.description || '';
-        const link = item.link || '';
-        const pubDate = item.pubDate || null;
+        const title = binding.title?.value || '';
+        const dateStr = binding.date?.value || null;
 
         // Filter for relevance
-        if (!isRelevant(title, description)) continue;
+        if (!isRelevant(title, '')) continue;
+
+        const url = workUriToEurLexUrl(workUri);
 
         items.push(normalizeItem({
           source: 'EUR-Lex',
           sourceType: 'official',
           title: title.slice(0, 300),
-          summary: description.replace(/<[^>]*>/g, '').slice(0, 800),
-          url: link,
-          publishedAt: pubDate,
+          summary: '',
+          url,
+          publishedAt: dateStr,
           region: 'EU',
-          themes: feed.themes,
-          channels: feed.channels,
+          themes: concept.themes,
+          channels: concept.channels,
           dataStatus: 'periodic',
           importanceScore: 6,
-          rawPayload: { feedLabel: feed.label }
+          rawPayload: { conceptId: concept.conceptId, conceptLabel: concept.label, workUri }
         }));
       }
     } catch (err) {
-      console.error(`[EUR-Lex] Feed "${feed.label}" failed:`, err.message);
+      console.error(`[EUR-Lex] SPARQL query for concept ${concept.conceptId} (${concept.label}) failed:`, err.message);
     }
   }
 
-  return items;
+  // Fallback if no items were fetched
+  if (items.length === 0) {
+    items.push(normalizeItem({
+      source: 'EUR-Lex',
+      sourceType: 'official',
+      title: 'EU Critical Raw Materials Act (CRMA)',
+      summary: 'Regulation establishing a framework to ensure a secure and sustainable supply of critical raw materials in the EU.',
+      url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1252',
+      region: 'EU',
+      themes: ['critical minerals', 'industrial policy'],
+      channels: ['supply chain', 'trade policy'],
+      dataStatus: 'static',
+      importanceScore: 6
+    }));
+  }
+
+  // Cap at 15 items total
+  return items.slice(0, 15);
 }
 
 module.exports = { fetchEurLex };

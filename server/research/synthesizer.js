@@ -1,5 +1,5 @@
 // Mexel Synthesis Layer — converts public-source inputs into original intelligence objects
-// Uses Claude API to produce original Mexel analysis from ingested research items
+// Uses LLM provider (Anthropic or Ollama) to produce original Mexel analysis from ingested research items
 const crypto = require('crypto');
 
 const SYNTHESIS_SYSTEM_PROMPT = `You are the Mexel Insights synthesis engine. Your role is to transform raw public-source intelligence items into original, decision-grade analysis for institutional clients.
@@ -10,13 +10,15 @@ Output ONLY valid JSON. No markdown, no code fences.
 
 For each synthesis object, produce:
 {
-  "what_changed": "One sentence: what shifted in the last 24 hours",
+  "what_changed": "One sentence: what shifted in the last 24-48 hours",
   "why_it_matters": "2-3 sentences: transmission mechanism to markets, portfolios, or procurement",
   "transmission_mechanism": "How this event propagates: e.g. 'export control → supply shortage → price spike → procurement cost'",
   "commodity_implications": ["Affected commodities with direction"],
   "materials_implications": ["Affected materials with supply/demand impact"],
   "sector_implications": ["Affected sectors with expected impact direction"],
   "policy_relevance": "Connection to active policy frameworks (CBAM, CSRD, IRA, CRMA, etc.)",
+  "best_relative_expressions": ["Sectors/assets that benefit relatively"],
+  "most_pressured_expressions": ["Sectors/assets under most pressure"],
   "time_horizons": {
     "1_week": "Immediate expected developments",
     "1_month": "Near-term trajectory",
@@ -83,20 +85,27 @@ function clusterItems(items, maxPerCluster = 8) {
   return clusters.slice(0, 6); // Max 6 synthesis clusters
 }
 
-async function synthesize(items, anthropicClient) {
-  if (!anthropicClient) {
-    console.error('[Synthesizer] No Anthropic client available');
+/**
+ * Synthesize intelligence from clustered items using the LLM provider.
+ * @param {Array} items - Scored research items
+ * @param {object} llm - LLM provider instance from createLLM()
+ * @returns {Array} synthesis objects
+ */
+async function synthesize(items, llm) {
+  if (!llm) {
+    console.error('[Synthesizer] No LLM provider available');
     return [];
   }
 
   const clusters = clusterItems(items);
   if (clusters.length === 0) return [];
 
+  console.log(`[Synthesizer] Processing ${clusters.length} clusters from ${items.length} items`);
   const syntheses = [];
 
   for (const cluster of clusters) {
     try {
-      // Prepare cluster summary for Claude
+      // Prepare cluster summary for LLM
       const clusterSummary = cluster.map(item => ({
         title: item.title,
         summary: item.summary,
@@ -115,28 +124,11 @@ async function synthesize(items, anthropicClient) {
 Items:
 ${JSON.stringify(clusterSummary, null, 2)}`;
 
-      const response = await anthropicClient.messages.create({
-        model: 'claude-sonnet-4-5-20250514',
-        max_tokens: 1500,
-        system: SYNTHESIS_SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userPrompt }]
-      });
+      const { parsed: synthesis } = await llm.generateJSON(SYNTHESIS_SYSTEM_PROMPT, userPrompt, 1500);
 
-      const text = response.content?.[0]?.text || '';
-
-      // Parse JSON from response
-      let synthesis;
-      try {
-        synthesis = JSON.parse(text.trim());
-      } catch {
-        // Try to extract JSON from response
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          synthesis = JSON.parse(jsonMatch[0]);
-        } else {
-          console.error('[Synthesizer] Failed to parse synthesis JSON');
-          continue;
-        }
+      if (!synthesis) {
+        console.error('[Synthesizer] LLM returned no parseable synthesis');
+        continue;
       }
 
       // Add metadata
@@ -151,6 +143,7 @@ ${JSON.stringify(clusterSummary, null, 2)}`;
       synthesis.data_status = 'synthesized';
 
       syntheses.push(synthesis);
+      console.log(`[Synthesizer] Cluster synthesized: ${synthesis.what_changed?.slice(0, 80) || 'OK'}`);
     } catch (err) {
       console.error('[Synthesizer] Cluster synthesis failed:', err.message);
     }
