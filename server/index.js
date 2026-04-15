@@ -17,6 +17,7 @@ const { PROVIDER, createLLM, logProviderConfig, classifyError } = require('./llm
 // Research pipeline
 const store = require('./research/store');
 const { startScheduler, runFullPipeline, refreshSource, setAnthropicClient, setLLMProvider } = require('./research/scheduler');
+const knowledge = require('./research/knowledge');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -353,6 +354,35 @@ app.post('/api/chat', aiLimiter, async (req, res) => {
     const classified = classifyError(err);
     res.status(classified.status).json({ error: classified.message, code: classified.code });
   }
+});
+
+// ═══ KNOWLEDGE LAYER API ═════════════════════════════════════════════
+
+/**
+ * GET /api/research/cards
+ * Canonical Mexel bottleneck knowledge cards (with optional ?category= and ?q=)
+ */
+app.get('/api/research/cards', (req, res) => {
+  const { category, q } = req.query;
+  let cards = knowledge.getAllCards();
+  if (category) cards = cards.filter(c => c.category === category || (c.secondary_categories || []).includes(category));
+  if (q) cards = knowledge.searchCards(q).filter(c => cards.some(x => x.id === c.id));
+  res.json({
+    cards,
+    count: cards.length,
+    categories: knowledge.getCategories(),
+    relationships: knowledge.getRelationships()
+  });
+});
+
+/**
+ * GET /api/research/cards/:id
+ */
+app.get('/api/research/cards/:id', (req, res) => {
+  const card = knowledge.getCard(req.params.id);
+  if (!card) return res.status(404).json({ error: 'Card not found' });
+  const rels = knowledge.getRelationships().filter(r => r.from === card.id || r.to === card.id);
+  res.json({ card, relationships: rels });
 });
 
 // ═══ RESEARCH PIPELINE API ═══════════════════════════════════════════

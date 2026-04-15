@@ -1,6 +1,7 @@
 // Mexel Synthesis Layer — converts public-source inputs into original intelligence objects
 // Uses LLM provider (Anthropic or Ollama) to produce original Mexel analysis from ingested research items
 const crypto = require('crypto');
+const knowledge = require('./knowledge');
 
 const SYNTHESIS_SYSTEM_PROMPT = `You are the Mexel Insights synthesis engine. Your role is to transform raw public-source intelligence items into original, decision-grade analysis for institutional clients.
 
@@ -40,7 +41,8 @@ Rules:
 - Every claim must trace to the input items. Do not hallucinate events.
 - If inputs are thin, say so. Lower confidence accordingly.
 - Prioritise actionable implications over description.
-- Use Mexel's framework: Context → Signals → Transmission → Implication → Decision.`;
+- Use Mexel's framework: Context → Signals → Transmission → Implication → Decision.
+- When MEXEL KNOWLEDGE CONTEXT cards are provided, use them as canonical scaffolding on bottleneck mechanics, public-equity exposure, and transmission channels. Do not contradict them and do not fabricate detail beyond them.`;
 
 // Group items into synthesis clusters by theme overlap
 function clusterItems(items, maxPerCluster = 8) {
@@ -119,9 +121,19 @@ async function synthesize(items, llm) {
         scores: item.scores
       }));
 
+      // Find relevant Mexel knowledge cards for this cluster
+      const clusterText = cluster.map(i => `${i.title} ${i.summary || ''}`).join(' ');
+      const clusterThemes = [...new Set(cluster.flatMap(i => i.themes || []))];
+      const clusterMaterials = [...new Set(cluster.flatMap(i => i.materials || []))];
+      const clusterSectors = [...new Set(cluster.flatMap(i => i.sectors || []))];
+      const relevantCards = knowledge.findRelevantCards({
+        text: clusterText, themes: clusterThemes, materials: clusterMaterials, sectors: clusterSectors, limit: 3
+      });
+      const contextBlock = knowledge.buildContextBlock(relevantCards);
+
       const userPrompt = `Synthesize these ${cluster.length} intelligence items into ONE Mexel synthesis object. Return a single JSON object (not an array).
 
-Items:
+${contextBlock ? contextBlock + '\n\n' : ''}Items:
 ${JSON.stringify(clusterSummary, null, 2)}`;
 
       const { parsed: synthesis } = await llm.generateJSON(SYNTHESIS_SYSTEM_PROMPT, userPrompt, 1500);
@@ -141,6 +153,7 @@ ${JSON.stringify(clusterSummary, null, 2)}`;
       synthesis.source_count = cluster.length;
       synthesis.sources = [...new Set(cluster.map(i => i.source))];
       synthesis.data_status = 'synthesized';
+      synthesis.knowledge_cards = relevantCards.map(c => c.id);
 
       syntheses.push(synthesis);
       console.log(`[Synthesizer] Cluster synthesized: ${synthesis.what_changed?.slice(0, 80) || 'OK'}`);

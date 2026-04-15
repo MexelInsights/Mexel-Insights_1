@@ -1,0 +1,37 @@
+[
+  {
+    "id": "semi-process-inputs",
+    "label": "Semiconductor Process Inputs",
+    "description": "Consumables, precursors, and specialty chemistries that gate wafer fab throughput and yield. Small line items on a fab BOM, but every one of them is a hard stop if supply fails or spec drifts."
+  },
+  {
+    "id": "advanced-packaging",
+    "label": "Advanced Packaging Bottlenecks",
+    "description": "Substrate, interposer, and build-up materials underneath every leading-edge logic, HBM, and AI accelerator. The capacity wall behind the capacity wall."
+  },
+  {
+    "id": "industrial-gases",
+    "label": "Industrial & Electronic Gas Bottlenecks",
+    "description": "Ultra-high-purity gases consumed inside deposition, etch, lithography, and chamber-clean steps. Concentrated supply, thin inventories, weaponisable."
+  },
+  {
+    "id": "mining-reagents",
+    "label": "Critical Mining & Refining Reagents",
+    "description": "Upstream chemistries and mineral feedstocks that convert ore into the inputs everything else depends on. The layer below the layer below."
+  },
+  {
+    "id": "battery-processing",
+    "label": "Battery & Electrification Processing Inputs",
+    "description": "Specialty salts, solvents, and reagents that convert refined metals into cell-grade chemistry. Where 'critical minerals' actually become batteries."
+  },
+  {
+    "id": "nuclear-fuel-cycle",
+    "label": "Nuclear & Advanced Energy Bottlenecks",
+    "description": "Conversion, enrichment, and fuel-fabrication feedstocks. Long lead times, concentrated geopolitically, structurally under-invested."
+  },
+  {
+    "id": "photonics-optics",
+    "label": "Photonics, Fibre & Optical-System Inputs",
+    "description": "Precursors and feedstocks for optical fibre, laser, and imaging systems. The invisible layer underneath telecoms and data-centre interconnect."
+  }
+]

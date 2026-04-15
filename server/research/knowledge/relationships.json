@@ -1,0 +1,22 @@
+[
+  {"from": "acid-grade-fluorspar", "to": "hf-electronic-grade", "type": "feedstock", "note": "Acidspar + H2SO4 → HF. Every downstream fluorine chain starts here."},
+  {"from": "hf-electronic-grade", "to": "wf6", "type": "precursor", "note": "F2 / HF feed the fluorination of tungsten metal to WF6."},
+  {"from": "hf-electronic-grade", "to": "nf3", "type": "precursor", "note": "HF/F2 feedstock for NF3 synthesis."},
+  {"from": "hf-electronic-grade", "to": "lipf6", "type": "precursor", "note": "HF → PF5 → LiPF6 via reaction with LiF."},
+  {"from": "hf-electronic-grade", "to": "uf6", "type": "precursor", "note": "Yellowcake is converted to UF6 using HF/F2."},
+  {"from": "hf-electronic-grade", "to": "euv-photoresists", "type": "input", "note": "Wet-etch and clean chemistries sit in the same fab BOM as resists; fluorinated solvents also feed resist formulation."},
+  {"from": "acid-grade-fluorspar", "to": "wf6", "type": "indirect-feedstock", "note": "Via HF chain."},
+  {"from": "acid-grade-fluorspar", "to": "nf3", "type": "indirect-feedstock", "note": "Via HF chain."},
+  {"from": "acid-grade-fluorspar", "to": "lipf6", "type": "indirect-feedstock", "note": "Via HF chain into battery electrolyte."},
+  {"from": "acid-grade-fluorspar", "to": "uf6", "type": "indirect-feedstock", "note": "Via HF chain into nuclear fuel conversion."},
+  {"from": "semi-neon", "to": "euv-photoresists", "type": "co-constraint", "note": "Both gate lithography throughput — neon for DUV excimer lasers, resist for the patterning itself."},
+  {"from": "euv-photoresists", "to": "abf-films", "type": "downstream-sequence", "note": "Leading-edge logic dies printed with EUV resist are packaged on ABF substrates."},
+  {"from": "hp-quartz", "to": "euv-photoresists", "type": "co-constraint", "note": "Both sit upstream of every wafer — quartz via crucibles, resist via lithography."},
+  {"from": "hp-quartz", "to": "abf-films", "type": "co-constraint", "note": "Both are narrow geographic-concentration chokepoints upstream of leading-edge silicon and packaging."},
+  {"from": "hp-quartz", "to": "gecl4-preforms", "type": "adjacent", "note": "Shared silica-and-photonics adjacency; preforms are silica doped with Ge."},
+  {"from": "gecl4-preforms", "to": "abf-films", "type": "downstream-sequence", "note": "Data-centre build-out depends on both AI-accelerator substrates (ABF) and optical fibre (GeCl4-doped preforms)."},
+  {"from": "wf6", "to": "nf3", "type": "co-consumer", "note": "Both consumed in-line at the same fab, sharing feedstock risk (HF/fluorspar) and Korean/Japanese producer concentration."},
+  {"from": "uf6", "to": "lipf6", "type": "shared-chain", "note": "Both are HF-downstream chemistries — nuclear fuel conversion and battery electrolyte share the same fluorine feed stack."},
+  {"from": "phosphine-extractants", "to": "lipf6", "type": "adjacent-chain", "note": "Lithium refining upstream of LiPF6 runs on SX extractants; phosphorus chain is shared."},
+  {"from": "phosphine-extractants", "to": "acid-grade-fluorspar", "type": "co-constraint", "note": "Both are invisible upstream reagent/mineral chokepoints for the critical-minerals refining stack."}
+]
