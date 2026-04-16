@@ -232,6 +232,30 @@
   </div>
 </section>
 
+<!-- ═══ HIDDEN BOTTLENECK KNOWLEDGE CARDS ═══ -->
+<section class="kb-sec rv" id="bottleneck-cards">
+  <div class="kb-inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">PROCESS BOTTLENECK INTELLIGENCE</div>
+        <h2>Hidden Bottleneck <em>Cards</em></h2>
+      </div>
+    </div>
+    <p class="kb-subtitle">The materials and chemistries most analysts don't name — but that gate semiconductor throughput, battery cell production, nuclear fuel cycles, and optical infrastructure. Mexel's canonical knowledgebase layer.</p>
+    <div class="kb-filters" id="kb-filters">
+      <button class="kb-filter-btn active" onclick="filterKB('all',this)">All</button>
+    </div>
+    <div class="kb-grid" id="kb-grid">
+      <div class="sf-empty">Loading knowledge cards...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Knowledge card detail overlay -->
+<div class="kb-detail-overlay" id="kb-detail-overlay" onclick="if(event.target===this)closeKBDetail()">
+  <div class="kb-detail" id="kb-detail"></div>
+</div>
+
 <section class="sec tools-sec">
   <div class="inner">
     <div class="shdr rv"><div><div class="ey">MMR SIGNAL ANALYSER</div><h2>Analyse a <em>signal.</em></h2></div></div>
@@ -347,6 +371,122 @@
 <script>
 loadSignalFeed();
 setInterval(loadSignalFeed, 5 * 60 * 1000);
+
+// ═══ KNOWLEDGE CARDS ═══
+let _kbCards = [];
+let _kbCategories = [];
+let _kbRelationships = [];
+let _kbFilter = 'all';
+
+async function loadKnowledgeCards() {
+  try {
+    const res = await fetch('/api/research/cards');
+    if (!res.ok) throw new Error('Cards unavailable');
+    const data = await res.json();
+    _kbCards = data.cards || [];
+    _kbCategories = data.categories || [];
+    _kbRelationships = data.relationships || [];
+    renderKBFilters();
+    renderKBGrid();
+  } catch (err) {
+    document.getElementById('kb-grid').innerHTML = '<div class="sf-empty">Knowledge cards loading...</div>';
+  }
+}
+
+function renderKBFilters() {
+  const el = document.getElementById('kb-filters');
+  if (!el) return;
+  const cats = _kbCategories;
+  el.innerHTML = '<button class="kb-filter-btn active" onclick="filterKB(\'all\',this)">All (' + _kbCards.length + ')</button>' +
+    cats.map(c => {
+      const count = _kbCards.filter(k => k.category === c.id || (k.secondary_categories || []).includes(c.id)).length;
+      return '<button class="kb-filter-btn" onclick="filterKB(\'' + c.id + '\',this)">' + escHtml(c.label) + ' (' + count + ')</button>';
+    }).join('');
+}
+
+function renderKBGrid() {
+  const grid = document.getElementById('kb-grid');
+  if (!grid) return;
+  let cards = _kbCards;
+  if (_kbFilter !== 'all') {
+    cards = cards.filter(c => c.category === _kbFilter || (c.secondary_categories || []).includes(_kbFilter));
+  }
+  if (cards.length === 0) {
+    grid.innerHTML = '<div class="sf-empty">No cards in this category.</div>';
+    return;
+  }
+  grid.innerHTML = cards.map(c => {
+    const cat = _kbCategories.find(x => x.id === c.category);
+    const catLabel = cat ? cat.label : c.category;
+    const chokeTag = (c.chokepoint_or_sanctions_exposure || '').toLowerCase().includes('high') ? '<span class="kb-card-tag kb-tag-risk">HIGH CHOKEPOINT</span>' : '';
+    return '<div class="kb-card" onclick="openKBDetail(\'' + c.id + '\')">' +
+      '<div class="kb-card-cat">' + escHtml(catLabel) + '</div>' +
+      '<div class="kb-card-title">' + escHtml(c.title) + '</div>' +
+      '<div class="kb-card-what">' + escHtml(c.what_it_is) + '</div>' +
+      '<div class="kb-card-why">' + escHtml(c.why_it_is_underappreciated) + '</div>' +
+      '<div class="kb-card-meta">' +
+        chokeTag +
+        '<span class="kb-card-tag">' + escHtml(c.substitutability || '').slice(0, 50) + '</span>' +
+        '<span class="kb-card-confidence">' + (c.confidence || '').toUpperCase() + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function filterKB(cat, btn) {
+  _kbFilter = cat;
+  document.querySelectorAll('.kb-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderKBGrid();
+}
+
+function openKBDetail(id) {
+  const c = _kbCards.find(x => x.id === id);
+  if (!c) return;
+  const cat = _kbCategories.find(x => x.id === c.category);
+  const rels = _kbRelationships.filter(r => r.from === c.id || r.to === c.id);
+
+  const section = (title, content) => content ? '<div class="kb-detail-section"><h4>' + title + '</h4>' + content + '</div>' : '';
+  const list = (arr) => arr && arr.length ? '<ul>' + arr.map(x => '<li>' + escHtml(x) + '</li>').join('') + '</ul>' : '';
+  const chips = (arr) => arr && arr.length ? '<div class="kb-detail-chips">' + arr.map(x => '<span class="kb-detail-chip">' + escHtml(x) + '</span>').join('') + '</div>' : '';
+
+  document.getElementById('kb-detail').innerHTML =
+    '<button class="kb-detail-close" onclick="closeKBDetail()">&times;</button>' +
+    '<h3>' + escHtml(c.title) + '</h3>' +
+    '<div class="kb-detail-cat">' + escHtml(cat ? cat.label : c.category) + (c.aliases ? ' · ' + c.aliases.slice(0, 4).join(', ') : '') + '</div>' +
+    section('What it is', '<p>' + escHtml(c.what_it_is) + '</p>') +
+    section('Exact process role', '<p>' + escHtml(c.exact_process_role) + '</p>') +
+    section('Where it matters', '<p>' + escHtml(c.where_it_matters_in_value_chain) + '</p>') +
+    section('Why it matters', '<p>' + escHtml(c.why_it_matters) + '</p>') +
+    section('Why it is underappreciated', '<p style="color:var(--gold);font-weight:500;">' + escHtml(c.why_it_is_underappreciated) + '</p>') +
+    section('Purity / spec constraints', '<p>' + escHtml(c.purity_or_spec_constraints) + '</p>') +
+    section('Substitutability', '<p>' + escHtml(c.substitutability) + '</p>') +
+    section('Supply concentration', '<p>' + escHtml(c.supply_concentration) + '</p>') +
+    section('Failure mode', '<p style="color:var(--rust);font-weight:500;">' + escHtml(c.failure_mode) + '</p>') +
+    section('Chokepoint / sanctions exposure', '<p>' + escHtml(c.chokepoint_or_sanctions_exposure) + '</p>') +
+    section('Triggers to watch', list(c.triggers_to_watch)) +
+    section('Easing / invalidation conditions', list(c.easing_invalidation_conditions)) +
+    section('Downstream sectors exposed', chips(c.downstream_sectors_exposed)) +
+    section('Upstream dependencies', chips(c.upstream_dependencies)) +
+    section('Public equity relevance', '<p style="font-size:0.78rem;">' + escHtml(c.public_equity_relevance) + '</p>') +
+    section('Policy / export control relevance', '<p>' + escHtml(c.policy_export_control_relevance) + '</p>') +
+    section('Related entities', chips(c.related_entities)) +
+    section('Related policies', chips(c.related_policies)) +
+    (rels.length > 0 ? section('Supply chain relationships', '<ul>' + rels.map(r => '<li><strong>' + escHtml(r.from) + ' → ' + escHtml(r.to) + '</strong> (' + escHtml(r.type) + ') — ' + escHtml(r.note) + '</li>').join('') + '</ul>') : '') +
+    '<div style="margin-top:1.5rem;font-family:var(--mono);font-size:0.42rem;color:var(--text-faint);">Confidence: ' + (c.confidence || '').toUpperCase() + ' · Sources: ' + (c.source_references || []).join(', ') + '</div>';
+
+  document.getElementById('kb-detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeKBDetail() {
+  document.getElementById('kb-detail-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeKBDetail(); });
+
+loadKnowledgeCards();
 </script>
 </body>
 </html>
