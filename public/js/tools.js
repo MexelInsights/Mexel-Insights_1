@@ -41,6 +41,7 @@ async function runRRM() {
   try {
     const data = await callAPI('rrm', { event, sector, region });
     const r = data.rrm;
+    const kbCards = data.knowledge_cards || [];
     const confColor = r.confidence === 'High' ? 'var(--green-bright)' : r.confidence === 'Medium' ? 'var(--gold)' : 'var(--text-muted)';
 
     let html = `<div class="result-box">
@@ -85,6 +86,22 @@ async function runRRM() {
       html += `</div>`;
     }
 
+    if (r.hidden_bottleneck_note) {
+      html += `<div style="background:var(--bg-elevated);border-left:3px solid var(--gold);padding:0.9rem 1.1rem;margin-top:0.8rem;border-radius:0 6px 6px 0;">
+        <div style="font-family:var(--mono);font-size:0.42rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Mexel Bottleneck Context</div>
+        <div style="font-size:0.7rem;color:var(--text-primary);line-height:1.55;">${escHtml(r.hidden_bottleneck_note)}</div>
+      </div>`;
+    }
+
+    if (kbCards.length > 0) {
+      html += `<div style="margin-top:0.8rem;padding:0.85rem 1rem;background:var(--navy);border-radius:6px;">
+        <div style="font-family:var(--mono);font-size:0.4rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.55rem;">Relevant Hidden Bottlenecks</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+          ${kbCards.map(c => `<a href="/materials-watch#bottleneck-cards" style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.65rem;border-radius:4px;font-size:0.6rem;font-weight:600;color:#fff;text-decoration:none;" title="${escHtml(c.why_it_matters)}">${escHtml(c.title)}</a>`).join('')}
+        </div>
+      </div>`;
+    }
+
     if (r.sources?.length) {
       html += `<div style="font-family:var(--mono);font-size:0.46rem;color:var(--text-faint);margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:0.7rem;">Sources: ${r.sources.join(' | ')}</div>`;
     }
@@ -113,6 +130,7 @@ async function runScenario() {
   try {
     const data = await callAPI('scenario', { topic, sector, timeframe });
     const s = data.scenario;
+    const kbCards = data.knowledge_cards || [];
 
     let html = `<div class="sc-result">
       <div class="rb-label">Mexel Insights \u2014 Scenario Briefing</div>
@@ -151,6 +169,15 @@ async function runScenario() {
       html += `<div class="rb-sec"><div class="rb-sec-title">Leading Indicators to Watch</div>`;
       s.leadingIndicators.forEach(i => { html += `<div class="rb-text" style="margin-bottom:0.25rem;">\u2014 ${i}</div>`; });
       html += `</div>`;
+    }
+
+    if (kbCards.length > 0) {
+      html += `<div style="margin-top:0.8rem;padding:0.85rem 1rem;background:var(--navy);border-radius:6px;">
+        <div style="font-family:var(--mono);font-size:0.4rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.55rem;">Relevant Hidden Bottlenecks</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+          ${kbCards.map(c => `<a href="/materials-watch#bottleneck-cards" style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.65rem;border-radius:4px;font-size:0.6rem;font-weight:600;color:#fff;text-decoration:none;" title="${escHtml(c.why_it_matters)}">${escHtml(c.title)}</a>`).join('')}
+        </div>
+      </div>`;
     }
 
     html += `<div style="font-family:var(--mono);font-size:0.44rem;color:var(--text-faint);margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:0.7rem;">Not investment advice. Mexel Insights Ltd.</div>`;

@@ -797,12 +797,12 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 @media (max-width: 600px) { .ccw-grid { grid-template-columns: 1fr; } }
 
 /* ═══ KNOWLEDGE / BOTTLENECK CARDS ═══ */
-.kb-sec { background: var(--bg-elevated); padding: 6rem 3.5rem; }
+.kb-sec { background: var(--navy); padding: 6rem 3.5rem; }
 .kb-inner { max-width: 1320px; margin: 0 auto; }
 .kb-inner .shdr { margin-bottom: 1rem; }
 .kb-subtitle {
-  font-size: 1.05rem; color: var(--text-muted); line-height: 1.75;
-  max-width: 780px; margin-bottom: 2.5rem;
+  font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.75;
+  max-width: 780px; margin-bottom: 2rem;
 }
 .kb-filters {
   display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
@@ -810,36 +810,36 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 .kb-filter-btn {
   font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.06em;
   padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer;
-  border: 1px solid var(--border-default); background: var(--bg-surface);
-  color: var(--text-muted); transition: all 0.25s;
+  border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.5); transition: all 0.25s;
 }
 .kb-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
-.kb-filter-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.kb-filter-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
 .kb-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
 }
 .kb-card {
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px; padding: 1.5rem 1.6rem;
   transition: all 0.35s var(--ease-out); cursor: pointer; position: relative;
   overflow: hidden;
 }
-.kb-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--gold); }
+.kb-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); border-color: var(--gold); background: rgba(255,255,255,0.08); }
 .kb-card-cat {
   font-family: var(--mono); font-size: 0.42rem; text-transform: uppercase;
   letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.6rem;
 }
 .kb-card-title {
-  font-family: var(--serif); font-size: 1.1rem; color: var(--navy);
+  font-family: var(--serif); font-size: 1.1rem; color: #fff;
   line-height: 1.35; margin-bottom: 0.5rem;
 }
 .kb-card-what {
-  font-size: 0.78rem; color: var(--text-muted); line-height: 1.6;
+  font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 1.6;
   margin-bottom: 0.8rem;
   display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 .kb-card-why {
-  font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6;
+  font-size: 0.78rem; color: rgba(255,255,255,0.75); line-height: 1.6;
   margin-bottom: 1rem; font-weight: 500;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
@@ -849,14 +849,14 @@ select.fi { cursor: pointer; font-family: var(--body); font-size: 0.9rem; }
 .kb-card-tag {
   font-family: var(--mono); font-size: 0.42rem;
   padding: 0.2rem 0.5rem; border-radius: 3px;
-  background: var(--teal-soft); color: var(--teal); letter-spacing: 0.04em;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); letter-spacing: 0.04em;
 }
 .kb-card-tag.kb-tag-risk {
-  background: var(--rust-soft); color: var(--rust);
+  background: rgba(196,64,48,0.25); color: #ff8877;
 }
 .kb-card-confidence {
   font-family: var(--mono); font-size: 0.42rem; letter-spacing: 0.06em;
-  color: var(--text-faint); margin-left: auto;
+  color: rgba(255,255,255,0.3); margin-left: auto;
 }
 /* Expanded card detail */
 .kb-detail-overlay {

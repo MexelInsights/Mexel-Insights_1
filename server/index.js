@@ -124,39 +124,51 @@ app.post('/api/rrm', aiLimiter, async (req, res) => {
 
   if (!event) return res.status(400).json({ error: 'Event description required.' });
 
+  // Find relevant Mexel knowledge cards for this event
+  const relevantCards = knowledge.findRelevantCards({
+    text: `${event} ${sector} ${region}`,
+    themes: [sector],
+    limit: 4
+  });
+  const contextBlock = knowledge.buildContextBlock(relevantCards);
+
   const prompt = `Generate a Rapid Response Memo (RRM) for the following event.
 
 Event: ${event}
 Sector: ${sector}
 Region: ${region}
 
-Return ONLY valid JSON in this exact structure (no markdown, no backticks):
+${contextBlock ? contextBlock + '\n\n' : ''}Return ONLY valid JSON in this exact structure (no markdown, no backticks):
 {
-  "headline": "One sentence â€” what happened and why it matters",
-  "confidence": "High|Medium|Low",
-  "confidenceReason": "Brief reason",
-  "bullets": {
-    "what": "One sentence factual summary",
-    "why": "One sentence analytical summary",
-    "do": "One sentence actionable summary"
+  “headline”: “One sentence — what happened and why it matters”,
+  “confidence”: “High|Medium|Low”,
+  “confidenceReason”: “Brief reason”,
+  “bullets”: {
+    “what”: “One sentence factual summary”,
+    “why”: “One sentence analytical summary”,
+    “do”: “One sentence actionable summary”
   },
-  "context": "2-3 paragraphs of factual context",
-  "signals": [
-    { "text": "Signal description", "type": "observation|implication|precedent" }
+  “context”: “2-3 paragraphs of factual context”,
+  “signals”: [
+    { “text”: “Signal description”, “type”: “observation|implication|precedent” }
   ],
-  "moves": [
-    { "action": "What to do", "timeframe": "By when", "owner": "Which function", "confidence": "High|Medium|Low" }
+  “moves”: [
+    { “action”: “What to do”, “timeframe”: “By when”, “owner”: “Which function”, “confidence”: “High|Medium|Low” }
   ],
-  "uncertaintyFlags": [
-    { "assumption": "Key assumption", "wouldChange": "What would change if this assumption is wrong" }
+  “uncertaintyFlags”: [
+    { “assumption”: “Key assumption”, “wouldChange”: “What would change if this assumption is wrong” }
   ],
-  "riskBand": 1-5,
-  "sources": ["Source 1", "Source 2", "Source 3"]
+  “riskBand”: 1-5,
+  “sources”: [“Source 1”, “Source 2”, “Source 3”],
+  “hidden_bottleneck_note”: “If any of the Mexel knowledge cards are directly relevant, write 1-2 sentences here naming the specific process input or material and why it is the real chokepoint. If none are relevant, return null.”
 }`;
 
   try {
     const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 2000);
-    res.json({ rrm: parsed });
+    res.json({
+      rrm: parsed,
+      knowledge_cards: relevantCards.map(c => ({ id: c.id, title: c.title, category: c.category, why_it_matters: c.why_it_matters }))
+    });
   } catch (err) {
     console.error('RRM error:', err.message, err.status || '');
     const classified = classifyError(err);
@@ -174,13 +186,21 @@ app.post('/api/scenario', aiLimiter, async (req, res) => {
 
   if (!topic) return res.status(400).json({ error: 'Topic required.' });
 
+  // Find relevant Mexel knowledge cards for this topic
+  const relevantCards = knowledge.findRelevantCards({
+    text: `${topic} ${sector}`,
+    themes: [sector],
+    limit: 4
+  });
+  const contextBlock = knowledge.buildContextBlock(relevantCards);
+
   const prompt = `Generate a Scenario Briefing for the following topic.
 
 Topic: ${topic}
 Sector: ${sector}
 Timeframe: ${timeframe}
 
-For each scenario, include best/worst relative sectors, commodity & material implications, time-horizon views (1 week, 1 month, 3 months), and invalidation conditions.
+${contextBlock ? contextBlock + '\n\n' : ''}For each scenario, include best/worst relative sectors, commodity & material implications, time-horizon views (1 week, 1 month, 3 months), and invalidation conditions.
 
 Return ONLY valid JSON (no markdown):
 {
@@ -237,7 +257,10 @@ Return ONLY valid JSON (no markdown):
 
   try {
     const { parsed } = await llm.generateJSON(MEXEL_SYSTEM_PROMPT, prompt, 4000);
-    res.json({ scenario: parsed });
+    res.json({
+      scenario: parsed,
+      knowledge_cards: relevantCards.map(c => ({ id: c.id, title: c.title, category: c.category, why_it_matters: c.why_it_matters }))
+    });
   } catch (err) {
     console.error('Scenario error:', err.message, err.status || '');
     const classified = classifyError(err);
