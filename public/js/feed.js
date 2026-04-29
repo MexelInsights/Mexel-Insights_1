@@ -186,9 +186,26 @@ async function loadLatestSynthesis() {
     }
 
     // Update disclaimer with live timestamp
-    const disc = document.querySelector('.wmn-disclaimer');
+    const disc = document.getElementById('wmn-disclaimer');
     if (disc && s.created_at) {
       disc.textContent = `Mexel Insights live synthesis. Sources: ${(s.sources || []).join(', ')}. Generated ${new Date(s.created_at).toLocaleString()}. Confidence: ${s.confidence || 'N/A'}. Not investment advice.`;
+    }
+
+    // Render knowledge card bottleneck block if synthesis references relevant cards
+    const kbBlock = document.getElementById('wmn-bottleneck-block');
+    const kbCardsEl = document.getElementById('wmn-bottleneck-cards');
+    const kbCards = s.knowledge_cards || [];
+    if (kbBlock && kbCardsEl && kbCards.length > 0) {
+      const isHigh = c => (c.chokepoint_or_sanctions_exposure || '').toLowerCase().includes('high');
+      kbCardsEl.innerHTML = kbCards.map(c =>
+        `<a href="/materials-watch#bottleneck-cards"
+          title="${escHtml(c.why_it_matters || '')}"
+          style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.07);border:1px solid ${isHigh(c) ? 'rgba(196,100,64,0.5)' : 'rgba(255,255,255,0.15)'};padding:0.3rem 0.7rem;border-radius:4px;font-size:0.62rem;font-weight:600;color:#fff;text-decoration:none;font-family:var(--sans);">
+          ${isHigh(c) ? '<span style="width:6px;height:6px;border-radius:50%;background:#ff8877;flex-shrink:0;"></span>' : ''}
+          ${escHtml(c.title)}
+        </a>`
+      ).join('');
+      kbBlock.style.display = 'block';
     }
   } catch (err) {
     // Fail silently — hardcoded content remains as fallback

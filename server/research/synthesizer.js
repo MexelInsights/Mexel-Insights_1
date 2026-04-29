@@ -153,7 +153,13 @@ ${JSON.stringify(clusterSummary, null, 2)}`;
       synthesis.source_count = cluster.length;
       synthesis.sources = [...new Set(cluster.map(i => i.source))];
       synthesis.data_status = 'synthesized';
-      synthesis.knowledge_cards = relevantCards.map(c => c.id);
+      synthesis.knowledge_cards = relevantCards.map(c => ({
+        id: c.id,
+        title: c.title,
+        category: c.category,
+        why_it_matters: c.why_it_matters,
+        chokepoint_or_sanctions_exposure: c.chokepoint_or_sanctions_exposure
+      }));
 
       syntheses.push(synthesis);
       console.log(`[Synthesizer] Cluster synthesized: ${synthesis.what_changed?.slice(0, 80) || 'OK'}`);
