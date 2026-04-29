@@ -197,14 +197,18 @@ async function loadLatestSynthesis() {
     const kbCards = s.knowledge_cards || [];
     if (kbBlock && kbCardsEl && kbCards.length > 0) {
       const isHigh = c => (c.chokepoint_or_sanctions_exposure || '').toLowerCase().includes('high');
-      kbCardsEl.innerHTML = kbCards.map(c =>
-        `<a href="/materials-watch#bottleneck-cards"
-          title="${escHtml(c.why_it_matters || '')}"
-          style="display:inline-flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.07);border:1px solid ${isHigh(c) ? 'rgba(196,100,64,0.5)' : 'rgba(255,255,255,0.15)'};padding:0.3rem 0.7rem;border-radius:4px;font-size:0.62rem;font-weight:600;color:#fff;text-decoration:none;font-family:var(--sans);">
-          ${isHigh(c) ? '<span style="width:6px;height:6px;border-radius:50%;background:#ff8877;flex-shrink:0;"></span>' : ''}
-          ${escHtml(c.title)}
-        </a>`
-      ).join('');
+      kbCardsEl.innerHTML = kbCards.map(c => {
+        const trigger = (c.triggers_to_watch || [])[0];
+        const failure = c.failure_mode || '';
+        return `<div style="background:rgba(255,255,255,0.05);border:1px solid ${isHigh(c) ? 'rgba(196,100,64,0.4)' : 'rgba(255,255,255,0.1)'};border-radius:6px;padding:0.75rem 1rem;min-width:220px;flex:1;max-width:340px;">
+          <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.4rem;">
+            ${isHigh(c) ? '<span style="width:6px;height:6px;border-radius:50%;background:#ff8877;flex-shrink:0;"></span>' : ''}
+            <a href="/materials-watch#bottleneck-cards" style="font-size:0.68rem;font-weight:700;color:#fff;text-decoration:none;">${escHtml(c.title)}</a>
+          </div>
+          ${failure ? `<div style="font-size:0.62rem;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:0.35rem;"><span style="color:#ff8877;font-weight:600;">Failure: </span>${escHtml(failure.slice(0, 120))}</div>` : ''}
+          ${trigger ? `<div style="font-family:var(--mono);font-size:0.42rem;color:var(--gold);letter-spacing:0.04em;">Watch: ${escHtml(trigger.slice(0, 100))}</div>` : ''}
+        </div>`;
+      }).join('');
       kbBlock.style.display = 'block';
     }
   } catch (err) {

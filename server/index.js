@@ -160,7 +160,15 @@ ${contextBlock ? contextBlock + '\n\n' : ''}Return ONLY valid JSON in this exact
   ],
   “riskBand”: 1-5,
   “sources”: [“Source 1”, “Source 2”, “Source 3”],
-  “hidden_bottleneck_note”: “If any of the Mexel knowledge cards are directly relevant, write 1-2 sentences here naming the specific process input or material and why it is the real chokepoint. If none are relevant, return null.”
+  “bottleneck_analysis”: [
+    {
+      “material”: “Name of the specific process input or chemical (only include if truly relevant)”,
+      “chain_position”: “Where it sits in the supply chain and why it gates output”,
+      “failure_mode”: “Exactly what breaks, at which step, on what timeline”,
+      “exposed_sectors”: [“sector directly affected”],
+      “key_trigger”: “The specific event or signal that would activate this failure”
+    }
+  ]
 }`;
 
   try {
@@ -252,6 +260,15 @@ Return ONLY valid JSON (no markdown):
   "confidence": "High|Medium|Low",
   "leadingIndicators": ["Indicator 1", "Indicator 2", "Indicator 3"],
   "keyAssumptions": ["Assumption 1", "Assumption 2"],
+  "bottleneck_context": [
+    {
+      "material": "Specific process input name (only if relevant to topic)",
+      "chain_position": "Where in the value chain this sits",
+      "failure_mode": "What fails and when",
+      "exposed_sectors": ["sector"],
+      "key_trigger": "The signal to watch"
+    }
+  ],
   "disclaimer": "For informational purposes only. Not investment advice. Mexel Insights Ltd."
 }`;
 

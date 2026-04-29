@@ -1,3 +1,34 @@
+// ═══ BOTTLENECK RENDERER (shared) ═══
+function renderBottleneckSection(analysisArr, kbCards) {
+  const items = (analysisArr || []).filter(a => a && a.material);
+  if (items.length === 0 && kbCards.length === 0) return '';
+
+  let html = `<div class="bottleneck-section">
+    <div class="bottleneck-label">Process Bottleneck Analysis — Mexel Knowledge Layer</div>`;
+
+  // Structured analysis rows (from LLM)
+  items.forEach(a => {
+    html += `<div class="bottleneck-item">
+      <div class="bottleneck-item-title">${escHtml(a.material)}</div>
+      <div class="bottleneck-item-row"><span class="bi-key">Chain position</span>${escHtml(a.chain_position || '')}</div>
+      <div class="bottleneck-item-row bi-failure"><span class="bi-key">Failure mode</span>${escHtml(a.failure_mode || '')}</div>
+      ${a.exposed_sectors?.length ? `<div class="bottleneck-item-row"><span class="bi-key">Exposed sectors</span>${a.exposed_sectors.map(s => `<span class="bi-chip">${escHtml(s)}</span>`).join('')}</div>` : ''}
+      ${a.key_trigger ? `<div class="bottleneck-item-row bi-trigger"><span class="bi-key">Key trigger</span>${escHtml(a.key_trigger)}</div>` : ''}
+    </div>`;
+  });
+
+  // Knowledge card pill links (from API)
+  if (kbCards.length > 0) {
+    html += `<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:${items.length > 0 ? '0.8rem' : '0.2rem'};padding-top:${items.length > 0 ? '0.8rem' : '0'};border-top:${items.length > 0 ? '1px solid rgba(255,255,255,0.1)' : 'none'};">
+      <span style="font-family:var(--mono);font-size:0.4rem;color:var(--gold);letter-spacing:0.08em;align-self:center;margin-right:0.2rem;">CARD REFS</span>
+      ${kbCards.map(c => `<a href="/materials-watch#bottleneck-cards" title="${escHtml(c.why_it_matters)}" style="display:inline-block;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);padding:0.25rem 0.6rem;border-radius:3px;font-size:0.58rem;font-weight:600;color:rgba(255,255,255,0.85);text-decoration:none;">${escHtml(c.title)}</a>`).join('')}
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
 // ═══ CHAT ═══
 let chatHistory = [];
 
@@ -86,20 +117,8 @@ async function runRRM() {
       html += `</div>`;
     }
 
-    if (r.hidden_bottleneck_note) {
-      html += `<div style="background:var(--bg-elevated);border-left:3px solid var(--gold);padding:0.9rem 1.1rem;margin-top:0.8rem;border-radius:0 6px 6px 0;">
-        <div style="font-family:var(--mono);font-size:0.42rem;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.35rem;">Mexel Bottleneck Context</div>
-        <div style="font-size:0.7rem;color:var(--text-primary);line-height:1.55;">${escHtml(r.hidden_bottleneck_note)}</div>
-      </div>`;
-    }
-
-    if (kbCards.length > 0) {
-      html += `<div style="margin-top:0.8rem;padding:0.85rem 1rem;background:var(--navy);border-radius:6px;">
-        <div style="font-family:var(--mono);font-size:0.4rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.55rem;">Relevant Hidden Bottlenecks</div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-          ${kbCards.map(c => `<a href="/materials-watch#bottleneck-cards" style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.65rem;border-radius:4px;font-size:0.6rem;font-weight:600;color:#fff;text-decoration:none;" title="${escHtml(c.why_it_matters)}">${escHtml(c.title)}</a>`).join('')}
-        </div>
-      </div>`;
+    if ((r.bottleneck_analysis?.length > 0) || kbCards.length > 0) {
+      html += renderBottleneckSection(r.bottleneck_analysis, kbCards);
     }
 
     if (r.sources?.length) {
@@ -171,13 +190,8 @@ async function runScenario() {
       html += `</div>`;
     }
 
-    if (kbCards.length > 0) {
-      html += `<div style="margin-top:0.8rem;padding:0.85rem 1rem;background:var(--navy);border-radius:6px;">
-        <div style="font-family:var(--mono);font-size:0.4rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.55rem;">Relevant Hidden Bottlenecks</div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-          ${kbCards.map(c => `<a href="/materials-watch#bottleneck-cards" style="display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:0.3rem 0.65rem;border-radius:4px;font-size:0.6rem;font-weight:600;color:#fff;text-decoration:none;" title="${escHtml(c.why_it_matters)}">${escHtml(c.title)}</a>`).join('')}
-        </div>
-      </div>`;
+    if ((s.bottleneck_context?.length > 0) || kbCards.length > 0) {
+      html += renderBottleneckSection(s.bottleneck_context, kbCards);
     }
 
     html += `<div style="font-family:var(--mono);font-size:0.44rem;color:var(--text-faint);margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:0.7rem;">Not investment advice. Mexel Insights Ltd.</div>`;

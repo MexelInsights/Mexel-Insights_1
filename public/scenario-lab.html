@@ -141,5 +141,38 @@
 
 <script src="/js/shared.js"></script>
 <script src="/js/tools.js"></script>
+<script>
+// Pre-fill from Risk Map or other cross-product links
+(function prefillFromURL() {
+  const p = new URLSearchParams(window.location.search);
+  const topic = p.get('topic');
+  const sector = p.get('sector');
+  const event = p.get('event');
+  const isRRM = p.get('rrm') === '1';
+
+  if (topic) {
+    const el = document.getElementById('sc-topic');
+    if (el) el.value = decodeURIComponent(topic);
+  }
+  if (sector) {
+    const sc = document.getElementById('sc-sector');
+    const rrm = document.getElementById('rrm-sector');
+    if (sc) sc.value = decodeURIComponent(sector);
+    if (rrm) rrm.value = decodeURIComponent(sector);
+  }
+  if (event) {
+    const el = document.getElementById('rrm-event');
+    if (el) el.value = decodeURIComponent(event);
+  }
+
+  // If RRM prefill, scroll to RRM tool
+  if (isRRM) {
+    setTimeout(() => {
+      const rrmCard = document.getElementById('rrm-event')?.closest('.tool-card');
+      if (rrmCard) rrmCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }
+})();
+</script>
 </body>
 </html>

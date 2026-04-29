@@ -77,10 +77,16 @@ function searchCards(query) {
 
 // Compact card summary for synthesis prompt injection
 function cardAsContext(c) {
-  return `• ${c.title} [${c.category}] — ${c.what_it_is} ` +
-    `Why it matters: ${c.why_it_matters} ` +
-    `Triggers: ${(c.triggers_to_watch || []).slice(0, 3).join('; ')}. ` +
-    `Exposure: ${(c.public_equity_relevance || '').slice(0, 200)}`;
+  return `• ${c.title} [${c.category}]\n` +
+    `  What: ${c.what_it_is}\n` +
+    `  Process role: ${c.exact_process_role}\n` +
+    `  Why it matters: ${c.why_it_matters}\n` +
+    `  Why underappreciated: ${c.why_it_is_underappreciated}\n` +
+    `  Failure mode: ${c.failure_mode}\n` +
+    `  Chokepoint exposure: ${c.chokepoint_or_sanctions_exposure}\n` +
+    `  Downstream sectors: ${(c.downstream_sectors_exposed || []).join(', ')}\n` +
+    `  Triggers to watch: ${(c.triggers_to_watch || []).slice(0, 3).join('; ')}\n` +
+    `  Equity exposure: ${(c.public_equity_relevance || '').slice(0, 200)}`;
 }
 
 function buildContextBlock(cards) {

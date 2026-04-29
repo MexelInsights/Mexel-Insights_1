@@ -158,7 +158,11 @@ ${JSON.stringify(clusterSummary, null, 2)}`;
         title: c.title,
         category: c.category,
         why_it_matters: c.why_it_matters,
-        chokepoint_or_sanctions_exposure: c.chokepoint_or_sanctions_exposure
+        failure_mode: c.failure_mode,
+        chokepoint_or_sanctions_exposure: c.chokepoint_or_sanctions_exposure,
+        downstream_sectors_exposed: (c.downstream_sectors_exposed || []).slice(0, 4),
+        triggers_to_watch: (c.triggers_to_watch || []).slice(0, 2),
+        easing_invalidation_conditions: (c.easing_invalidation_conditions || []).slice(0, 2)
       }));
 
       syntheses.push(synthesis);

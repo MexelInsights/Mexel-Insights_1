@@ -48,7 +48,7 @@
   <div class="inner">
     <div class="ey">RISK</div>
     <h1>Risk <em>Map</em></h1>
-    <p class="page-desc">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter to your portfolio and procurement.</p>
+    <p class="page-desc">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter. Click any point to explore signals, bottleneck links, and jump to Scenario Lab or RRM.</p>
   </div>
 </section>
 
@@ -60,24 +60,61 @@
         <div class="ey">SUPPLY CHAIN RISK MAP</div>
         <h2>Global chokepoints,<br><em>visualised.</em></h2>
       </div>
+      <div style="font-family:var(--mono);font-size:0.44rem;color:var(--text-muted);display:flex;align-items:center;gap:0.6rem;">
+        <span id="map-live-count" style="color:#10B981;">Loading live signals...</span>
+        <span>· Click any point to explore</span>
+      </div>
     </div>
-    <p class="map-subtitle">Export controls, supply concentration, and policy hotspots — mapped to the materials that matter to your portfolio and procurement.</p>
-    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1.2rem;" id="map-filters">
-      <button class="map-filter-btn active" data-filter="all" onclick="filterMap('all',this)">All</button>
-      <button class="map-filter-btn" data-filter="critical" onclick="filterMap('critical',this)">Export Controls</button>
-      <button class="map-filter-btn" data-filter="elevated" onclick="filterMap('elevated',this)">Supply Concentration</button>
-      <button class="map-filter-btn" data-filter="watch" onclick="filterMap('watch',this)">Emerging Shifts</button>
-      <button class="map-filter-btn" data-filter="policy" onclick="filterMap('policy',this)">Policy & Regulation</button>
+
+    <!-- Risk-level filters -->
+    <div style="margin-bottom:0.5rem;">
+      <div style="font-family:var(--mono);font-size:0.42rem;color:var(--text-faint);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">Risk level</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="map-filters">
+        <button class="map-filter-btn risk-filter active" onclick="filterMap('all',this,'risk')">All</button>
+        <button class="map-filter-btn risk-filter" onclick="filterMap('critical',this,'risk')">Export Controlled</button>
+        <button class="map-filter-btn risk-filter" onclick="filterMap('elevated',this,'risk')">Elevated</button>
+        <button class="map-filter-btn risk-filter" onclick="filterMap('watch',this,'risk')">Watch</button>
+        <button class="map-filter-btn risk-filter" onclick="filterMap('policy',this,'risk')">Policy</button>
+        <button class="map-filter-btn risk-filter" onclick="filterMap('live',this,'risk')" style="color:#10B981;border-color:#10B981;">Live Signals</button>
+      </div>
     </div>
+
+    <!-- Theme filters -->
+    <div style="margin-bottom:1rem;">
+      <div style="font-family:var(--mono);font-size:0.42rem;color:var(--text-faint);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">Theme</div>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
+        <button class="map-filter-btn theme-filter active" onclick="filterMap('all',this,'theme')">All themes</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('minerals',this,'theme')">Critical Minerals</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('semiconductors',this,'theme')">Semiconductors</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('batteries',this,'theme')">Batteries / EVs</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('chemicals',this,'theme')">Chemicals</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('energy',this,'theme')">Energy</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('defense',this,'theme')">Defence</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('nuclear',this,'theme')">Nuclear</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('export-controls',this,'theme')">Export Controls</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('shipping',this,'theme')">Shipping</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('conflict',this,'theme')">Conflict</button>
+        <button class="map-filter-btn theme-filter" onclick="filterMap('policy',this,'theme')">Policy</button>
+      </div>
+    </div>
+
     <div id="intel-map"></div>
+
     <div class="map-legend">
       <div class="map-legend-item"><div class="map-legend-dot ml-red"></div>Critical — Export controlled / supply crisis</div>
       <div class="map-legend-item"><div class="map-legend-dot ml-amber"></div>Elevated — Concentrated supply / rising risk</div>
       <div class="map-legend-item"><div class="map-legend-dot ml-teal"></div>Watch — Emerging shifts</div>
       <div class="map-legend-item"><div class="map-legend-dot ml-blue"></div>Policy — Regulatory action</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#10B981;box-shadow:0 0 6px #10B981;"></div>Live — Pipeline signals</div>
     </div>
   </div>
 </section>
+
+<!-- ═══ DETAIL PANEL ═══ -->
+<div id="map-detail-panel" class="map-detail-panel">
+  <!-- populated by openMapPanel() -->
+</div>
+<div id="map-panel-backdrop" onclick="closeMapPanel()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);"></div>
 
 <footer>
   <div class="fi-inner">
@@ -103,6 +140,18 @@
 <script src="/js/shared.js"></script>
 <script src="/js/map.js"></script>
 <script>
+// Wire backdrop toggle
+const _origOpen = openMapPanel;
+const _origClose = closeMapPanel;
+window.openMapPanel = function(p, live) {
+  _origOpen(p, live);
+  document.getElementById('map-panel-backdrop').style.display = 'block';
+};
+window.closeMapPanel = function() {
+  _origClose();
+  document.getElementById('map-panel-backdrop').style.display = 'none';
+};
+
 loadLiveMapPoints();
 setInterval(loadLiveMapPoints, 15 * 60 * 1000);
 </script>
