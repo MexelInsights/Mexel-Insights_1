@@ -235,13 +235,19 @@ function openMapPanel(point, liveItem) {
       <div class="map-panel-kb-label">Hidden Bottleneck Links</div>`;
     kbCards.forEach(c => {
       const isHigh = (c.chokepoint_or_sanctions_exposure || '').toLowerCase().includes('high');
+      const dotColor = isHigh ? '#ff8877' : '#C47E30';
+      const titleColor = isHigh ? '#ff8877' : '#fff';
+      const why = c.why_it_matters || '';
+      const failure = c.failure_mode || '';
+      const whyText = why.length > 140 ? escHtml(why.slice(0, 140)) + '…' : escHtml(why);
+      const failureText = failure.length > 120 ? escHtml(failure.slice(0, 120)) + '…' : escHtml(failure);
       html += `<div class="map-panel-kb-item">
-        <div class="map-panel-kb-title" style="color:${isHigh ? '#ff8877' : '#fff'};">
-          ${isHigh ? '<span style="width:6px;height:6px;border-radius:50%;background:#ff8877;display:inline-block;margin-right:0.3rem;"></span>' : ''}
+        <div class="map-panel-kb-title" style="color:${titleColor};">
+          <span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;margin-right:0.35rem;flex-shrink:0;"></span>
           ${escHtml(c.title)}
         </div>
-        ${c.why_it_matters ? `<div class="map-panel-kb-text">${escHtml(c.why_it_matters.slice(0, 140))}</div>` : ''}
-        ${c.failure_mode ? `<div class="map-panel-kb-failure">Failure: ${escHtml(c.failure_mode.slice(0, 120))}</div>` : ''}
+        ${why ? `<div class="map-panel-kb-text">${whyText}</div>` : ''}
+        ${failure ? `<div class="map-panel-kb-failure">Failure: ${failureText}</div>` : ''}
         <a href="/materials-watch#bottleneck-cards" class="map-panel-kb-link">View full card →</a>
       </div>`;
     });
