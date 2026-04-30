@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexel Insights — Bottleneck Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header id="header">
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div class="logo-text">MEXEL <span>INSIGHTS</span></div>
+  </a>
+  <nav>
+    <a href="/" class="hm">Home</a>
+    <a href="/scenario-lab" class="hm">Scenario Lab</a>
+    <a href="/materials-watch" class="hm">Materials Watch</a>
+    <a href="/bottleneck-intelligence" class="hm active">Bottlenecks</a>
+    <a href="/policy-monitor" class="hm">Policy Monitor</a>
+    <a href="/risk-map" class="hm">Risk Map</a>
+    <a href="/ai-tools" class="hm">AI Tools</a>
+    <a href="/pricing" class="hm">Pricing</a>
+    <div class="nav-status"><span class="status-dot"></span>SYSTEMS ACTIVE</div>
+    <a href="/pricing" class="nav-cta">Get Access</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="/" onclick="toggleMenu()">Home</a>
+  <a href="/scenario-lab" onclick="toggleMenu()">Scenario Lab</a>
+  <a href="/materials-watch" onclick="toggleMenu()">Materials Watch</a>
+  <a href="/bottleneck-intelligence" onclick="toggleMenu()">Bottlenecks</a>
+  <a href="/policy-monitor" onclick="toggleMenu()">Policy Monitor</a>
+  <a href="/risk-map" onclick="toggleMenu()">Risk Map</a>
+  <a href="/ai-tools" onclick="toggleMenu()">AI Tools</a>
+  <a href="/pricing" onclick="toggleMenu()">Pricing</a>
+  <a href="/pricing" class="nav-cta" onclick="toggleMenu()">Get Access</a>
+</div>
+
+<section class="page-header">
+  <div class="inner">
+    <div class="ey">BOTTLENECK INTELLIGENCE</div>
+    <h1>Hidden <em>Bottleneck</em> Intelligence</h1>
+    <p class="page-desc">The hidden physical, chemical, process, and equipment constraints behind every major market and policy shift. Not what the headline says — what actually gates output, why it cannot be resolved quickly, and what to watch.</p>
+  </div>
+</section>
+
+<!-- ═══ CONSTRAINT CHAIN EXPLAINER ═══ -->
+<section class="sec rv" style="background:var(--navy);color:#fff;">
+  <div class="inner">
+    <div class="shdr">
+      <div>
+        <div class="ey" style="color:var(--gold);">MEXEL METHODOLOGY</div>
+        <h2 style="color:#fff;">The Constraint Chain.<br><em style="color:var(--gold);">How we think.</em></h2>
+        <p class="sdesc" style="color:rgba(255,255,255,0.65);">Most intelligence stops at the headline. Mexel maps the full chain from headline to hidden constraint to market signal — so you can act before the consensus catches up.</p>
+      </div>
+    </div>
+    <!-- Chain flow -->
+    <div style="display:flex;gap:0;flex-wrap:wrap;margin-bottom:2rem;" class="rv">
+      <div class="cc-step-pill">
+        <div class="cc-step-num">01</div>
+        <div class="cc-step-label">Headline</div>
+        <div class="cc-step-desc">The visible event</div>
+      </div>
+      <div class="cc-step-arrow">→</div>
+      <div class="cc-step-pill">
+        <div class="cc-step-num">02</div>
+        <div class="cc-step-label">Hidden Bottleneck</div>
+        <div class="cc-step-desc">The underappreciated physical constraint</div>
+      </div>
+      <div class="cc-step-arrow">→</div>
+      <div class="cc-step-pill">
+        <div class="cc-step-num">03</div>
+        <div class="cc-step-label">Transmission Chain</div>
+        <div class="cc-step-desc">Step-by-step propagation</div>
+      </div>
+      <div class="cc-step-arrow">→</div>
+      <div class="cc-step-pill">
+        <div class="cc-step-num">04</div>
+        <div class="cc-step-label">Sector Implication</div>
+        <div class="cc-step-desc">Who is exposed and how</div>
+      </div>
+      <div class="cc-step-arrow">→</div>
+      <div class="cc-step-pill">
+        <div class="cc-step-num">05</div>
+        <div class="cc-step-label">Decision Signal</div>
+        <div class="cc-step-desc">The trigger to watch</div>
+      </div>
+    </div>
+
+    <!-- Example constraint chain -->
+    <div class="cc-example rv">
+      <div class="cc-example-label">Example Constraint Chain — AI Infrastructure & Grid</div>
+      <div class="cc-example-body">
+        <div class="cc-ex-row cc-ex-headline">
+          <div class="cc-ex-tag">Headline</div>
+          <div class="cc-ex-text">AI data-centre build-out is accelerating</div>
+        </div>
+        <div class="cc-ex-row cc-ex-obvious">
+          <div class="cc-ex-tag">Obvious explanation</div>
+          <div class="cc-ex-text">Power demand is rising — utilities need more capacity</div>
+        </div>
+        <div class="cc-ex-row cc-ex-hidden">
+          <div class="cc-ex-tag cc-ex-tag-gold">↓ Hidden constraint</div>
+          <div class="cc-ex-text cc-ex-text-gold">Large power transformers / grain-oriented electrical steel / high-voltage switchgear — lead times have extended to 24–48 months</div>
+        </div>
+        <div class="cc-ex-row cc-ex-process">
+          <div class="cc-ex-tag">Process reason</div>
+          <div class="cc-ex-text">LPT manufacturing is a global oligopoly; GOES mills book 12–18 months forward; qualified EPC crews are fully booked. None of these can be resolved in under 2–3 years.</div>
+        </div>
+        <div class="cc-ex-chain">
+          <div class="cc-ex-tag" style="margin-bottom:0.5rem;">Transmission chain</div>
+          <div class="cc-chain-steps">
+            <span class="cc-chain-step">AI load growth</span>
+            <span class="cc-chain-sep">→</span>
+            <span class="cc-chain-step">Grid interconnection requests surge</span>
+            <span class="cc-chain-sep">→</span>
+            <span class="cc-chain-step">Transformer order backlog &gt;36 months</span>
+            <span class="cc-chain-sep">→</span>
+            <span class="cc-chain-step">Utility interconnection queue extends</span>
+            <span class="cc-chain-sep">→</span>
+            <span class="cc-chain-step">Data-centre commissioning delayed 1–3 years</span>
+          </div>
+        </div>
+        <div class="cc-ex-row" style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.6rem;">
+          <div>
+            <div class="cc-ex-tag">Trigger to watch</div>
+            <div class="cc-ex-text" style="margin-top:0.3rem;">Transformer lead times rising above 36 months in OEM earnings commentary</div>
+          </div>
+          <div>
+            <div class="cc-ex-tag cc-ex-tag-muted">What would prove this wrong</div>
+            <div class="cc-ex-text" style="margin-top:0.3rem;">New Western LPT factories announced and funded; AI demand profile shifts to nuclear or storage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BOTTLENECK CARDS GRID ═══ -->
+<section class="sec rv" id="bottleneck-cards">
+  <div class="inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">BOTTLENECK KNOWLEDGE LAYER</div>
+        <h2>22 canonical<br><em>constraint cards.</em></h2>
+        <p class="sdesc">Each card maps a hidden bottleneck — its process role, failure mode, supply concentration, lead-time risk, and decision triggers. Updated as the landscape shifts.</p>
+      </div>
+      <div id="bi-card-count" style="font-family:var(--mono);font-size:0.46rem;color:var(--text-faint);align-self:flex-end;"></div>
+    </div>
+
+    <!-- Category filters -->
+    <div style="margin-bottom:1.5rem;">
+      <div style="font-family:var(--mono);font-size:0.42rem;color:var(--text-faint);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.6rem;">Filter by category</div>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;" id="bi-filters">
+        <button class="bi-filter-btn active" onclick="filterBI('all',this)">All categories</button>
+        <button class="bi-filter-btn" onclick="filterBI('semi-process-inputs',this)">Semiconductor Inputs</button>
+        <button class="bi-filter-btn" onclick="filterBI('advanced-packaging',this)">AI Packaging</button>
+        <button class="bi-filter-btn" onclick="filterBI('industrial-gases',this)">Industrial Gases</button>
+        <button class="bi-filter-btn" onclick="filterBI('grid-equipment',this)">Grid Equipment</button>
+        <button class="bi-filter-btn" onclick="filterBI('industrial-manufacturing',this)">Industrial Mfg</button>
+        <button class="bi-filter-btn" onclick="filterBI('battery-processing',this)">Battery / EV</button>
+        <button class="bi-filter-btn" onclick="filterBI('pharma-specialty',this)">Pharma / Specialty</button>
+        <button class="bi-filter-btn" onclick="filterBI('nuclear-fuel-cycle',this)">Nuclear</button>
+        <button class="bi-filter-btn" onclick="filterBI('mining-reagents',this)">Mining Reagents</button>
+        <button class="bi-filter-btn" onclick="filterBI('photonics-optics',this)">Photonics</button>
+      </div>
+    </div>
+
+    <!-- Cards grid -->
+    <div id="bi-grid" class="bi-grid"></div>
+  </div>
+</section>
+
+<!-- ═══ FEATURED CHAINS ═══ -->
+<section class="sec rv" style="background:var(--bg-elevated);">
+  <div class="inner">
+    <div class="shdr">
+      <div>
+        <div class="ey">FEATURED CONSTRAINT CHAINS</div>
+        <h2>Three chains <em>in detail.</em></h2>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;" class="rv">
+
+      <!-- Chain 1: Fluorine -->
+      <div class="bi-chain-card">
+        <div class="bi-chain-label semi-label">Semiconductor</div>
+        <div class="bi-chain-title">The Fluorine Chain</div>
+        <div class="bi-chain-summary">China controls 55–60% of acid-grade fluorspar. Every fluorinated semiconductor input — HF, WF6, NF3, LiPF6, UF6 — traces back to acidspar. A single export-quota tightening hits fabs, batteries, and nuclear simultaneously.</div>
+        <div class="bi-chain-steps-sm">
+          <span>China fluorspar controls</span><span class="cc-chain-sep">→</span>
+          <span>HF supply pressure</span><span class="cc-chain-sep">→</span>
+          <span>WF6 / NF3 / LiPF6 constraints</span><span class="cc-chain-sep">→</span>
+          <span>Fab throughput + battery electrolyte margins</span>
+        </div>
+        <a href="/scenario-lab?topic=China+fluorine+export+controls+and+semiconductor+supply+chain&sector=Semiconductors" class="bi-chain-cta">Model this scenario →</a>
+      </div>
+
+      <!-- Chain 2: Grid -->
+      <div class="bi-chain-card">
+        <div class="bi-chain-label grid-label">Grid Equipment</div>
+        <div class="bi-chain-title">AI Load → Grid Bottleneck</div>
+        <div class="bi-chain-summary">AI data-centre load growth is driving transformer orders at rates not seen since 2002. LPT lead times have quietly extended to 24–48 months. The commissioning delay is a physical constraint that cannot be resolved with capital alone.</div>
+        <div class="bi-chain-steps-sm">
+          <span>AI load growth</span><span class="cc-chain-sep">→</span>
+          <span>Interconnection queue</span><span class="cc-chain-sep">→</span>
+          <span>Transformer / GOES backlog</span><span class="cc-chain-sep">→</span>
+          <span>Data-centre commissioning delayed 1–3 years</span>
+        </div>
+        <a href="/scenario-lab?topic=AI+data+centre+grid+capacity+and+transformer+bottleneck&sector=Utilities+%26+Grid" class="bi-chain-cta">Model this scenario →</a>
+      </div>
+
+      <!-- Chain 3: Gas turbine -->
+      <div class="bi-chain-card">
+        <div class="bi-chain-label mfg-label">Industrial Mfg</div>
+        <div class="bi-chain-title">Gas Turbine Duopoly</div>
+        <div class="bi-chain-summary">GE Vernova and Siemens Energy control large-frame gas turbine supply. Order books extend past 2027–2028. The constraint is not design or permitting — it is single-crystal blade casting capacity at Howmet and Precision Castparts.</div>
+        <div class="bi-chain-steps-sm">
+          <span>Firm capacity demand</span><span class="cc-chain-sep">→</span>
+          <span>OEM order saturation</span><span class="cc-chain-sep">→</span>
+          <span>Blade casting bottleneck</span><span class="cc-chain-sep">→</span>
+          <span>Power capacity unavailable until 2028–2030</span>
+        </div>
+        <a href="/scenario-lab?topic=Gas+turbine+supply+shortage+and+power+capacity+constraints&sector=Energy+%26+Utilities" class="bi-chain-cta">Model this scenario →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="nl" id="subscribe">
+  <div class="nl-in">
+    <div class="rv">
+      <div class="ey">Take it further</div>
+      <div class="nl-t">Bottleneck intelligence,<br><em>in your workflow.</em></div>
+      <p class="nl-d">Model scenarios, generate rapid response memos, and map constraints across sectors — with Mexel's AI tools pre-loaded with these cards.</p>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:1.5rem;" class="rv">
+      <a href="/scenario-lab" class="btn-g" style="font-size:0.58rem;padding:0.6rem 1.4rem;">Open Scenario Lab →</a>
+      <a href="/risk-map" class="btn-o" style="font-size:0.58rem;padding:0.6rem 1.4rem;">View Risk Map →</a>
+      <a href="/ai-tools" class="btn-o" style="font-size:0.58rem;padding:0.6rem 1.4rem;">AI Tools →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi-inner">
+    <div class="ft">
+      <div class="fb">
+        <div class="logo-wrap" style="margin-bottom:0.7rem;">
+          <div class="logo-mark" style="width:22px;height:22px;"></div>
+          <div class="logo-text" style="font-size:0.72rem;">MEXEL <span>INSIGHTS</span></div>
+        </div>
+        <p>Hidden bottleneck intelligence for energy, AI, defence, semiconductors, and industrial policy.</p>
+      </div>
+      <div><div class="fc-t">Products</div><ul class="fl"><li><a href="/scenario-lab">Scenario Lab</a></li><li><a href="/materials-watch">Materials Watch</a></li><li><a href="/bottleneck-intelligence">Bottleneck Intelligence</a></li><li><a href="/policy-monitor">Policy Monitor</a></li><li><a href="/risk-map">Risk Map</a></li><li><a href="/ai-tools">AI Tools</a></li></ul></div>
+      <div><div class="fc-t">Sectors</div><ul class="fl"><li><a href="/bottleneck-intelligence">Semiconductors</a></li><li><a href="/bottleneck-intelligence">Grid Equipment</a></li><li><a href="/bottleneck-intelligence">AI Infrastructure</a></li><li><a href="/bottleneck-intelligence">Battery / EV</a></li><li><a href="/bottleneck-intelligence">Nuclear</a></li></ul></div>
+      <div><div class="fc-t">Company</div><ul class="fl"><li><a href="/">About Mexel</a></li><li><a href="/">Methodology</a></li><li><a href="/pricing">Pricing</a></li><li><a href="mailto:info@mexelinsights.com">Contact</a></li></ul></div>
+    </div>
+    <div class="fb-row">
+      <div class="fc">&copy; 2026 Mexel Insights Ltd. &middot; Hidden Bottleneck Intelligence for Energy, AI, Defence, and Industrial Policy</div>
+      <div class="fl-row"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/shared.js"></script>
+<script>
+// ═══ BOTTLENECK INTELLIGENCE PAGE ═══
+const BI_CATEGORY_COLORS = {
+  'semi-process-inputs':   { bg: 'rgba(59,130,246,0.12)', border: 'rgba(59,130,246,0.3)', text: '#3B82F6', label: 'Semiconductor Inputs' },
+  'advanced-packaging':    { bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.3)', text: '#8B5CF6', label: 'AI Packaging' },
+  'industrial-gases':      { bg: 'rgba(20,184,166,0.12)', border: 'rgba(20,184,166,0.3)', text: '#14B8A6', label: 'Industrial Gases' },
+  'grid-equipment':        { bg: 'rgba(234,179,8,0.12)',  border: 'rgba(234,179,8,0.3)',  text: '#CA8A04', label: 'Grid Equipment' },
+  'industrial-manufacturing': { bg: 'rgba(249,115,22,0.12)', border: 'rgba(249,115,22,0.3)', text: '#EA580C', label: 'Industrial Mfg' },
+  'battery-processing':    { bg: 'rgba(34,197,94,0.12)', border: 'rgba(34,197,94,0.3)',  text: '#16A34A', label: 'Battery / EV' },
+  'nuclear-fuel-cycle':    { bg: 'rgba(239,68,68,0.12)', border: 'rgba(239,68,68,0.3)',  text: '#DC2626', label: 'Nuclear' },
+  'mining-reagents':       { bg: 'rgba(180,83,9,0.12)',  border: 'rgba(180,83,9,0.3)',   text: '#92400E', label: 'Mining Reagents' },
+  'photonics-optics':      { bg: 'rgba(168,85,247,0.12)', border: 'rgba(168,85,247,0.3)', text: '#7C3AED', label: 'Photonics' },
+  'pharma-specialty':      { bg: 'rgba(236,72,153,0.12)', border: 'rgba(236,72,153,0.3)', text: '#BE185D', label: 'Pharma / Specialty' },
+};
+
+let _allCards = [];
+let _activeFilter = 'all';
+
+async function loadBI() {
+  try {
+    const res = await fetch('/api/research/cards');
+    const data = await res.json();
+    _allCards = data.cards || [];
+    const countEl = document.getElementById('bi-card-count');
+    if (countEl) countEl.textContent = _allCards.length + ' bottleneck cards loaded';
+    renderBI();
+  } catch(e) {
+    document.getElementById('bi-grid').innerHTML = '<div style="color:var(--text-faint);font-size:0.75rem;padding:2rem 0;">Cards loading...</div>';
+  }
+}
+
+function filterBI(filter, btn) {
+  _activeFilter = filter;
+  document.querySelectorAll('.bi-filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderBI();
+}
+
+function renderBI() {
+  const grid = document.getElementById('bi-grid');
+  if (!grid) return;
+  const cards = _activeFilter === 'all'
+    ? _allCards
+    : _allCards.filter(c => c.category === _activeFilter || (c.secondary_categories || []).includes(_activeFilter));
+
+  if (cards.length === 0) {
+    grid.innerHTML = '<div style="color:var(--text-faint);font-size:0.75rem;padding:2rem 0;">No cards in this category yet.</div>';
+    return;
+  }
+
+  grid.innerHTML = cards.map(c => {
+    const cat = BI_CATEGORY_COLORS[c.category] || { bg: 'rgba(0,0,0,0.04)', border: 'rgba(0,0,0,0.1)', text: 'var(--text-faint)', label: c.category };
+    const hidden = c.hidden_constraint || '';
+    const failure = c.failure_mode || '';
+    const leadTime = c.lead_time_risk || '';
+    const chokepoint = c.chokepoint_or_sanctions_exposure || '';
+    const triggerFirst = (c.triggers_to_watch || [])[0] || '';
+    const sectors = (c.downstream_sectors_exposed || []).slice(0, 3);
+    const isHighRisk = chokepoint.toLowerCase().includes('high') || chokepoint.toLowerCase().includes('very high');
+
+    const scenUrl = `/scenario-lab?topic=${encodeURIComponent(c.title + ' supply chain risk')}&sector=${encodeURIComponent((sectors[0] || ''))}`;
+    const rrmUrl = `/scenario-lab?rrm=1&event=${encodeURIComponent(c.failure_mode ? c.failure_mode.slice(0, 120) : c.title + ' disruption risk')}&sector=${encodeURIComponent(sectors[0] || '')}`;
+
+    return `<div class="bi-card" style="border-top:3px solid ${cat.text};">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.7rem;">
+        <span class="bi-cat-badge" style="background:${cat.bg};color:${cat.text};border:1px solid ${cat.border};">${cat.label}</span>
+        ${isHighRisk ? '<span style="font-family:var(--mono);font-size:0.38rem;color:#C04A28;letter-spacing:0.1em;padding:0.15rem 0.45rem;border:1px solid rgba(192,74,40,0.3);border-radius:2px;">HIGH EXPOSURE</span>' : ''}
+      </div>
+      <div class="bi-card-title">${escHtml(c.title)}</div>
+      ${hidden ? `<div class="bi-card-hidden"><span class="bi-hidden-label">Hidden constraint</span>${escHtml(hidden.slice(0, 160))}${hidden.length > 160 ? '…' : ''}</div>` : ''}
+      ${failure ? `<div class="bi-card-failure"><span class="bi-failure-label">Failure mode</span>${escHtml(failure.slice(0, 140))}${failure.length > 140 ? '…' : ''}</div>` : ''}
+      ${leadTime ? `<div class="bi-card-leadtime"><span class="bi-leadtime-label">Lead time risk</span>${escHtml(leadTime.slice(0, 100))}${leadTime.length > 100 ? '…' : ''}</div>` : ''}
+      ${sectors.length > 0 ? `<div class="bi-card-sectors">${sectors.map(s => `<span class="bi-sector-chip">${escHtml(s)}</span>`).join('')}</div>` : ''}
+      ${triggerFirst ? `<div class="bi-card-trigger"><span class="bi-trigger-label">Watch</span>${escHtml(triggerFirst.slice(0, 100))}${triggerFirst.length > 100 ? '…' : ''}</div>` : ''}
+      <div class="bi-card-actions">
+        <a href="${scenUrl}" class="bi-action-btn bi-action-primary">⚡ Scenario</a>
+        <a href="${rrmUrl}" class="bi-action-btn">📋 RRM</a>
+        <a href="/risk-map" class="bi-action-btn">🗺 Map</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+loadBI();
+</script>
+</body>
+</html>

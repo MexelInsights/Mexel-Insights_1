@@ -1301,3 +1301,422 @@ footer .logo-mark { background: var(--gold); }
   .stat-val { font-size: 1.1rem; }
   .shdr { flex-direction: column; align-items: flex-start; }
 }
+
+/* ═══════════════════════════════════════════
+   BOTTLENECK INTELLIGENCE PAGE
+═══════════════════════════════════════════ */
+
+/* ── Category filter bar ── */
+.bi-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.bi-filter-btn {
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-transform: uppercase;
+}
+.bi-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.bi-filter-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+
+/* ── Card grid ── */
+.bi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+@media (max-width: 1100px) { .bi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .bi-grid { grid-template-columns: 1fr; } }
+
+.bi-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1.25rem 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.bi-card:hover { border-color: rgba(196,126,48,0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.bi-card.hidden { display: none; }
+
+/* ── Category badge ── */
+.bi-cat-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.55rem;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+  width: fit-content;
+  opacity: 0.85;
+}
+.bi-cat-badge.semi    { color: #7ecfff; }
+.bi-cat-badge.pkg     { color: #a78bfa; }
+.bi-cat-badge.gas     { color: var(--teal); }
+.bi-cat-badge.mining  { color: #fb923c; }
+.bi-cat-badge.battery { color: var(--gold); }
+.bi-cat-badge.nuclear { color: #34d399; }
+.bi-cat-badge.photon  { color: #f472b6; }
+.bi-cat-badge.grid    { color: var(--amber); }
+.bi-cat-badge.mfg     { color: #94a3b8; }
+.bi-cat-badge.pharma  { color: #e879f9; }
+
+/* ── Card fields ── */
+.bi-card-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.3;
+  font-weight: 400;
+}
+.bi-card-label {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.15rem;
+}
+.bi-card-hidden {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-weight: 300;
+}
+.bi-card-failure {
+  font-size: 0.72rem;
+  color: var(--rust);
+  line-height: 1.5;
+  font-weight: 300;
+  font-style: italic;
+}
+.bi-card-leadtime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.44rem;
+  color: var(--amber);
+  background: rgba(217,119,6,0.1);
+  border: 1px solid rgba(217,119,6,0.25);
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  letter-spacing: 0.03em;
+}
+.bi-card-sectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.bi-sector-chip {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.bi-card-trigger {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  border-left: 2px solid var(--gold);
+  padding-left: 0.55rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+.bi-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+.bi-action-btn {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.bi-action-btn:hover { border-color: var(--gold); color: var(--gold); }
+.bi-action-primary {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+.bi-action-primary:hover { background: #d4922a; border-color: #d4922a; color: var(--navy); }
+
+/* ── Constraint chain methodology (dark section) ── */
+.cc-flow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+.cc-step-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 120px;
+  max-width: 160px;
+  text-align: center;
+}
+.cc-step-num {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+}
+.cc-step-label {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 400;
+}
+.cc-step-desc {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+  font-weight: 300;
+}
+.cc-step-arrow {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.25);
+  align-self: center;
+  padding: 0 0.5rem;
+  margin-top: -0.6rem;
+}
+
+/* ── Example chain block ── */
+.cc-example {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.cc-example-label {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.cc-example-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.cc-ex-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.cc-ex-tag {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+.cc-ex-tag-gold { color: var(--gold); }
+.cc-ex-text {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+  font-weight: 300;
+}
+.cc-ex-text-gold { color: rgba(196,126,48,0.9); font-weight: 400; }
+
+.cc-chain-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cc-chain-step {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+.cc-chain-step::before {
+  content: '→';
+  color: var(--gold);
+  font-size: 0.6rem;
+  flex-shrink: 0;
+}
+.cc-chain-sep { height: 1px; background: rgba(255,255,255,0.06); margin: 0.4rem 0; }
+
+/* ── Featured constraint chain cards ── */
+.bi-chain-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: border-color 0.18s;
+}
+.bi-chain-card:hover { border-color: rgba(196,126,48,0.4); }
+.bi-chain-label {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.bi-chain-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: #fff;
+  line-height: 1.4;
+}
+.bi-chain-summary {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.bi-chain-steps-sm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.bi-chain-cta {
+  font-family: var(--mono);
+  font-size: 0.44rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 0.15s;
+}
+.bi-chain-cta:hover { opacity: 0.7; }
+
+/* ── Constraint Chain renderer (RRM / Scenario output) ── */
+.constraint-chain {
+  margin-top: 1.2rem;
+  border: 1px solid rgba(196,126,48,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.constraint-chain-hdr {
+  background: rgba(196,126,48,0.12);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1px solid rgba(196,126,48,0.2);
+}
+.cc-label {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cc-headline {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  padding: 0.8rem 1rem 0.4rem;
+  line-height: 1.4;
+}
+.cc-body {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.cc-field-label {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.cc-field-val {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-weight: 300;
+}
+.cc-hidden-val { color: var(--gold); font-weight: 400; }
+.cc-tx-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  padding-left: 0.3rem;
+}
+.cc-tx-step {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+.cc-tx-step-num {
+  font-family: var(--mono);
+  font-size: 0.38rem;
+  color: var(--gold);
+  min-width: 1rem;
+  flex-shrink: 0;
+}
+.cc-trigger-val { color: var(--amber); }
+.cc-inv-val { color: var(--text-faint); font-style: italic; }
+.cc-sectors-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.cc-sector-chip {
+  font-family: var(--mono);
+  font-size: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  background: rgba(196,126,48,0.1);
+  border: 1px solid rgba(196,126,48,0.25);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+}

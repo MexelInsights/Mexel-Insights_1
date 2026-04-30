@@ -31,6 +31,7 @@ function getCard(id) { load(); return _cards.find(c => c.id === id) || null; }
 function _cardText(c) {
   return [
     c.title, (c.aliases || []).join(' '), c.what_it_is, c.exact_process_role,
+    c.hidden_constraint, c.process_or_equipment_dependency,
     c.why_it_matters, c.why_it_is_underappreciated,
     (c.related_entities || []).join(' '), (c.related_policies || []).join(' '),
     (c.downstream_sectors_exposed || []).join(' '), (c.upstream_dependencies || []).join(' ')
@@ -77,13 +78,15 @@ function searchCards(query) {
 
 // Compact card summary for synthesis prompt injection
 function cardAsContext(c) {
+  const processDesc = c.hidden_constraint || c.exact_process_role || '';
+  const leadTime = c.lead_time_risk ? `\n  Lead-time risk: ${c.lead_time_risk}` : '';
   return `• ${c.title} [${c.category}]\n` +
     `  What: ${c.what_it_is}\n` +
-    `  Process role: ${c.exact_process_role}\n` +
+    `  Hidden constraint / process role: ${processDesc}\n` +
     `  Why it matters: ${c.why_it_matters}\n` +
     `  Why underappreciated: ${c.why_it_is_underappreciated}\n` +
     `  Failure mode: ${c.failure_mode}\n` +
-    `  Chokepoint exposure: ${c.chokepoint_or_sanctions_exposure}\n` +
+    `  Chokepoint exposure: ${c.chokepoint_or_sanctions_exposure}${leadTime}\n` +
     `  Downstream sectors: ${(c.downstream_sectors_exposed || []).join(', ')}\n` +
     `  Triggers to watch: ${(c.triggers_to_watch || []).slice(0, 3).join('; ')}\n` +
     `  Equity exposure: ${(c.public_equity_relevance || '').slice(0, 200)}`;

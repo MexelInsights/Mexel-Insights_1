@@ -66,18 +66,19 @@ app.use(express.static(path.join(__dirname, '../public')));
 const MEXEL_SYSTEM_PROMPT = `You are the lead intelligence analyst at Mexel Insights â€” an independent geopolitical intelligence firm specialising in energy transition, critical minerals, regulatory pressure, and geopolitical risk.
 
 Your identity:
-- Firm: Mexel Insights ("Decision-Grade Intelligence for the Energy Transition")
+- Firm: Mexel Insights ("Hidden Bottleneck Intelligence for Energy, AI, Defence, Semiconductors, and Industrial Policy")
+- Core methodology: Headline -> Hidden Bottleneck -> Transmission Chain -> Sector Implication -> Decision Signal
 - Output style: Always structured, always sourced, always actionable
-- Voice: Analytical, direct, evidence-led â€” not sensational, not vague
-- Framework: Every output follows Context â†’ Signals â†’ Moves â†’ Uncertainty Flags
+- Voice: Analytical, direct, evidence-led -- not sensational, not vague
+- Framework: Context -> Signals -> Hidden Bottleneck -> Constraint Chain -> Moves
 
 Your products:
-1. RRM (Rapid Response Memos): 48-72h event-driven briefs
-2. Scenario Briefings: 3-scenario structured analysis (Base/Stress/Tail)
-3. PPI (Policy Pressure Index): Sector Ã— Jurisdiction scoring (0-5)
-4. MMR (Minerals & Metals Radar): Weekly signal tape across 10 materials
-5. AI Energy Demand Radar: Compute-to-power intelligence
-6. Procurement Playbooks: Commercial guidance and clause libraries
+1. RRM (Rapid Response Memos): 48-72h event-driven briefs with constraint chain analysis
+2. Scenario Briefings: 3-scenario analysis (Base/Stress/Tail) with hidden bottleneck context
+3. PPI (Policy Pressure Index): Sector x Jurisdiction scoring (0-5)
+4. MMR (Minerals & Metals Radar): Weekly signal tape across 30+ materials
+5. Bottleneck Intelligence: Process inputs, grid equipment, pharma, industrial manufacturing constraints
+6. AI Energy Demand Radar: Compute-to-power-to-grid-to-transformer chain
 
 Core rules:
 - Every quantitative claim must reference a real or plausible source
@@ -85,6 +86,7 @@ Core rules:
 - Risk bands: 1=Low, 2=Guarded, 3=Elevated, 4=High, 5=Critical
 - Moves are time-bounded: Action + Owner + Timeframe + Confidence
 - Always flag key assumptions and data gaps
+- Constraint Chain when relevant: headline -> obvious explanation -> hidden constraint -> process reason -> transmission chain -> sectors exposed -> trigger -> invalidation
 - Disclaimer: "For informational purposes only. Not legal, financial, or investment advice. Mexel Insights Ltd."
 
 Output format: Return clean JSON unless the user asks for prose. No markdown backticks around JSON.`;
@@ -162,13 +164,24 @@ ${contextBlock ? contextBlock + '\n\n' : ''}Return ONLY valid JSON in this exact
   “sources”: [“Source 1”, “Source 2”, “Source 3”],
   “bottleneck_analysis”: [
     {
-      “material”: “Name of the specific process input or chemical (only include if truly relevant)”,
+      “material”: “Name of the specific process input or equipment (only include if truly relevant)”,
       “chain_position”: “Where it sits in the supply chain and why it gates output”,
       “failure_mode”: “Exactly what breaks, at which step, on what timeline”,
       “exposed_sectors”: [“sector directly affected”],
       “key_trigger”: “The specific event or signal that would activate this failure”
     }
-  ]
+  ],
+  “constraint_chain”: {
+    “headline”: “The core insight in one line — what the bottleneck is and why it matters now”,
+    “obvious_explanation”: “What mainstream analysis says (the common narrative)”,
+    “hidden_constraint”: “The underappreciated physical, chemical, process, or equipment bottleneck”,
+    “process_reason”: “Why this constraint exists — the technical or structural reason it cannot be resolved quickly”,
+    “transmission_chain”: [“Headline event”, “First-order effect”, “Hidden constraint activates”, “Sector implication”, “Market signal”],
+    “sectors_exposed”: [“Sector 1”, “Sector 2”],
+    “company_exposure_logic”: “How equity exposure maps to this constraint chain”,
+    “trigger”: “The specific signal that confirms this chain is activating”,
+    “invalidation”: “What would prove this analysis wrong”
+  }
 }`;
 
   try {
@@ -262,13 +275,24 @@ Return ONLY valid JSON (no markdown):
   "keyAssumptions": ["Assumption 1", "Assumption 2"],
   "bottleneck_context": [
     {
-      "material": "Specific process input name (only if relevant to topic)",
+      "material": "Specific process input or equipment name (only if relevant to topic)",
       "chain_position": "Where in the value chain this sits",
       "failure_mode": "What fails and when",
       "exposed_sectors": ["sector"],
       "key_trigger": "The signal to watch"
     }
   ],
+  "constraint_chain": {
+    "headline": "The core Mexel bottleneck insight in one line",
+    "obvious_explanation": "What mainstream analysis says about this scenario",
+    "hidden_constraint": "The underappreciated physical, chemical, process, or equipment bottleneck",
+    "process_reason": "Why this constraint exists and cannot be resolved quickly",
+    "transmission_chain": ["Headline event", "First-order effect", "Hidden constraint activates", "Sector implication", "Market signal"],
+    "sectors_exposed": ["Sector 1", "Sector 2"],
+    "company_exposure_logic": "How equity exposure maps to this constraint chain",
+    "trigger": "The specific signal that confirms this chain is activating",
+    "invalidation": "What would prove this analysis wrong"
+  },
   "disclaimer": "For informational purposes only. Not investment advice. Mexel Insights Ltd."
 }`;
 
@@ -583,7 +607,7 @@ app.get('/api/health', async (req, res) => {
 
 // â”€â”€ SERVE FRONTEND â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Explicit page routes for multi-page site
-const pageRoutes = ['/', '/scenario-lab', '/materials-watch', '/policy-monitor', '/risk-map', '/ai-tools', '/pricing'];
+const pageRoutes = ['/', '/scenario-lab', '/materials-watch', '/policy-monitor', '/risk-map', '/ai-tools', '/pricing', '/bottleneck-intelligence'];
 pageRoutes.forEach(route => {
   const filename = route === '/' ? 'index.html' : route.slice(1) + '.html';
   app.get(route, (req, res) => {

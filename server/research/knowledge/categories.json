@@ -33,5 +33,20 @@
     "id": "photonics-optics",
     "label": "Photonics, Fibre & Optical-System Inputs",
     "description": "Precursors and feedstocks for optical fibre, laser, and imaging systems. The invisible layer underneath telecoms and data-centre interconnect."
+  },
+  {
+    "id": "grid-equipment",
+    "label": "Grid Infrastructure Equipment Bottlenecks",
+    "description": "The physical hardware layer of the energy transition — transformers, switchgear, cables, and the construction capacity to install them. Lead times of 2–4 years are now the binding constraint on AI and renewables build-out."
+  },
+  {
+    "id": "industrial-manufacturing",
+    "label": "Industrial & Process Manufacturing Bottlenecks",
+    "description": "Capital-intensive precision manufacturing constraints — superalloy casting, specialty steel, gas turbines — that gate power generation, defence, and industrial capacity for years ahead."
+  },
+  {
+    "id": "pharma-specialty",
+    "label": "Pharma & Specialty Manufacturing Bottlenecks",
+    "description": "Process precision, regulatory qualification, and feedstock constraints in pharmaceutical and specialty chemical manufacturing. Where the bottleneck is know-how, not just raw material."
   }
 ]

@@ -1,3 +1,42 @@
+// ═══ CONSTRAINT CHAIN RENDERER ═══
+function renderConstraintChain(chain) {
+  if (!chain || !chain.headline) return '';
+
+  let txHtml = '';
+  if (Array.isArray(chain.transmission_chain) && chain.transmission_chain.length) {
+    txHtml = `<div class="cc-tx-chain">` +
+      chain.transmission_chain.map((step, i) =>
+        `<div class="cc-tx-step"><span class="cc-tx-step-num">${String(i + 1).padStart(2, '0')}</span>${escHtml(step)}</div>`
+      ).join('') +
+      `</div>`;
+  }
+
+  let sectorsHtml = '';
+  if (Array.isArray(chain.sectors_exposed) && chain.sectors_exposed.length) {
+    sectorsHtml = `<div class="cc-field">
+      <div class="cc-field-label">Sectors exposed</div>
+      <div class="cc-sectors-row">${chain.sectors_exposed.map(s => `<span class="cc-sector-chip">${escHtml(s)}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  return `<div class="constraint-chain">
+    <div class="constraint-chain-hdr">
+      <span class="cc-label">Constraint Chain</span>
+    </div>
+    <div class="cc-headline">${escHtml(chain.headline)}</div>
+    <div class="cc-body">
+      ${chain.obvious_explanation ? `<div class="cc-field"><div class="cc-field-label">Obvious explanation</div><div class="cc-field-val">${escHtml(chain.obvious_explanation)}</div></div>` : ''}
+      ${chain.hidden_constraint ? `<div class="cc-field"><div class="cc-field-label">Hidden constraint</div><div class="cc-field-val cc-hidden-val">${escHtml(chain.hidden_constraint)}</div></div>` : ''}
+      ${chain.process_reason ? `<div class="cc-field"><div class="cc-field-label">Why it cannot be resolved quickly</div><div class="cc-field-val">${escHtml(chain.process_reason)}</div></div>` : ''}
+      ${txHtml ? `<div class="cc-field"><div class="cc-field-label">Transmission chain</div>${txHtml}</div>` : ''}
+      ${sectorsHtml}
+      ${chain.company_exposure_logic ? `<div class="cc-field"><div class="cc-field-label">Equity exposure logic</div><div class="cc-field-val">${escHtml(chain.company_exposure_logic)}</div></div>` : ''}
+      ${chain.trigger ? `<div class="cc-field"><div class="cc-field-label">Trigger to watch</div><div class="cc-field-val cc-trigger-val">${escHtml(chain.trigger)}</div></div>` : ''}
+      ${chain.invalidation ? `<div class="cc-field"><div class="cc-field-label">Invalidation condition</div><div class="cc-field-val cc-inv-val">${escHtml(chain.invalidation)}</div></div>` : ''}
+    </div>
+  </div>`;
+}
+
 // ═══ BOTTLENECK RENDERER (shared) ═══
 function renderBottleneckSection(analysisArr, kbCards) {
   const items = (analysisArr || []).filter(a => a && a.material);
@@ -121,6 +160,10 @@ async function runRRM() {
       html += renderBottleneckSection(r.bottleneck_analysis, kbCards);
     }
 
+    if (r.constraint_chain) {
+      html += renderConstraintChain(r.constraint_chain);
+    }
+
     if (r.sources?.length) {
       html += `<div style="font-family:var(--mono);font-size:0.46rem;color:var(--text-faint);margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:0.7rem;">Sources: ${r.sources.join(' | ')}</div>`;
     }
@@ -192,6 +235,10 @@ async function runScenario() {
 
     if ((s.bottleneck_context?.length > 0) || kbCards.length > 0) {
       html += renderBottleneckSection(s.bottleneck_context, kbCards);
+    }
+
+    if (s.constraint_chain) {
+      html += renderConstraintChain(s.constraint_chain);
     }
 
     html += `<div style="font-family:var(--mono);font-size:0.44rem;color:var(--text-faint);margin-top:1rem;border-top:1px solid var(--border-subtle);padding-top:0.7rem;">Not investment advice. Mexel Insights Ltd.</div>`;
